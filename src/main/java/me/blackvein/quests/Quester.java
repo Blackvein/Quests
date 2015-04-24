@@ -2570,7 +2570,11 @@ public class Quester {
 
             for (int i = 0; i < questNames.size(); i++) {
             	if (plugin.getQuest(questNames.get(i)) != null) {
-            		currentQuests.put(plugin.getQuest(questNames.get(i)), questStages.get(i));
+                    try {
+                        currentQuests.put(plugin.getQuest(questNames.get(i)), questStages.get(i));
+                    }
+                    catch (IndexOutOfBoundsException ex) {
+                    }
             	}
 
             }
@@ -2609,7 +2613,12 @@ public class Quester {
 
                     for (String s : names) {
 
-                        getQuestData(quest).blocksDamaged.put(Material.matchMaterial(s), amounts.get(names.indexOf(s)));
+                        try {
+                            getQuestData(quest).blocksDamaged.put(Material.matchMaterial(s),
+                                                                     amounts.get(names.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2622,7 +2631,12 @@ public class Quester {
 
                     for (String s : names) {
 
-                        getQuestData(quest).blocksBroken.put(Material.matchMaterial(s), amounts.get(names.indexOf(s)));
+                        try {
+                            getQuestData(quest).blocksBroken.put(Material.matchMaterial(s),
+                                                                    amounts.get(names.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2635,7 +2649,12 @@ public class Quester {
 
                     for (String s : names) {
 
-                        getQuestData(quest).blocksPlaced.put(Material.matchMaterial(s), amounts.get(names.indexOf(s)));
+                        try {
+                            getQuestData(quest).blocksPlaced.put(Material.matchMaterial(s),
+                                                                    amounts.get(names.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2648,7 +2667,12 @@ public class Quester {
 
                     for (String s : names) {
 
-                        getQuestData(quest).blocksUsed.put(Material.matchMaterial(s), amounts.get(names.indexOf(s)));
+                        try {
+                            getQuestData(quest).blocksUsed.put(Material.matchMaterial(s),
+                                                                  amounts.get(names.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2661,7 +2685,11 @@ public class Quester {
 
                     for (String s : names) {
 
-                        getQuestData(quest).blocksCut.put(Material.matchMaterial(s), amounts.get(names.indexOf(s)));
+                        try {
+                            getQuestData(quest).blocksCut.put(Material.matchMaterial(s), amounts.get(names.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2680,7 +2708,12 @@ public class Quester {
 
                     for (String s : playerNames) {
 
-                        getQuestData(quest).playerKillTimes.put(UUID.fromString(s), killTimes.get(playerNames.indexOf(s)));
+                        try {
+                            getQuestData(quest).playerKillTimes.put(UUID.fromString(s),
+                                                                       killTimes.get(playerNames.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2707,10 +2740,14 @@ public class Quester {
 
                     for (Enchantment e : enchantments) {
 
-                        Map<Enchantment, Material> map = new HashMap<Enchantment, Material>();
-                        map.put(e, materials.get(enchantments.indexOf(e)));
+                        try {
+                            Map<Enchantment, Material> map = new HashMap<Enchantment, Material>();
+                            map.put(e, materials.get(enchantments.indexOf(e)));
 
-                        getQuestData(quest).itemsEnchanted.put(map, amounts.get(enchantments.indexOf(e)));
+                            getQuestData(quest).itemsEnchanted.put(map, amounts.get(enchantments.indexOf(e)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2774,8 +2811,12 @@ public class Quester {
 
                     	if (i < getCurrentStage(quest).itemsToDeliver.size()) {
 
-                            getQuestData(quest).itemsDelivered.put(getCurrentStage(quest).itemsToDeliver.get(i), deliveryAmounts.get(i));
-
+                            try {
+                                getQuestData(quest).itemsDelivered.put(getCurrentStage(quest).itemsToDeliver.get(i),
+                                                                          deliveryAmounts.get(i));
+                            }
+                            catch (IndexOutOfBoundsException ex) {
+                            }
 
                     	}
 
@@ -2790,7 +2831,11 @@ public class Quester {
 
                     for (int i : ids) {
 
-                        getQuestData(quest).citizensInteracted.put(i, has.get(ids.indexOf(i)));
+                        try {
+                            getQuestData(quest).citizensInteracted.put(i, has.get(ids.indexOf(i)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2851,7 +2896,11 @@ public class Quester {
 
                     for (String s : names) {
 
-                        getQuestData(quest).potionsBrewed.put(s, amounts.get(names.indexOf(s)));
+                        try {
+                            getQuestData(quest).potionsBrewed.put(s, amounts.get(names.indexOf(s)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2864,14 +2913,18 @@ public class Quester {
 
                     for (String mob : mobs) {
 
-                        if (mob.equalsIgnoreCase("Wolf")) {
+                        try {
+                            if (mob.equalsIgnoreCase("Wolf")) {
 
-                            getQuestData(quest).mobsTamed.put(EntityType.WOLF, amounts.get(mobs.indexOf(mob)));
+                                getQuestData(quest).mobsTamed.put(EntityType.WOLF, amounts.get(mobs.indexOf(mob)));
 
-                        } else {
+                            } else {
 
-                            getQuestData(quest).mobsTamed.put(EntityType.OCELOT, amounts.get(mobs.indexOf(mob)));
+                                getQuestData(quest).mobsTamed.put(EntityType.OCELOT, amounts.get(mobs.indexOf(mob)));
 
+                            }
+                        }
+                        catch (IndexOutOfBoundsException ex) {
                         }
 
                     }
@@ -2885,7 +2938,12 @@ public class Quester {
 
                     for (String color : colors) {
 
-                        getQuestData(quest).sheepSheared.put(Quests.getDyeColor(color), amounts.get(colors.indexOf(color)));
+                        try {
+                            getQuestData(quest).sheepSheared.put(Quests.getDyeColor(color),
+                                                                    amounts.get(colors.indexOf(color)));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2896,7 +2954,11 @@ public class Quester {
                     List<String> passwords = questSec.getStringList("passwords");
                     List<Boolean> said = questSec.getBooleanList("passwords-said");
                     for (int i = 0; i < passwords.size(); i++) {
-                        getQuestData(quest).passwordsSaid.put(passwords.get(i), said.get(i));
+                        try {
+                            getQuestData(quest).passwordsSaid.put(passwords.get(i), said.get(i));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
                     }
 
                 }
@@ -2907,7 +2969,11 @@ public class Quester {
                     List<Integer> customObjCount = questSec.getIntegerList("custom-objective-counts");
 
                     for (int i = 0; i < customObj.size(); i++) {
-                        getQuestData(quest).customObjectiveCounts.put(customObj.get(i), customObjCount.get(i));
+                        try {
+                            getQuestData(quest).customObjectiveCounts.put(customObj.get(i), customObjCount.get(i));
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
                     }
 
                 }
@@ -2922,7 +2988,11 @@ public class Quester {
 
                     for (String trig : getCurrentStage(quest).chatEvents.keySet()) {
 
-                        getQuestData(quest).eventFired.put(trig, false);
+                        try {
+                            getQuestData(quest).eventFired.put(trig, false);
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
@@ -2933,7 +3003,11 @@ public class Quester {
                     List<String> triggers = questSec.getStringList("chat-triggers");
                     for (String s : triggers) {
 
-                        getQuestData(quest).eventFired.put(s, true);
+                        try {
+                            getQuestData(quest).eventFired.put(s, true);
+                        }
+                        catch (IndexOutOfBoundsException ex) {
+                        }
 
                     }
 
