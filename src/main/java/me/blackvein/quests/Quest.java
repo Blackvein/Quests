@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import me.blackvein.api.QuestCompleteEvent;
 
 import me.blackvein.quests.exceptions.InvalidStageException;
 import me.blackvein.quests.util.ItemUtil;
@@ -172,6 +173,10 @@ public class Quest {
     public String getName() {
         return name;
     }
+    public int getQuestPoints()
+    {
+        return questPoints;
+    }
 
     public boolean testRequirements(Quester quester) {
         return testRequirements(quester.getPlayer());
@@ -292,6 +297,8 @@ public class Quest {
         q.completedQuests.add(name);
         String none = ChatColor.GRAY + "- (" + Lang.get("none") + ")";
 
+        Quests.getInstance().getServer().getPluginManager().callEvent(new QuestCompleteEvent(this, q));
+        
         String ps = Quests.parseString(finished, this);
 
         for (String msg : ps.split("<br>")) {

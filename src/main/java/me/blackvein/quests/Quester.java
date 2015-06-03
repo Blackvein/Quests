@@ -74,6 +74,10 @@ public class Quester {
     };
 
     int questPoints = 0;
+    public int getQuestPoints()
+    {
+        return questPoints;
+    }
     Quests plugin;
     public LinkedList<String> completedQuests = new LinkedList<String>() {
 
