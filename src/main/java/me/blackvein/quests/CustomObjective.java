@@ -1,85 +1,22 @@
 package me.blackvein.quests;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class CustomObjective implements Listener {
 
-    private String name = null;
-    private String author = null;
     public final Map<String, Object> datamap = new HashMap<String, Object>();
     public final Map<String, String> descriptions = new HashMap<String, String>();
+    private String name = null;
+    private String author = null;
     private String countPrompt = "null";
     private String display = "null";
     private boolean enableCount = true;
     private boolean showCount = true;
     private int count = 1;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void addData(String name) {
-        datamap.put(name, null);
-    }
-
-    public void addDescription(String data, String description) {
-        descriptions.put(data, description);
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public String getCountPrompt() {
-        return countPrompt;
-    }
-
-    public void setCountPrompt(String countPrompt) {
-        this.countPrompt = countPrompt;
-    }
-
-    public boolean isCountShown() {
-        return showCount;
-    }
-
-    public void setShowCount(boolean showCount) {
-        this.showCount = showCount;
-    }
-
-    public String getDisplay() {
-        return display;
-    }
-
-    public void setDisplay(String display) {
-        this.display = display;
-    }
-
-    public boolean isEnableCount() {
-        return enableCount;
-    }
-
-    public void setEnableCount(boolean enableCount) {
-        this.enableCount = enableCount;
-    }
 
     public static Map<String, Object> getDatamap(Player player, CustomObjective obj, Quest quest) {
 
@@ -163,6 +100,70 @@ public abstract class CustomObjective implements Listener {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void addData(String name) {
+        datamap.put(name, null);
+    }
+
+    public void addDescription(String data, String description) {
+        descriptions.put(data, description);
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getCountPrompt() {
+        return countPrompt;
+    }
+
+    public void setCountPrompt(String countPrompt) {
+        this.countPrompt = countPrompt;
+    }
+
+    public boolean isCountShown() {
+        return showCount;
+    }
+
+    public void setShowCount(boolean showCount) {
+        this.showCount = showCount;
+    }
+
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
+    public boolean isEnableCount() {
+        return enableCount;
+    }
+
+    public void setEnableCount(boolean enableCount) {
+        this.enableCount = enableCount;
+    }
+
     @Override
     public boolean equals(Object o) {
 
@@ -170,59 +171,28 @@ public abstract class CustomObjective implements Listener {
 
             CustomObjective other = (CustomObjective) o;
 
-            if (other.name.equals(name) == false) {
-                return false;
-            }
+            if (!other.name.equals(name)) return false;
 
-            if (other.author.equals(name) == false) {
-                return false;
-            }
+            if (!other.author.equals(name)) return false;
 
             for (String s : other.datamap.keySet()) {
-                if (datamap.containsKey(s) == false) {
-                    return false;
-                }
+                if (!datamap.containsKey(s)) return false;
             }
 
             for (Object val : other.datamap.values()) {
-                if (datamap.containsValue(val) == false) {
-                    return false;
-                }
+                if (!datamap.containsValue(val)) return false;
             }
 
             for (String s : other.descriptions.keySet()) {
-                if (descriptions.containsKey(s) == false) {
-                    return false;
-                }
+                if (!descriptions.containsKey(s)) return false;
             }
 
             for (String s : other.descriptions.values()) {
-                if (descriptions.containsValue(s) == false) {
-                    return false;
-                }
+                if (!descriptions.containsValue(s)) return false;
             }
 
-            if (other.countPrompt.equals(countPrompt) == false) {
-                return false;
-            }
+            return other.countPrompt.equals(countPrompt) && other.display.equals(display) && other.enableCount == enableCount && other.showCount == showCount && other.count == count;
 
-            if (other.display.equals(display) == false) {
-                return false;
-            }
-
-            if (other.enableCount != enableCount) {
-                return false;
-            }
-
-            if (other.showCount != showCount) {
-                return false;
-            }
-
-            if (other.count != count) {
-                return false;
-            }
-
-            return true;
         }
 
         return false;
