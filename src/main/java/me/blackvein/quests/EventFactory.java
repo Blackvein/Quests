@@ -1,25 +1,9 @@
 package me.blackvein.quests;
 
-import me.blackvein.quests.util.ColorUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
 import me.blackvein.quests.prompts.ItemStackPrompt;
-import me.blackvein.quests.util.CK;
-import me.blackvein.quests.util.ItemUtil;
-import me.blackvein.quests.util.Lang;
-import me.blackvein.quests.util.MiscUtil;
-import me.blackvein.quests.util.QuestMob;
+import me.blackvein.quests.util.*;
+import me.blackvein.quests.util.ColorUtil;
 import net.citizensnpcs.api.CitizensAPI;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -29,30 +13,27 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.conversations.ConversationAbandonedListener;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.ConversationPrefix;
-import org.bukkit.conversations.FixedSetPrompt;
-import org.bukkit.conversations.NumericPrompt;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
+import org.bukkit.conversations.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
+
 public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
     Quests quests;
-    Map<UUID, Quest> editSessions = new HashMap<UUID, Quest>();
-    Map<UUID, Block> selectedExplosionLocations = new HashMap<UUID, Block>();
-    Map<UUID, Block> selectedEffectLocations = new HashMap<UUID, Block>();
-    Map<UUID, Block> selectedMobLocations = new HashMap<UUID, Block>();
-    Map<UUID, Block> selectedLightningLocations = new HashMap<UUID, Block>();
-    Map<UUID, Block> selectedTeleportLocations = new HashMap<UUID, Block>();
+   // Map<UUID, Quest> editSessions = new HashMap<UUID, Quest>();
+    Map<UUID, Block> selectedExplosionLocations = new HashMap<UUID, Block>(),
+            selectedEffectLocations = new HashMap<UUID, Block>(),
+            selectedMobLocations = new HashMap<UUID, Block>(),
+            selectedLightningLocations = new HashMap<UUID, Block>(),
+            selectedTeleportLocations = new HashMap<UUID, Block>();
     List<String> names = new LinkedList<String>();
     ConversationFactory convoCreator;
     File eventsFile;
@@ -70,116 +51,6 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
                 .withTimeout(3600)
                 .thatExcludesNonPlayersWithMessage("Console may not perform this operation!")
                 .addConversationAbandonedListener(this);
-
-    }
-
-    @Override
-    public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
-
-        Player player = (Player) abandonedEvent.getContext().getForWhom();
-        selectedExplosionLocations.remove(player.getUniqueId());
-        selectedEffectLocations.remove(player.getUniqueId());
-        selectedMobLocations.remove(player.getUniqueId());
-        selectedLightningLocations.remove(player.getUniqueId());
-        selectedTeleportLocations.remove(player.getUniqueId());
-
-    }
-
-    private class QuestCreatorPrefix implements ConversationPrefix {
-
-        @Override
-        public String getPrefix(ConversationContext context) {
-
-            return "";
-
-        }
-    }
-
-    private class MenuPrompt extends FixedSetPrompt {
-
-        public MenuPrompt() {
-
-            super("1", "2", "3", "4");
-
-        }
-
-        @Override
-        public String getPromptText(ConversationContext context) {
-
-            String text
-                    = GOLD + Lang.get("eventEditorTitle") + "\n"
-                    + BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorCreate") + "\n"
-                    + BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorEdit") + "\n"
-                    + BLUE + "" + BOLD + "3" + RESET + YELLOW + " - " + Lang.get("eventEditorDelete") + "\n"
-                    + GREEN + "" + BOLD + "4" + RESET + YELLOW + " - " + Lang.get("exit");
-
-            return text;
-
-        }
-
-        @Override
-        protected Prompt acceptValidatedInput(ConversationContext context, String input) {
-
-            final Player player = (Player) context.getForWhom();
-
-            if (input.equalsIgnoreCase("1")) {
-
-                if (player.hasPermission("quests.editor.events.create")) {
-                    context.setSessionData(CK.E_OLD_EVENT, "");
-                    return new EventNamePrompt();
-                } else {
-                    player.sendMessage(RED + Lang.get("eventEditorCreatePermisssions"));
-                    return new MenuPrompt();
-                }
-
-            } else if (input.equalsIgnoreCase("2")) {
-
-                if (player.hasPermission("quests.editor.events.edit")) {
-
-                    if (quests.events.isEmpty()) {
-                        ((Player) context.getForWhom()).sendMessage(YELLOW + Lang.get("eventEditorNoneToEdit"));
-                        return new MenuPrompt();
-                    } else {
-                        return new SelectEditPrompt();
-                    }
-
-                } else {
-
-                    player.sendMessage(RED + Lang.get("eventEditorEditPermisssions"));
-                    return new MenuPrompt();
-
-                }
-            } else if (input.equalsIgnoreCase("3")) {
-
-                if (player.hasPermission("quests.editor.events.delete")) {
-
-                    if (quests.events.isEmpty()) {
-                        ((Player) context.getForWhom()).sendMessage(YELLOW + Lang.get("eventEditorNoneToDelete"));
-                        return new MenuPrompt();
-                    } else {
-                        return new SelectDeletePrompt();
-                    }
-
-                } else {
-
-                    player.sendMessage(RED + Lang.get("eventEditorDeletePermisssions"));
-                    return new MenuPrompt();
-
-                }
-
-            } else if (input.equalsIgnoreCase("4")) {
-                ((Player) context.getForWhom()).sendMessage(YELLOW + Lang.get("exited"));
-                return Prompt.END_OF_CONVERSATION;
-            }
-
-            return null;
-
-        }
-    }
-
-    public Prompt returnToMenu() {
-
-        return new CreateMenuPrompt();
 
     }
 
@@ -218,19 +89,19 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
             context.setSessionData(CK.E_MESSAGE, event.message);
         }
 
-        if (event.clearInv == true) {
+        if (event.clearInv) {
             context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("yesWord"));
         } else {
             context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("noWord"));
         }
 
-        if (event.failQuest == true) {
+        if (event.failQuest) {
             context.setSessionData(CK.E_FAIL_QUEST, Lang.get("yesWord"));
         } else {
             context.setSessionData(CK.E_FAIL_QUEST, Lang.get("noWord"));
         }
 
-        if (event.items != null && event.items.isEmpty() == false) {
+        if (event.items != null && !event.items.isEmpty()) {
 
             LinkedList<ItemStack> items = new LinkedList<ItemStack>();
             items.addAll(event.items);
@@ -239,7 +110,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
         }
 
-        if (event.explosions != null && event.explosions.isEmpty() == false) {
+        if (event.explosions != null && !event.explosions.isEmpty()) {
 
             LinkedList<String> locs = new LinkedList<String>();
 
@@ -251,15 +122,15 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
         }
 
-        if (event.effects != null && event.effects.isEmpty() == false) {
+        if (event.effects != null && !event.effects.isEmpty()) {
 
             LinkedList<String> locs = new LinkedList<String>();
             LinkedList<String> effs = new LinkedList<String>();
 
             for (Entry<Location, Effect> e : event.effects.entrySet()) {
 
-                locs.add(Quests.getLocationInfo((Location) e.getKey()));
-                effs.add(((Effect) e.getValue()).toString());
+                locs.add(Quests.getLocationInfo(e.getKey()));
+                effs.add((e.getValue()).toString());
 
             }
 
@@ -282,7 +153,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
         }
 
-        if (event.mobSpawns != null && event.mobSpawns.isEmpty() == false) {
+        if (event.mobSpawns != null && !event.mobSpawns.isEmpty()) {
 
             LinkedList<String> questMobs = new LinkedList<String>();
 
@@ -293,7 +164,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
             context.setSessionData(CK.E_MOB_TYPES, questMobs);
         }
 
-        if (event.lightningStrikes != null && event.lightningStrikes.isEmpty() == false) {
+        if (event.lightningStrikes != null && !event.lightningStrikes.isEmpty()) {
 
             LinkedList<String> locs = new LinkedList<String>();
             for (Location loc : event.lightningStrikes) {
@@ -303,7 +174,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
         }
 
-        if (event.potionEffects != null && event.potionEffects.isEmpty() == false) {
+        if (event.potionEffects != null && !event.potionEffects.isEmpty()) {
 
             LinkedList<String> types = new LinkedList<String>();
             LinkedList<Long> durations = new LinkedList<Long>();
@@ -325,19 +196,19 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
         if (event.hunger > -1) {
 
-            context.setSessionData(CK.E_HUNGER, (Integer) event.hunger);
+            context.setSessionData(CK.E_HUNGER, event.hunger);
 
         }
 
         if (event.saturation > -1) {
 
-            context.setSessionData(CK.E_SATURATION, (Integer) event.saturation);
+            context.setSessionData(CK.E_SATURATION, event.saturation);
 
         }
 
         if (event.health > -1) {
 
-            context.setSessionData(CK.E_HEALTH, (Float) event.health);
+            context.setSessionData(CK.E_HEALTH, event.health);
 
         }
 
@@ -350,540 +221,6 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
         if (event.commands != null) {
 
             context.setSessionData(CK.E_COMMANDS, event.commands);
-
-        }
-
-    }
-
-    private class SelectEditPrompt extends StringPrompt {
-
-        @Override
-        public String getPromptText(ConversationContext context) {
-
-            String text = GOLD + "- " + Lang.get("eventEditorEdit") + " -\n";
-
-            for (Event evt : quests.events) {
-                text += AQUA + evt.name + YELLOW + ", ";
-            }
-
-            text = text.substring(0, text.length() - 2) + "\n";
-            text += YELLOW + Lang.get("eventEditorEnterEventName");
-
-            return text;
-
-        }
-
-        @Override
-        public Prompt acceptInput(ConversationContext context, String input) {
-
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
-
-                for (Event evt : quests.events) {
-
-                    if (evt.name.equalsIgnoreCase(input)) {
-                        context.setSessionData(CK.E_OLD_EVENT, evt.name);
-                        context.setSessionData(CK.E_NAME, evt.name);
-                        loadData(evt, context);
-                        return new CreateMenuPrompt();
-                    }
-
-                }
-
-                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorNotFound"));
-                return new SelectEditPrompt();
-
-            } else {
-                return new MenuPrompt();
-            }
-
-        }
-
-    }
-
-    private class SelectDeletePrompt extends StringPrompt {
-
-        @Override
-        public String getPromptText(ConversationContext context) {
-
-            String text = GOLD + "- " + Lang.get("eventEditorDelete") + " -\n";
-
-            for (Event evt : quests.events) {
-                text += AQUA + evt.name + YELLOW + ",";
-            }
-
-            text = text.substring(0, text.length() - 1) + "\n";
-            text += YELLOW + Lang.get("eventEditorEnterEventName");
-
-            return text;
-
-        }
-
-        @Override
-        public Prompt acceptInput(ConversationContext context, String input) {
-
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
-
-                LinkedList<String> used = new LinkedList<String>();
-
-                for (Event evt : quests.events) {
-
-                    if (evt.name.equalsIgnoreCase(input)) {
-
-                        for (Quest quest : quests.getQuests()) {
-
-                            for (Stage stage : quest.orderedStages) {
-
-                                if (stage.finishEvent != null && stage.finishEvent.name.equalsIgnoreCase(evt.name)) {
-                                    used.add(quest.name);
-                                    break;
-                                }
-
-                            }
-
-                        }
-
-                        if (used.isEmpty()) {
-                            context.setSessionData(CK.ED_EVENT_DELETE, evt.name);
-                            return new DeletePrompt();
-                        } else {
-                            ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorEventInUse") + " \"" + PURPLE + evt.name + RED + "\":");
-                            for (String s : used) {
-                                ((Player) context.getForWhom()).sendMessage(RED + "- " + DARKRED + s);
-                            }
-                            ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorMustModifyQuests"));
-                            return new SelectDeletePrompt();
-                        }
-                    }
-
-                }
-
-                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorNotFound"));
-                return new SelectDeletePrompt();
-
-            } else {
-                return new MenuPrompt();
-            }
-
-        }
-
-    }
-
-    private class DeletePrompt extends StringPrompt {
-
-        @Override
-        public String getPromptText(ConversationContext context) {
-
-            String text
-                    = RED + Lang.get("eventEditorDeletePrompt") + " \"" + GOLD + (String) context.getSessionData(CK.ED_EVENT_DELETE) + RED + "\"?\n";
-            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
-
-            return text;
-
-        }
-
-        @Override
-        public Prompt acceptInput(ConversationContext context, String input) {
-
-            if (input.equalsIgnoreCase(Lang.get("yesWord"))) {
-                deleteEvent(context);
-                return new MenuPrompt();
-            } else if (input.equalsIgnoreCase(Lang.get("noWord"))) {
-                return new MenuPrompt();
-            } else {
-                return new DeletePrompt();
-            }
-
-        }
-
-    }
-
-    private class CreateMenuPrompt extends FixedSetPrompt {
-
-        public CreateMenuPrompt() {
-
-            super("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19");
-
-        }
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public String getPromptText(ConversationContext context) {
-
-            String text
-                    = GOLD + "- " + Lang.get("event") + ": " + AQUA + context.getSessionData(CK.E_NAME) + GOLD + " -\n";
-
-            text += BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorSetName") + "\n";
-
-            if (context.getSessionData(CK.E_MESSAGE) == null) {
-                text += BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMessage") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-                text += BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMessage") + "(" + AQUA + "\"" + context.getSessionData(CK.E_MESSAGE) + "\"" + YELLOW + ")\n";
-            }
-
-            if (context.getSessionData(CK.E_CLEAR_INVENTORY) == null) {
-                context.setSessionData(CK.E_CLEAR_INVENTORY, "No");
-            }
-
-            if (context.getSessionData(CK.E_FAIL_QUEST) == null) {
-                context.setSessionData(CK.E_FAIL_QUEST, "No");
-            }
-
-            text += BLUE + "" + BOLD + "3" + RESET + YELLOW + " - " + Lang.get("eventEditorClearInv") + ": " + AQUA + context.getSessionData(CK.E_CLEAR_INVENTORY) + "\n";
-            text += BLUE + "" + BOLD + "4" + RESET + YELLOW + " - " + Lang.get("eventEditorFailQuest") + ": " + AQUA + context.getSessionData(CK.E_FAIL_QUEST) + "\n";
-
-            if (context.getSessionData(CK.E_ITEMS) == null) {
-                text += BLUE + "" + BOLD + "5" + RESET + YELLOW + " - " + Lang.get("eventEditorSetItems") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "5" + RESET + YELLOW + " - " + Lang.get("eventEditorSetItems") + "\n";
-                LinkedList<ItemStack> items = (LinkedList<ItemStack>) context.getSessionData(CK.E_ITEMS);
-
-                for (ItemStack is : items) {
-
-                    text += GRAY + "    - " + ItemUtil.getString(is) + "\n";
-
-                }
-
-            }
-
-            if (context.getSessionData(CK.E_EXPLOSIONS) == null) {
-                text += BLUE + "" + BOLD + "6" + RESET + YELLOW + " - " + Lang.get("eventEditorSetExplosions") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "6" + RESET + YELLOW + " - " + Lang.get("eventEditorSetExplosions") + "\n";
-                LinkedList<String> locations = (LinkedList<String>) context.getSessionData(CK.E_EXPLOSIONS);
-
-                for (String loc : locations) {
-
-                    text += GRAY + "    - " + AQUA + loc + "\n";
-
-                }
-
-            }
-
-            if (context.getSessionData(CK.E_EFFECTS) == null) {
-                text += BLUE + "" + BOLD + "7" + RESET + YELLOW + " - " + Lang.get("eventEditorSetEffects") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "7" + RESET + YELLOW + " - " + Lang.get("eventEditorSetEffects") + "\n";
-                LinkedList<String> effects = (LinkedList<String>) context.getSessionData(CK.E_EFFECTS);
-                LinkedList<String> locations = (LinkedList<String>) context.getSessionData(CK.E_EFFECTS_LOCATIONS);
-
-                for (String effect : effects) {
-
-                    text += GRAY + "    - " + AQUA + effect + GRAY + " at " + DARKAQUA + locations.get(effects.indexOf(effect)) + "\n";
-
-                }
-
-            }
-
-            if (context.getSessionData(CK.E_WORLD_STORM) == null) {
-                text += BLUE + "" + BOLD + "8" + RESET + YELLOW + " - " + Lang.get("eventEditorSetStorm") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-                text += BLUE + "" + BOLD + "8" + RESET + YELLOW + " - " + Lang.get("eventEditorSetStorm") + " (" + AQUA + (String) context.getSessionData(CK.E_WORLD_STORM) + YELLOW + " -> " + DARKAQUA + Quests.getTime((Long) context.getSessionData(CK.E_WORLD_STORM_DURATION)) + YELLOW + ")\n";
-            }
-
-            if (context.getSessionData(CK.E_WORLD_THUNDER) == null) {
-                text += BLUE + "" + BOLD + "9" + RESET + YELLOW + " - " + Lang.get("eventEditorSetThunder") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-                text += BLUE + "" + BOLD + "9" + RESET + YELLOW + " - " + Lang.get("eventEditorSetThunder") + " (" + AQUA + (String) context.getSessionData(CK.E_WORLD_THUNDER) + YELLOW + " -> " + DARKAQUA + Quests.getTime((Long) context.getSessionData(CK.E_WORLD_THUNDER_DURATION)) + YELLOW + ")\n";
-            }
-
-            if (context.getSessionData(CK.E_MOB_TYPES) == null) {
-                text += BLUE + "" + BOLD + "10" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMobSpawns") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-                LinkedList<String> types = (LinkedList<String>) context.getSessionData(CK.E_MOB_TYPES);
-
-                text += BLUE + "" + BOLD + "10" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMobSpawns") + "\n";
-
-                for (String s : types) {
-                    QuestMob qm = QuestMob.fromString(s);
-                    text += GRAY + "    - " + AQUA + qm.getType().name() + ((qm.getName() != null) ? ": " + qm.getName() : "") + GRAY + " x " + DARKAQUA + qm.getSpawnAmounts() + GRAY + " -> " + GREEN + Quests.getLocationInfo(qm.getSpawnLocation()) + "\n";
-                }
-            }
-
-            if (context.getSessionData(CK.E_LIGHTNING) == null) {
-                text += BLUE + "" + BOLD + "11" + RESET + YELLOW + " - " + Lang.get("eventEditorSetLightning") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "11" + RESET + YELLOW + " - " + Lang.get("eventEditorSetLightning") + "\n";
-                LinkedList<String> locations = (LinkedList<String>) context.getSessionData(CK.E_LIGHTNING);
-
-                for (String loc : locations) {
-
-                    text += GRAY + "    - " + AQUA + loc + "\n";
-
-                }
-
-            }
-
-            if (context.getSessionData(CK.E_POTION_TYPES) == null) {
-                text += BLUE + "" + BOLD + "12" + RESET + YELLOW + " - " + Lang.get("eventEditorSetPotionEffects") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "12" + RESET + YELLOW + " - " + Lang.get("eventEditorSetPotionEffects") + "\n";
-                LinkedList<String> types = (LinkedList<String>) context.getSessionData(CK.E_POTION_TYPES);
-                LinkedList<Long> durations = (LinkedList<Long>) context.getSessionData(CK.E_POTION_DURATIONS);
-                LinkedList<Integer> mags = (LinkedList<Integer>) context.getSessionData(CK.E_POTION_STRENGHT);
-                int index = -1;
-
-                for (String type : types) {
-
-                    index++;
-                    text += GRAY + "    - " + AQUA + type + PURPLE + " " + Quests.getNumeral(mags.get(index)) + GRAY + " -> " + DARKAQUA + Quests.getTime(durations.get(index) * 50L) + "\n";
-
-                }
-
-            }
-
-            if (context.getSessionData(CK.E_HUNGER) == null) {
-                text += BLUE + "" + BOLD + "13" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHunger") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "13" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHunger") + AQUA + " (" + (Integer) context.getSessionData(CK.E_HUNGER) + ")\n";
-
-            }
-
-            if (context.getSessionData(CK.E_SATURATION) == null) {
-                text += BLUE + "" + BOLD + "14" + RESET + YELLOW + " - " + Lang.get("eventEditorSetSaturation") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "14" + RESET + YELLOW + " - " + Lang.get("eventEditorSetSaturation") + AQUA + " (" + (Integer) context.getSessionData(CK.E_SATURATION) + ")\n";
-
-            }
-
-            if (context.getSessionData(CK.E_HEALTH) == null) {
-                text += BLUE + "" + BOLD + "15" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHealth") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "15" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHealth") + AQUA + " (" + (Integer) context.getSessionData(CK.E_HEALTH) + ")\n";
-
-            }
-
-            if (context.getSessionData(CK.E_TELEPORT) == null) {
-                text += BLUE + "" + BOLD + "16" + RESET + YELLOW + " - " + Lang.get("eventEditorSetTeleport") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "16" + RESET + YELLOW + " - " + Lang.get("eventEditorSetTeleport") + AQUA + " (" + (String) context.getSessionData(CK.E_TELEPORT) + ")\n";
-
-            }
-
-            if (context.getSessionData(CK.E_COMMANDS) == null) {
-                text += BLUE + "" + BOLD + "17" + RESET + YELLOW + " - " + Lang.get("eventEditorSetCommands") + GRAY + " (" + Lang.get("noneSet") + ")\n";
-            } else {
-
-                text += BLUE + "" + BOLD + "17" + RESET + YELLOW + " - " + Lang.get("eventEditorSetCommands") + "\n";
-                for (String s : (LinkedList<String>) context.getSessionData(CK.E_COMMANDS)) {
-                    text += GRAY + "    - " + AQUA + s + "\n";
-                }
-
-            }
-
-            text += GREEN + "" + BOLD + "18" + RESET + YELLOW + " - " + Lang.get("done") + "\n";
-            text += RED + "" + BOLD + "19" + RESET + YELLOW + " - " + Lang.get("quit");
-
-            return text;
-
-        }
-
-        @Override
-        public Prompt acceptValidatedInput(ConversationContext context, String input) {
-
-            if (input.equalsIgnoreCase("1")) {
-
-                return new SetNamePrompt();
-
-            } else if (input.equalsIgnoreCase("2")) {
-
-                return new MessagePrompt();
-
-            } else if (input.equalsIgnoreCase("3")) {
-
-                String s = (String) context.getSessionData(CK.E_CLEAR_INVENTORY);
-                if (s.equalsIgnoreCase(Lang.get("yesWord"))) {
-                    context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("noWord"));
-                } else {
-                    context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("yesWord"));
-                }
-
-                return new CreateMenuPrompt();
-
-            } else if (input.equalsIgnoreCase("4")) {
-
-                String s = (String) context.getSessionData(CK.E_FAIL_QUEST);
-                if (s.equalsIgnoreCase(Lang.get("yesWord"))) {
-                    context.setSessionData(CK.E_FAIL_QUEST, Lang.get("noWord"));
-                } else {
-                    context.setSessionData(CK.E_FAIL_QUEST, Lang.get("yesWord"));
-                }
-
-                return new CreateMenuPrompt();
-
-            } else if (input.equalsIgnoreCase("5")) {
-
-                return new ItemListPrompt();
-
-            } else if (input.equalsIgnoreCase("6")) {
-
-                selectedExplosionLocations.put(((Player) context.getForWhom()).getUniqueId(), null);
-                return new ExplosionPrompt();
-
-            } else if (input.equalsIgnoreCase("7")) {
-
-                return new EffectListPrompt();
-
-            } else if (input.equalsIgnoreCase("8")) {
-
-                return new StormPrompt();
-
-            } else if (input.equalsIgnoreCase("9")) {
-
-                return new ThunderPrompt();
-
-            } else if (input.equalsIgnoreCase("10")) {
-
-                return new MobPrompt();
-
-            } else if (input.equalsIgnoreCase("11")) {
-
-                selectedLightningLocations.put(((Player) context.getForWhom()).getUniqueId(), null);
-                return new LightningPrompt();
-
-            } else if (input.equalsIgnoreCase("12")) {
-
-                return new PotionEffectPrompt();
-
-            } else if (input.equalsIgnoreCase("13")) {
-
-                return new HungerPrompt();
-
-            } else if (input.equalsIgnoreCase("14")) {
-
-                return new SaturationPrompt();
-
-            } else if (input.equalsIgnoreCase("15")) {
-
-                return new HealthPrompt();
-
-            } else if (input.equalsIgnoreCase("16")) {
-
-                selectedTeleportLocations.put(((Player) context.getForWhom()).getUniqueId(), null);
-                return new TeleportPrompt();
-
-            } else if (input.equalsIgnoreCase("17")) {
-
-                return new CommandsPrompt();
-
-            } else if (input.equalsIgnoreCase("18")) {
-
-                if (context.getSessionData(CK.E_OLD_EVENT) != null) {
-                    return new FinishPrompt((String) context.getSessionData(CK.E_OLD_EVENT));
-                } else {
-                    return new FinishPrompt(null);
-                }
-
-            } else if (input.equalsIgnoreCase("19")) {
-
-                return new QuitPrompt();
-
-            }
-
-            return null;
-
-        }
-    }
-
-    private class QuitPrompt extends StringPrompt {
-
-        @Override
-        public String getPromptText(ConversationContext context) {
-
-            String text
-                    = GREEN + Lang.get("eventEditorQuitWithoutSaving") + "\n";
-            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
-
-            return text;
-
-        }
-
-        @Override
-        public Prompt acceptInput(ConversationContext context, String input) {
-
-            if (input.equalsIgnoreCase(Lang.get("yesWord"))) {
-                clearData(context);
-                return new MenuPrompt();
-            } else if (input.equalsIgnoreCase(Lang.get("noWord"))) {
-                return new CreateMenuPrompt();
-            } else {
-                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("invalidOption"));
-                return new QuitPrompt();
-            }
-
-        }
-
-    }
-
-    private class FinishPrompt extends StringPrompt {
-
-        String modName = null;
-        LinkedList<String> modified = new LinkedList<String>();
-
-        public FinishPrompt(String modifiedName) {
-
-            if (modifiedName != null) {
-
-                modName = modifiedName;
-                for (Quest q : quests.getQuests()) {
-
-                    for (Stage s : q.orderedStages) {
-
-                        if (s.finishEvent != null && s.finishEvent.name != null) {
-
-                            if (s.finishEvent.name.equalsIgnoreCase(modifiedName)) {
-                                modified.add(q.getName());
-                                break;
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        @Override
-        public String getPromptText(ConversationContext context) {
-
-            String text
-                    = RED + Lang.get("eventEditorFinishAndSave") + " \"" + GOLD + (String) context.getSessionData(CK.E_NAME) + RED + "\"?\n";
-            if (modified.isEmpty() == false) {
-                text += RED + Lang.get("eventEditorModifiedNote") + "\n";
-                for (String s : modified) {
-                    text += GRAY + "    - " + DARKRED + s + "\n";
-                }
-                text += RED + Lang.get("eventEditorForcedToQuit") + "\n";
-            }
-            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
-
-            return text;
-
-        }
-
-        @Override
-        public Prompt acceptInput(ConversationContext context, String input) {
-
-            if (input.equalsIgnoreCase(Lang.get("yesWord"))) {
-                saveEvent(context);
-                return new MenuPrompt();
-            } else if (input.equalsIgnoreCase(Lang.get("noWord"))) {
-                return new CreateMenuPrompt();
-            } else {
-                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("invalidOption"));
-                return new FinishPrompt(modName);
-            }
 
         }
 
@@ -926,7 +263,24 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
     private static LinkedList<Long> getCLongList(ConversationContext context, String path) {
         return (LinkedList<Long>) context.getSessionData(path);
     }
-    //
+
+    @Override
+    public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
+
+        Player player = (Player) abandonedEvent.getContext().getForWhom();
+        selectedExplosionLocations.remove(player.getUniqueId());
+        selectedEffectLocations.remove(player.getUniqueId());
+        selectedMobLocations.remove(player.getUniqueId());
+        selectedLightningLocations.remove(player.getUniqueId());
+        selectedTeleportLocations.remove(player.getUniqueId());
+
+    }
+
+    public Prompt returnToMenu() {
+
+        return new CreateMenuPrompt();
+
+    }
 
     private void deleteEvent(ConversationContext context) {
 
@@ -989,13 +343,13 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
             return;
         }
 
-        if (((String) context.getSessionData(CK.E_OLD_EVENT)).isEmpty() == false) {
-            data.set("events." + (String) context.getSessionData(CK.E_OLD_EVENT), null);
+        if (!((String) context.getSessionData(CK.E_OLD_EVENT)).isEmpty()) {
+            data.set("events." + context.getSessionData(CK.E_OLD_EVENT), null);
             quests.events.remove(quests.getEvent((String) context.getSessionData(CK.E_OLD_EVENT)));
         }
 
-        ConfigurationSection section = data.createSection("events." + (String) context.getSessionData(CK.E_NAME));
-        names.remove((String) context.getSessionData(CK.E_NAME));
+        ConfigurationSection section = data.createSection("events." + context.getSessionData(CK.E_NAME));
+        names.remove(context.getSessionData(CK.E_NAME));
 
         if (context.getSessionData(CK.E_MESSAGE) != null) {
             section.set("message", getCString(context, CK.E_MESSAGE));
@@ -1181,6 +535,630 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
     }
 
+    private class QuestCreatorPrefix implements ConversationPrefix {
+
+        @Override
+        public String getPrefix(ConversationContext context) {
+
+            return "";
+
+        }
+    }
+
+    private class MenuPrompt extends FixedSetPrompt {
+
+        public MenuPrompt() {
+
+            super("1", "2", "3", "4");
+
+        }
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+
+            return GOLD + Lang.get("eventEditorTitle") + "\n"
+            + BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorCreate") + "\n"
+            + BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorEdit") + "\n"
+            + BLUE + "" + BOLD + "3" + RESET + YELLOW + " - " + Lang.get("eventEditorDelete") + "\n"
+            + GREEN + "" + BOLD + "4" + RESET + YELLOW + " - " + Lang.get("exit");
+
+        }
+
+        @Override
+        protected Prompt acceptValidatedInput(ConversationContext context, String input) {
+
+            final Player player = (Player) context.getForWhom();
+
+            if (input.equalsIgnoreCase("1")) {
+
+                if (player.hasPermission("quests.editor.events.create")) {
+                    context.setSessionData(CK.E_OLD_EVENT, "");
+                    return new EventNamePrompt();
+                } else {
+                    player.sendMessage(RED + Lang.get("eventEditorCreatePermisssions"));
+                    return new MenuPrompt();
+                }
+
+            } else if (input.equalsIgnoreCase("2")) {
+
+                if (player.hasPermission("quests.editor.events.edit")) {
+
+                    if (quests.events.isEmpty()) {
+                        ((Player) context.getForWhom()).sendMessage(YELLOW + Lang.get("eventEditorNoneToEdit"));
+                        return new MenuPrompt();
+                    } else {
+                        return new SelectEditPrompt();
+                    }
+
+                } else {
+
+                    player.sendMessage(RED + Lang.get("eventEditorEditPermisssions"));
+                    return new MenuPrompt();
+
+                }
+            } else if (input.equalsIgnoreCase("3")) {
+
+                if (player.hasPermission("quests.editor.events.delete")) {
+
+                    if (quests.events.isEmpty()) {
+                        ((Player) context.getForWhom()).sendMessage(YELLOW + Lang.get("eventEditorNoneToDelete"));
+                        return new MenuPrompt();
+                    } else {
+                        return new SelectDeletePrompt();
+                    }
+
+                } else {
+
+                    player.sendMessage(RED + Lang.get("eventEditorDeletePermisssions"));
+                    return new MenuPrompt();
+
+                }
+
+            } else if (input.equalsIgnoreCase("4")) {
+                ((Player) context.getForWhom()).sendMessage(YELLOW + Lang.get("exited"));
+                return Prompt.END_OF_CONVERSATION;
+            }
+
+            return null;
+
+        }
+    }
+
+    private class SelectEditPrompt extends StringPrompt {
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+
+            String text = GOLD + "- " + Lang.get("eventEditorEdit") + " -\n";
+
+            for (Event evt : quests.events) {
+                text += AQUA + evt.name + YELLOW + ", ";
+            }
+
+            text = text.substring(0, text.length() - 2) + "\n";
+            text += YELLOW + Lang.get("eventEditorEnterEventName");
+
+            return text;
+
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
+
+                for (Event evt : quests.events) {
+
+                    if (evt.name.equalsIgnoreCase(input)) {
+                        context.setSessionData(CK.E_OLD_EVENT, evt.name);
+                        context.setSessionData(CK.E_NAME, evt.name);
+                        loadData(evt, context);
+                        return new CreateMenuPrompt();
+                    }
+
+                }
+
+                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorNotFound"));
+                return new SelectEditPrompt();
+
+            } else {
+                return new MenuPrompt();
+            }
+
+        }
+
+    }
+
+    private class SelectDeletePrompt extends StringPrompt {
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+
+            String text = GOLD + "- " + Lang.get("eventEditorDelete") + " -\n";
+
+            for (Event evt : quests.events) {
+                text += AQUA + evt.name + YELLOW + ",";
+            }
+
+            text = text.substring(0, text.length() - 1) + "\n";
+            text += YELLOW + Lang.get("eventEditorEnterEventName");
+
+            return text;
+
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
+
+                LinkedList<String> used = new LinkedList<String>();
+
+                for (Event evt : quests.events) {
+
+                    if (evt.name.equalsIgnoreCase(input)) {
+
+                        for (Quest quest : quests.getQuests()) {
+
+                            for (Stage stage : quest.orderedStages) {
+
+                                if (stage.finishEvent != null && stage.finishEvent.name.equalsIgnoreCase(evt.name)) {
+                                    used.add(quest.name);
+                                    break;
+                                }
+
+                            }
+
+                        }
+
+                        if (used.isEmpty()) {
+                            context.setSessionData(CK.ED_EVENT_DELETE, evt.name);
+                            return new DeletePrompt();
+                        } else {
+                            ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorEventInUse") + " \"" + PURPLE + evt.name + RED + "\":");
+                            for (String s : used) {
+                                ((Player) context.getForWhom()).sendMessage(RED + "- " + DARKRED + s);
+                            }
+                            ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorMustModifyQuests"));
+                            return new SelectDeletePrompt();
+                        }
+                    }
+
+                }
+
+                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorNotFound"));
+                return new SelectDeletePrompt();
+
+            } else {
+                return new MenuPrompt();
+            }
+
+        }
+
+    }
+
+    private class DeletePrompt extends StringPrompt {
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+
+            String text
+                    = RED + Lang.get("eventEditorDeletePrompt") + " \"" + GOLD + context.getSessionData(CK.ED_EVENT_DELETE) + RED + "\"?\n";
+            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
+
+            return text;
+
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+
+            if (input.equalsIgnoreCase(Lang.get("yesWord"))) {
+                deleteEvent(context);
+                return new MenuPrompt();
+            } else if (input.equalsIgnoreCase(Lang.get("noWord"))) {
+                return new MenuPrompt();
+            } else {
+                return new DeletePrompt();
+            }
+
+        }
+
+    }
+
+    private class CreateMenuPrompt extends FixedSetPrompt {
+
+        public CreateMenuPrompt() {
+
+            super("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19");
+
+        }
+
+        @SuppressWarnings("unchecked")
+		@Override
+        public String getPromptText(ConversationContext context) {
+
+            String text
+                    = GOLD + "- " + Lang.get("event") + ": " + AQUA + context.getSessionData(CK.E_NAME) + GOLD + " -\n";
+
+            text += BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorSetName") + "\n";
+
+            if (context.getSessionData(CK.E_MESSAGE) == null) {
+                text += BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMessage") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+                text += BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMessage") + "(" + AQUA + "\"" + context.getSessionData(CK.E_MESSAGE) + "\"" + YELLOW + ")\n";
+            }
+
+            if (context.getSessionData(CK.E_CLEAR_INVENTORY) == null) {
+                context.setSessionData(CK.E_CLEAR_INVENTORY, "No");
+            }
+
+            if (context.getSessionData(CK.E_FAIL_QUEST) == null) {
+                context.setSessionData(CK.E_FAIL_QUEST, "No");
+            }
+
+            text += BLUE + "" + BOLD + "3" + RESET + YELLOW + " - " + Lang.get("eventEditorClearInv") + ": " + AQUA + context.getSessionData(CK.E_CLEAR_INVENTORY) + "\n";
+            text += BLUE + "" + BOLD + "4" + RESET + YELLOW + " - " + Lang.get("eventEditorFailQuest") + ": " + AQUA + context.getSessionData(CK.E_FAIL_QUEST) + "\n";
+
+            if (context.getSessionData(CK.E_ITEMS) == null) {
+                text += BLUE + "" + BOLD + "5" + RESET + YELLOW + " - " + Lang.get("eventEditorSetItems") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "5" + RESET + YELLOW + " - " + Lang.get("eventEditorSetItems") + "\n";
+                LinkedList<ItemStack> items = (LinkedList<ItemStack>) context.getSessionData(CK.E_ITEMS);
+
+                for (ItemStack is : items) {
+
+                    text += GRAY + "    - " + ItemUtil.getString(is) + "\n";
+
+                }
+
+            }
+
+            if (context.getSessionData(CK.E_EXPLOSIONS) == null) {
+                text += BLUE + "" + BOLD + "6" + RESET + YELLOW + " - " + Lang.get("eventEditorSetExplosions") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "6" + RESET + YELLOW + " - " + Lang.get("eventEditorSetExplosions") + "\n";
+                LinkedList<String> locations = (LinkedList<String>) context.getSessionData(CK.E_EXPLOSIONS);
+
+                for (String loc : locations) {
+
+                    text += GRAY + "    - " + AQUA + loc + "\n";
+
+                }
+
+            }
+
+            if (context.getSessionData(CK.E_EFFECTS) == null) {
+                text += BLUE + "" + BOLD + "7" + RESET + YELLOW + " - " + Lang.get("eventEditorSetEffects") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "7" + RESET + YELLOW + " - " + Lang.get("eventEditorSetEffects") + "\n";
+                LinkedList<String> effects = (LinkedList<String>) context.getSessionData(CK.E_EFFECTS);
+                LinkedList<String> locations = (LinkedList<String>) context.getSessionData(CK.E_EFFECTS_LOCATIONS);
+
+                for (String effect : effects) {
+
+                    text += GRAY + "    - " + AQUA + effect + GRAY + " at " + DARKAQUA + locations.get(effects.indexOf(effect)) + "\n";
+
+                }
+
+            }
+
+            if (context.getSessionData(CK.E_WORLD_STORM) == null) {
+                text += BLUE + "" + BOLD + "8" + RESET + YELLOW + " - " + Lang.get("eventEditorSetStorm") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+                text += BLUE + "" + BOLD + "8" + RESET + YELLOW + " - " + Lang.get("eventEditorSetStorm") + " (" + AQUA + context.getSessionData(CK.E_WORLD_STORM) + YELLOW + " -> " + DARKAQUA + Quests.getTime((Long) context.getSessionData(CK.E_WORLD_STORM_DURATION)) + YELLOW + ")\n";
+            }
+
+            if (context.getSessionData(CK.E_WORLD_THUNDER) == null) {
+                text += BLUE + "" + BOLD + "9" + RESET + YELLOW + " - " + Lang.get("eventEditorSetThunder") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+                text += BLUE + "" + BOLD + "9" + RESET + YELLOW + " - " + Lang.get("eventEditorSetThunder") + " (" + AQUA + context.getSessionData(CK.E_WORLD_THUNDER) + YELLOW + " -> " + DARKAQUA + Quests.getTime((Long) context.getSessionData(CK.E_WORLD_THUNDER_DURATION)) + YELLOW + ")\n";
+            }
+
+            if (context.getSessionData(CK.E_MOB_TYPES) == null) {
+                text += BLUE + "" + BOLD + "10" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMobSpawns") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+                LinkedList<String> types = (LinkedList<String>) context.getSessionData(CK.E_MOB_TYPES);
+
+                text += BLUE + "" + BOLD + "10" + RESET + YELLOW + " - " + Lang.get("eventEditorSetMobSpawns") + "\n";
+
+                for (String s : types) {
+                    QuestMob qm = QuestMob.fromString(s);
+                    text += GRAY + "    - " + AQUA + qm.getType().name() + ((qm.getName() != null) ? ": " + qm.getName() : "") + GRAY + " x " + DARKAQUA + qm.getSpawnAmounts() + GRAY + " -> " + GREEN + Quests.getLocationInfo(qm.getSpawnLocation()) + "\n";
+                }
+            }
+
+            if (context.getSessionData(CK.E_LIGHTNING) == null) {
+                text += BLUE + "" + BOLD + "11" + RESET + YELLOW + " - " + Lang.get("eventEditorSetLightning") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "11" + RESET + YELLOW + " - " + Lang.get("eventEditorSetLightning") + "\n";
+                LinkedList<String> locations = (LinkedList<String>) context.getSessionData(CK.E_LIGHTNING);
+
+                for (String loc : locations) {
+
+                    text += GRAY + "    - " + AQUA + loc + "\n";
+
+                }
+
+            }
+
+            if (context.getSessionData(CK.E_POTION_TYPES) == null) {
+                text += BLUE + "" + BOLD + "12" + RESET + YELLOW + " - " + Lang.get("eventEditorSetPotionEffects") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "12" + RESET + YELLOW + " - " + Lang.get("eventEditorSetPotionEffects") + "\n";
+                LinkedList<String> types = (LinkedList<String>) context.getSessionData(CK.E_POTION_TYPES);
+                LinkedList<Long> durations = (LinkedList<Long>) context.getSessionData(CK.E_POTION_DURATIONS);
+                LinkedList<Integer> mags = (LinkedList<Integer>) context.getSessionData(CK.E_POTION_STRENGHT);
+                int index = -1;
+
+                for (String type : types) {
+
+                    index++;
+                    text += GRAY + "    - " + AQUA + type + PURPLE + " " + Quests.getNumeral(mags.get(index)) + GRAY + " -> " + DARKAQUA + Quests.getTime(durations.get(index) * 50L) + "\n";
+
+                }
+
+            }
+
+            if (context.getSessionData(CK.E_HUNGER) == null) {
+                text += BLUE + "" + BOLD + "13" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHunger") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "13" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHunger") + AQUA + " (" + context.getSessionData(CK.E_HUNGER) + ")\n";
+
+            }
+
+            if (context.getSessionData(CK.E_SATURATION) == null) {
+                text += BLUE + "" + BOLD + "14" + RESET + YELLOW + " - " + Lang.get("eventEditorSetSaturation") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "14" + RESET + YELLOW + " - " + Lang.get("eventEditorSetSaturation") + AQUA + " (" + context.getSessionData(CK.E_SATURATION) + ")\n";
+
+            }
+
+            if (context.getSessionData(CK.E_HEALTH) == null) {
+                text += BLUE + "" + BOLD + "15" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHealth") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "15" + RESET + YELLOW + " - " + Lang.get("eventEditorSetHealth") + AQUA + " (" + context.getSessionData(CK.E_HEALTH) + ")\n";
+
+            }
+
+            if (context.getSessionData(CK.E_TELEPORT) == null) {
+                text += BLUE + "" + BOLD + "16" + RESET + YELLOW + " - " + Lang.get("eventEditorSetTeleport") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "16" + RESET + YELLOW + " - " + Lang.get("eventEditorSetTeleport") + AQUA + " (" + context.getSessionData(CK.E_TELEPORT) + ")\n";
+
+            }
+
+            if (context.getSessionData(CK.E_COMMANDS) == null) {
+                text += BLUE + "" + BOLD + "17" + RESET + YELLOW + " - " + Lang.get("eventEditorSetCommands") + GRAY + " (" + Lang.get("noneSet") + ")\n";
+            } else {
+
+                text += BLUE + "" + BOLD + "17" + RESET + YELLOW + " - " + Lang.get("eventEditorSetCommands") + "\n";
+                for (String s : (LinkedList<String>) context.getSessionData(CK.E_COMMANDS)) {
+                    text += GRAY + "    - " + AQUA + s + "\n";
+                }
+
+            }
+
+            text += GREEN + "" + BOLD + "18" + RESET + YELLOW + " - " + Lang.get("done") + "\n";
+            text += RED + "" + BOLD + "19" + RESET + YELLOW + " - " + Lang.get("quit");
+
+            return text;
+
+        }
+
+        @Override
+        public Prompt acceptValidatedInput(ConversationContext context, String input) {
+
+            if (input.equalsIgnoreCase("1")) {
+
+                return new SetNamePrompt();
+
+            } else if (input.equalsIgnoreCase("2")) {
+
+                return new MessagePrompt();
+
+            } else if (input.equalsIgnoreCase("3")) {
+
+                String s = (String) context.getSessionData(CK.E_CLEAR_INVENTORY);
+                if (s.equalsIgnoreCase(Lang.get("yesWord"))) {
+                    context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("noWord"));
+                } else {
+                    context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("yesWord"));
+                }
+
+                return new CreateMenuPrompt();
+
+            } else if (input.equalsIgnoreCase("4")) {
+
+                String s = (String) context.getSessionData(CK.E_FAIL_QUEST);
+                if (s.equalsIgnoreCase(Lang.get("yesWord"))) {
+                    context.setSessionData(CK.E_FAIL_QUEST, Lang.get("noWord"));
+                } else {
+                    context.setSessionData(CK.E_FAIL_QUEST, Lang.get("yesWord"));
+                }
+
+                return new CreateMenuPrompt();
+
+            } else if (input.equalsIgnoreCase("5")) {
+
+                return new ItemListPrompt();
+
+            } else if (input.equalsIgnoreCase("6")) {
+
+                selectedExplosionLocations.put(((Player) context.getForWhom()).getUniqueId(), null);
+                return new ExplosionPrompt();
+
+            } else if (input.equalsIgnoreCase("7")) {
+
+                return new EffectListPrompt();
+
+            } else if (input.equalsIgnoreCase("8")) {
+
+                return new StormPrompt();
+
+            } else if (input.equalsIgnoreCase("9")) {
+
+                return new ThunderPrompt();
+
+            } else if (input.equalsIgnoreCase("10")) {
+
+                return new MobPrompt();
+
+            } else if (input.equalsIgnoreCase("11")) {
+
+                selectedLightningLocations.put(((Player) context.getForWhom()).getUniqueId(), null);
+                return new LightningPrompt();
+
+            } else if (input.equalsIgnoreCase("12")) {
+
+                return new PotionEffectPrompt();
+
+            } else if (input.equalsIgnoreCase("13")) {
+
+                return new HungerPrompt();
+
+            } else if (input.equalsIgnoreCase("14")) {
+
+                return new SaturationPrompt();
+
+            } else if (input.equalsIgnoreCase("15")) {
+
+                return new HealthPrompt();
+
+            } else if (input.equalsIgnoreCase("16")) {
+
+                selectedTeleportLocations.put(((Player) context.getForWhom()).getUniqueId(), null);
+                return new TeleportPrompt();
+
+            } else if (input.equalsIgnoreCase("17")) {
+
+                return new CommandsPrompt();
+
+            } else if (input.equalsIgnoreCase("18")) {
+
+                if (context.getSessionData(CK.E_OLD_EVENT) != null) {
+                    return new FinishPrompt((String) context.getSessionData(CK.E_OLD_EVENT));
+                } else {
+                    return new FinishPrompt(null);
+                }
+
+            } else if (input.equalsIgnoreCase("19")) {
+
+                return new QuitPrompt();
+
+            }
+
+            return null;
+
+        }
+    }
+    //
+
+    private class QuitPrompt extends StringPrompt {
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+
+            String text
+                    = GREEN + Lang.get("eventEditorQuitWithoutSaving") + "\n";
+            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
+
+            return text;
+
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+
+            if (input.equalsIgnoreCase(Lang.get("yesWord"))) {
+                clearData(context);
+                return new MenuPrompt();
+            } else if (input.equalsIgnoreCase(Lang.get("noWord"))) {
+                return new CreateMenuPrompt();
+            } else {
+                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("invalidOption"));
+                return new QuitPrompt();
+            }
+
+        }
+
+    }
+
+    private class FinishPrompt extends StringPrompt {
+
+        String modName = null;
+        LinkedList<String> modified = new LinkedList<String>();
+
+        public FinishPrompt(String modifiedName) {
+
+            if (modifiedName != null) {
+
+                modName = modifiedName;
+                for (Quest q : quests.getQuests()) {
+
+                    for (Stage s : q.orderedStages) {
+
+                        if (s.finishEvent != null && s.finishEvent.name != null) {
+
+                            if (s.finishEvent.name.equalsIgnoreCase(modifiedName)) {
+                                modified.add(q.getName());
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        @Override
+        public String getPromptText(ConversationContext context) {
+
+            String text
+                    = RED + Lang.get("eventEditorFinishAndSave") + " \"" + GOLD + context.getSessionData(CK.E_NAME) + RED + "\"?\n";
+            if (!modified.isEmpty()) {
+                text += RED + Lang.get("eventEditorModifiedNote") + "\n";
+                for (String s : modified) {
+                    text += GRAY + "    - " + DARKRED + s + "\n";
+                }
+                text += RED + Lang.get("eventEditorForcedToQuit") + "\n";
+            }
+            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
+
+            return text;
+
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+
+            if (input.equalsIgnoreCase(Lang.get("yesWord"))) {
+                saveEvent(context);
+                return new MenuPrompt();
+            } else if (input.equalsIgnoreCase(Lang.get("noWord"))) {
+                return new CreateMenuPrompt();
+            } else {
+                ((Player) context.getForWhom()).sendMessage(RED + Lang.get("invalidOption"));
+                return new FinishPrompt(modName);
+            }
+
+        }
+
+    }
+
     private class EventNamePrompt extends StringPrompt {
 
         @Override
@@ -1358,7 +1336,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
                 }
 
-                names.remove((String) context.getSessionData(CK.E_NAME));
+                names.remove(context.getSessionData(CK.E_NAME));
                 context.setSessionData(CK.E_NAME, input);
                 names.add(input);
 
@@ -1701,7 +1679,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
                 text += BLUE + "" + BOLD + "4" + RESET + YELLOW + " - " + Lang.get("done");
             } else {
 
-                text += BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorSetWorld") + " (" + AQUA + ((String) context.getSessionData(CK.E_WORLD_STORM)) + YELLOW + ")\n";
+                text += BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorSetWorld") + " (" + AQUA + context.getSessionData(CK.E_WORLD_STORM) + YELLOW + ")\n";
 
                 if (context.getSessionData(CK.E_WORLD_STORM_DURATION) == null) {
                     text += BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorSetDuration") + " (" + Lang.get("noneSet") + ")\n";
@@ -1837,7 +1815,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
             } else {
 
-                text += BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorSetWorld") + " (" + AQUA + ((String) context.getSessionData(CK.E_WORLD_THUNDER)) + YELLOW + ")\n";
+                text += BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("eventEditorSetWorld") + " (" + AQUA + context.getSessionData(CK.E_WORLD_THUNDER) + YELLOW + ")\n";
 
                 if (context.getSessionData(CK.E_WORLD_THUNDER_DURATION) == null) {
                     text += BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("eventEditorSetDuration") + " (" + Lang.get("noneSet") + ")\n";
@@ -2025,9 +2003,9 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
 
     private class QuestMobPrompt extends StringPrompt {
 
+        private final Integer mobIndex;
         private QuestMob questMob;
         private Integer itemIndex = -1;
-        private final Integer mobIndex;
 
         public QuestMobPrompt(int mobIndex, QuestMob questMob) {
             this.questMob = questMob;
@@ -2716,7 +2694,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
                     ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorHungerLevelAtLeastZero"));
                     return new HungerPrompt();
                 } else {
-                    context.setSessionData(CK.E_HUNGER, (Integer) input.intValue());
+                    context.setSessionData(CK.E_HUNGER, input.intValue());
                 }
 
             } else {
@@ -2746,7 +2724,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
                     ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorSaturationLevelAtLeastZero"));
                     return new SaturationPrompt();
                 } else {
-                    context.setSessionData(CK.E_SATURATION, (Integer) input.intValue());
+                    context.setSessionData(CK.E_SATURATION, input.intValue());
                 }
 
             } else {
@@ -2776,7 +2754,7 @@ public class EventFactory implements ConversationAbandonedListener, ColorUtil {
                     ((Player) context.getForWhom()).sendMessage(RED + Lang.get("eventEditorHealthLevelAtLeastZero"));
                     return new HealthPrompt();
                 } else {
-                    context.setSessionData(CK.E_HEALTH, (Integer) input.intValue());
+                    context.setSessionData(CK.E_HEALTH, input.intValue());
                 }
 
             } else {

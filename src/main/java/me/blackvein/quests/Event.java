@@ -1,15 +1,7 @@
 package me.blackvein.quests;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import me.blackvein.quests.util.ItemUtil;
 import me.blackvein.quests.util.QuestMob;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -23,37 +15,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 public class Event {
-	
-	Quests plugin;
-    String name = "";
-    String message = null;
-    boolean clearInv = false;
-    boolean failQuest = false;
-    LinkedList<Location> explosions = new LinkedList<Location>();
-    Map<Location, Effect> effects = new HashMap<Location, Effect>();
-    LinkedList<ItemStack> items = new LinkedList<ItemStack>();
-    World stormWorld = null;
-    int stormDuration = 0;
-    World thunderWorld = null;
-    int thunderDuration = 0;
+
     public LinkedList<QuestMob> mobSpawns = new LinkedList<QuestMob>() {
 
-		private static final long serialVersionUID = -761974607799449780L;
+        private static final long serialVersionUID = -761974607799449780L;
 
-		@Override
+        @Override
         public boolean equals(Object o) {
             if (o instanceof LinkedList) {
 
                 @SuppressWarnings("unchecked")
-				LinkedList<QuestMob> other = (LinkedList<QuestMob>) o;
+                LinkedList<QuestMob> other = (LinkedList<QuestMob>) o;
 
                 if (size() != other.size()) {
                     return false;
                 }
 
                 for (int i = 0; i < size(); i++) {
-                    if (get(i).equals(other.get(i)) == false) {
+                    if (!get(i).equals(other.get(i))) {
                         return false;
                     }
                 }
@@ -61,6 +48,14 @@ public class Event {
             return false;
         }
     };
+    //Quests plugin;
+    String name = "", message = null;
+    boolean clearInv = false, failQuest = false;
+    LinkedList<Location> explosions = new LinkedList<Location>();
+    Map<Location, Effect> effects = new HashMap<Location, Effect>();
+    LinkedList<ItemStack> items = new LinkedList<ItemStack>();
+    World stormWorld = null, thunderWorld = null;
+    int stormDuration = 0, thunderDuration = 0;
     LinkedList<Location> lightningStrikes = new LinkedList<Location>();
     LinkedList<String> commands = new LinkedList<String>();
     LinkedList<PotionEffect> potionEffects = new LinkedList<PotionEffect>();
@@ -68,250 +63,6 @@ public class Event {
     int saturation = -1;
     float health = -1;
     Location teleport;
-
-    public int hashCode() {
-    	assert false : "hashCode not designed";
-    	return 42; // any arbitrary constant will do
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-
-        if (o instanceof Event) {
-
-            Event other = (Event) o;
-
-            if (other.name.equals(name) == false) {
-                return false;
-            }
-
-            if (other.message != null && message != null) {
-                if (other.message.equals(message) == false) {
-                    return false;
-                }
-            } else if (other.message != null && message == null) {
-                return false;
-            } else if (other.message == null && message != null) {
-                return false;
-            }
-
-            if (other.clearInv != clearInv) {
-                return false;
-            }
-
-            if (other.failQuest != failQuest) {
-                return false;
-            }
-
-            if (other.explosions.equals(explosions) == false) {
-                return false;
-            }
-
-            if (other.effects.entrySet().equals(effects.entrySet()) == false) {
-                return false;
-            }
-
-            if (other.items.equals(items) == false) {
-                return false;
-            }
-
-            if (other.stormWorld != null && stormWorld != null) {
-                if (other.stormWorld.equals(stormWorld) == false) {
-                    return false;
-                }
-            } else if (other.stormWorld != null && stormWorld == null) {
-                return false;
-            } else if (other.stormWorld == null && stormWorld != null) {
-                return false;
-            }
-
-            if (other.stormDuration != stormDuration) {
-                return false;
-            }
-
-            if (other.thunderWorld != null && thunderWorld != null) {
-                if (other.thunderWorld.equals(thunderWorld) == false) {
-                    return false;
-                }
-            } else if (other.thunderWorld != null && thunderWorld == null) {
-                return false;
-            } else if (other.thunderWorld == null && thunderWorld != null) {
-                return false;
-            }
-
-            if (other.thunderDuration != thunderDuration) {
-                return false;
-            }
-
-            for (QuestMob qm : mobSpawns) {
-
-                if (qm.equals(other.mobSpawns.get(mobSpawns.indexOf(qm))) == false) {
-                    return false;
-                }
-
-            }
-
-            if (other.lightningStrikes.equals(lightningStrikes) == false) {
-                return false;
-            }
-
-            if (other.commands.equals(commands) == false) {
-                return false;
-            }
-
-            if (other.potionEffects.equals(potionEffects) == false) {
-                return false;
-            }
-
-            if (other.hunger != hunger) {
-                return false;
-            }
-
-            if (other.saturation != saturation) {
-                return false;
-            }
-
-            if (other.health != health) {
-                return false;
-            }
-
-            if (other.teleport != null && teleport != null) {
-                if (other.teleport.equals(teleport) == false) {
-                    return false;
-                }
-            } else if (other.teleport != null && teleport == null) {
-                return false;
-            } else if (other.teleport == null && teleport != null) {
-                return false;
-            }
-
-        }
-
-        return true;
-    }
-
-    public String getName() {
-
-        return name;
-
-    }
-
-    public void fire(Quester quester, Quest quest) {
-
-        Player player = quester.getPlayer();
-
-        if (message != null) {
-            player.sendMessage(Quests.parseString(message, quest));
-        }
-
-        if (clearInv == true) {
-            player.getInventory().clear();
-        }
-
-        if (explosions.isEmpty() == false) {
-
-            for (Location l : explosions) {
-
-                l.getWorld().createExplosion(l, 4F, false);
-
-            }
-
-        }
-
-        if (effects.isEmpty() == false) {
-
-            for (Location l : effects.keySet()) {
-
-                l.getWorld().playEffect(l, effects.get(l), 1);
-
-            }
-
-        }
-
-        if (items.isEmpty() == false) {
-
-            for (ItemStack is : items) {
-                Quests.addItem(player, is);
-            }
-
-        }
-
-        if (stormWorld != null) {
-            stormWorld.setStorm(true);
-            stormWorld.setWeatherDuration(stormDuration);
-        }
-
-        if (thunderWorld != null) {
-            thunderWorld.setThundering(true);
-            thunderWorld.setThunderDuration(thunderDuration);
-        }
-
-        if (mobSpawns.isEmpty() == false) {
-
-            for (QuestMob questMob : mobSpawns) {
-                questMob.spawn();
-            }
-        }
-
-        if (lightningStrikes.isEmpty() == false) {
-
-            for (Location l : lightningStrikes) {
-
-                l.getWorld().strikeLightning(l);
-
-            }
-
-        }
-
-        if (commands.isEmpty() == false) {
-
-            for (String s : commands) {
-                quester.plugin.getServer().dispatchCommand(quester.plugin.getServer().getConsoleSender(), s.replaceAll("<player>", quester.getPlayer().getName()));
-            }
-
-        }
-
-        if (potionEffects.isEmpty() == false) {
-
-            for (PotionEffect p : potionEffects) {
-
-                player.addPotionEffect(p);
-
-            }
-
-        }
-
-        if (hunger != -1) {
-
-            player.setFoodLevel(hunger);
-
-        }
-
-        if (saturation != -1) {
-
-            player.setSaturation(saturation);
-
-        }
-
-        if (health != -1) {
-
-            player.setHealth(health);
-
-        }
-
-        if (teleport != null) {
-
-            player.teleport(teleport);
-
-        }
-
-        if (failQuest == true) {
-
-            quest.failQuest(quester);
-
-        }
-
-    }
 
     public static Event loadEvent(String name, Quests plugin) {
 
@@ -702,6 +453,226 @@ public class Event {
         }
 
         return event;
+
+    }
+
+    public int hashCode() {
+        assert false : "hashCode not designed";
+        return 42; // any arbitrary constant will do
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o instanceof Event) {
+
+            Event other = (Event) o;
+
+            if (!other.name.equals(name)) return false;
+
+
+            if (other.message != null && message != null)
+                if (!other.message.equals(message)) return false;
+                else return false;
+
+
+            if (other.clearInv != clearInv) return false;
+
+            if (other.failQuest != failQuest) return false;
+
+            if (!other.explosions.equals(explosions)) return false;
+
+            if (!other.effects.entrySet().equals(effects.entrySet())) return false;
+
+            if (!other.items.equals(items)) return false;
+
+
+            if (other.stormWorld != null && stormWorld != null) {
+                if (!other.stormWorld.equals(stormWorld))
+                    return false;
+            } else if (other.stormWorld != null) return false;
+            else if (stormWorld != null) return false;
+
+
+            if (other.stormDuration != stormDuration) return false;
+
+
+            if (other.thunderWorld != null && thunderWorld != null) {
+                if (!other.thunderWorld.equals(thunderWorld)) {
+                    return false;
+                }
+            } else if (other.thunderWorld != null) {
+                return false;
+            } else if (thunderWorld != null) {
+                return false;
+            }
+
+            if (other.thunderDuration != thunderDuration) {
+                return false;
+            }
+
+            for (QuestMob qm : mobSpawns) {
+
+                if (!qm.equals(other.mobSpawns.get(mobSpawns.indexOf(qm)))) {
+                    return false;
+                }
+
+            }
+
+            if (!other.lightningStrikes.equals(lightningStrikes)) {
+                return false;
+            }
+
+            if (!other.commands.equals(commands)) {
+                return false;
+            }
+
+            if (!other.potionEffects.equals(potionEffects)) {
+                return false;
+            }
+
+            if (other.hunger != hunger) {
+                return false;
+            }
+
+            if (other.saturation != saturation) {
+                return false;
+            }
+
+            if (other.health != health) {
+                return false;
+            }
+
+            if (other.teleport != null && teleport != null) {
+                if (!other.teleport.equals(teleport)) {
+                    return false;
+                }
+            } else if (other.teleport != null) {
+                return false;
+            } else if (teleport != null) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    public String getName() {
+
+        return name;
+
+    }
+
+    public void fire(Quester quester, Quest quest) {
+
+        Player player = quester.getPlayer();
+
+        if (message != null) {
+            player.sendMessage(Quests.parseString(message, quest));
+        }
+
+        if (clearInv) player.getInventory().clear();
+
+
+        if (!explosions.isEmpty()) {
+
+            for (Location l : explosions) {
+
+                l.getWorld().createExplosion(l, 4F, false);
+
+            }
+
+        }
+
+        if (!effects.isEmpty()) {
+
+            for (Location l : effects.keySet()) {
+
+                l.getWorld().playEffect(l, effects.get(l), 1);
+
+            }
+
+        }
+
+        if (items.isEmpty() == false) {
+
+            for (ItemStack is : items) {
+                Quests.addItem(player, is);
+            }
+
+        }
+
+        if (stormWorld != null) {
+            stormWorld.setStorm(true);
+            stormWorld.setWeatherDuration(stormDuration);
+        }
+
+        if (thunderWorld != null) {
+            thunderWorld.setThundering(true);
+            thunderWorld.setThunderDuration(thunderDuration);
+        }
+
+        if (!mobSpawns.isEmpty()) {
+
+            for (QuestMob questMob : mobSpawns) {
+                questMob.spawn();
+            }
+        }
+
+        if (!lightningStrikes.isEmpty()) {
+
+            for (Location l : lightningStrikes) {
+
+                l.getWorld().strikeLightning(l);
+
+            }
+
+        }
+
+        if (!commands.isEmpty()) {
+
+            for (String s : commands) {
+                quester.plugin.getServer().dispatchCommand(quester.plugin.getServer().getConsoleSender(), s.replaceAll("<player>", quester.getPlayer().getName()));
+            }
+
+        }
+
+        if (!potionEffects.isEmpty()) {
+
+            for (PotionEffect p : potionEffects) {
+
+                player.addPotionEffect(p);
+
+            }
+
+        }
+
+        if (hunger != -1) {
+
+            player.setFoodLevel(hunger);
+
+        }
+
+        if (saturation != -1) {
+
+            player.setSaturation(saturation);
+
+        }
+
+        if (health != -1) {
+
+            player.setHealth(health);
+
+        }
+
+        if (teleport != null) {
+
+            player.teleport(teleport);
+
+        }
+
+        if (failQuest) quest.failQuest(quester);
 
     }
 }

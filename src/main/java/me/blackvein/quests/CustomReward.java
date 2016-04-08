@@ -1,16 +1,18 @@
 package me.blackvein.quests;
 
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.entity.Player;
 
 public abstract class CustomReward {
 
-    private String name = null;
-    private String author = null;
-    private String rewardName = null;
-    public final Map<String, Object> datamap = new HashMap<String, Object>();
+    public final Map<String, Object> dataMap = new HashMap<String, Object>();
     public final Map<String, String> descriptions = new HashMap<String, String>();
+    private String rewardName = null;
+    private String author = null;
+    private String name = null;
+
 
     public abstract void giveReward(Player p, Map<String, Object> m);
 
@@ -31,19 +33,19 @@ public abstract class CustomReward {
     }
 
     public void addData(String name) {
-        datamap.put(name, null);
+        dataMap.put(name, null);
     }
 
     public void addDescription(String data, String description) {
         descriptions.put(data, description);
     }
 
-    public void setRewardName(String name) {
-        rewardName = name;
-    }
-
     public String getRewardName() {
         return rewardName;
+    }
+
+    public void setRewardName(String name) {
+        rewardName = name;
     }
 
 }

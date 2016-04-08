@@ -1,15 +1,16 @@
 package me.blackvein.quests;
 
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.entity.Player;
 
 public abstract class CustomRequirement {
 
+    public final Map<String, Object> dataMap = new HashMap<String, Object>();
+    public final Map<String, String> descriptions = new HashMap<String, String>();
     private String name = null;
     private String author = null;
-    public final Map<String, Object> datamap = new HashMap<String, Object>();
-    public final Map<String, String> descriptions = new HashMap<String, String>();
 
     public abstract boolean testRequirement(Player p, Map<String, Object> m);
 
@@ -30,7 +31,7 @@ public abstract class CustomRequirement {
     }
 
     public void addData(String name) {
-        datamap.put(name, null);
+        dataMap.put(name, null);
     }
 
     public void addDescription(String data, String description) {

@@ -2,7 +2,6 @@ package me.blackvein.particles;
 
 import me.blackvein.quests.util.ReflectionUtil;
 import net.minecraft.server.v1_7_R1.PacketPlayOutWorldParticles;
-
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
