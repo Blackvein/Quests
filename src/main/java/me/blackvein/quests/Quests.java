@@ -932,16 +932,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
     private void adminGivePoints(final CommandSender cs, String[] args) {
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.givepoints")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().equalsIgnoreCase(args[1])) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByExactCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
@@ -988,16 +979,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
 
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.takepoints")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().equalsIgnoreCase(args[1])) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByExactCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
@@ -1044,16 +1026,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
     private void adminPoints(final CommandSender cs, String[] args) {
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.points")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().equalsIgnoreCase(args[1])) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByExactCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
@@ -1101,16 +1074,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
 
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.give")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().toLowerCase().contains(args[1].toLowerCase())) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByPartialCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
@@ -1289,16 +1253,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
 
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.finish")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().toLowerCase().contains(args[1].toLowerCase())) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByPartialCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
@@ -1347,29 +1302,13 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
 
     private void adminSetStage(final CommandSender cs, String[] args) {
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.setstage")) {
+            Player target;
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                //To ensure the correct player is selected
-                if (p.getName().equalsIgnoreCase(args[1])) {
-                    target = p;
-                    break;
-                }
-
-            }
-
+            target = PlayerFinder.findOnlinePlayerByExactCaseInsensitiveNameMatch(args[1]);
             if (target == null) {
-                //
-                for (Player p : getServer().getOnlinePlayers()) {
-
-                    if (p.getName().toLowerCase().contains(args[1].toLowerCase())) {
-                        target = p;
-                        break;
-                    }
-                }
+                target = PlayerFinder.findOnlinePlayerByPartialCaseInsensitiveNameMatch(args[1]);
             }
+
             int stage = -1;
             if (args.length > 3) {
                 try {
@@ -1429,16 +1368,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
 
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.nextstage")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().toLowerCase().contains(args[1].toLowerCase())) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByPartialCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
@@ -1489,16 +1419,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
 try{
         if (cs.hasPermission("quests.admin.*") || cs.hasPermission("quests.admin.quit")) {
 
-            Player target = null;
-
-            for (Player p : getServer().getOnlinePlayers()) {
-
-                if (p.getName().toLowerCase().contains(args[1].toLowerCase())) {
-                    target = p;
-                    break;
-                }
-
-            }
+            Player target = PlayerFinder.findOnlinePlayerByPartialCaseInsensitiveNameMatch(args[1]);
 
             if (target == null) {
 
