@@ -1,40 +1,6 @@
 package me.blackvein.quests;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import static org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.conversations.ConversationAbandonedListener;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.FixedSetPrompt;
-import org.bukkit.conversations.NumericPrompt;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.sk89q.worldguard.protection.managers.RegionManager;
-
 import me.blackvein.quests.prompts.ItemStackPrompt;
 import me.blackvein.quests.prompts.RequirementsPrompt;
 import me.blackvein.quests.prompts.RewardsPrompt;
@@ -43,6 +9,22 @@ import me.blackvein.quests.util.CK;
 import me.blackvein.quests.util.ItemUtil;
 import me.blackvein.quests.util.Lang;
 import net.citizensnpcs.api.CitizensAPI;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.conversations.*;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class QuestFactory implements ConversationAbandonedListener{
 
@@ -98,11 +80,11 @@ public class QuestFactory implements ConversationAbandonedListener{
         @Override
         public String getPromptText(ConversationContext context) {
 
-            return GOLD + Lang.get("questEditorTitle") + "\n"
-            + BLUE + "" + BOLD + "1" + RESET + YELLOW + " - " + Lang.get("questEditorCreate") + "\n"
-            + BLUE + "" + BOLD + "2" + RESET + YELLOW + " - " + Lang.get("questEditorEdit") + "\n"
-            + BLUE + "" + BOLD + "3" + RESET + YELLOW + " - " + Lang.get("questEditorDelete") + "\n"
-            + GOLD + "" + BOLD + "4" + RESET + YELLOW + " - " + Lang.get("exit");
+            return ChatColor.GOLD + Lang.get("questEditorTitle") + "\n"
+            + ChatColor.BLUE + "" + ChatColor.BOLD + "1" + ChatColor.RESET + ChatColor.YELLOW + " - " + Lang.get("questEditorCreate") + "\n"
+            + ChatColor.BLUE + "" + ChatColor.BOLD + "2" + ChatColor.RESET + ChatColor.YELLOW + " - " + Lang.get("questEditorEdit") + "\n"
+            + ChatColor.BLUE + "" + ChatColor.BOLD + "3" + ChatColor.RESET + ChatColor.YELLOW + " - " + Lang.get("questEditorDelete") + "\n"
+            + ChatColor.GOLD + "" + ChatColor.BOLD + "4" + ChatColor.RESET + ChatColor.YELLOW + " - " + Lang.get("exit");
 
         }
 
@@ -653,7 +635,7 @@ public class QuestFactory implements ConversationAbandonedListener{
                         }
 
                         if (s != null && !s.equalsIgnoreCase(input)) {
-                            context.getForWhom().sendRawMessage(RED + Lang.get("questEditorNameExists"));
+                            context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("questEditorNameExists"));
                             return new SetNamePrompt();
                         }
                     }
@@ -2303,8 +2285,8 @@ public class QuestFactory implements ConversationAbandonedListener{
         public String getPromptText(ConversationContext context) {
 
             String text
-                    = RED + Lang.get("questEditorDeleted") + " \"" + GOLD + context.getSessionData(CK.ED_QUEST_DELETE) + RED + "\"?\n";
-            text += YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
+                    = ChatColor.RED + Lang.get("questEditorDeleted") + " \"" + ChatColor.GOLD + context.getSessionData(CK.ED_QUEST_DELETE) + ChatColor.RED + "\"?\n";
+            text += ChatColor.YELLOW + Lang.get("yesWord") + "/" + Lang.get("noWord");
 
             return text;
 

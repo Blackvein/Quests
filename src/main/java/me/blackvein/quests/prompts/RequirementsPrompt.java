@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static org.bukkit.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.NumericPrompt;
@@ -130,11 +130,11 @@ public class RequirementsPrompt extends FixedSetPrompt {
                 text += ChatColor.BLUE + "" + ChatColor.BOLD + "8" + ChatColor.RESET + ChatColor.YELLOW + " - " + Lang.get("reqSetHeroes") + "\n";
 
                 if (context.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) != null) {
-                    text += AQUA + "    " + Lang.get("reqHeroesPrimaryDisplay") + " " + BLUE + context.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + "\n";
+                    text += ChatColor.AQUA + "    " + Lang.get("reqHeroesPrimaryDisplay") + " " + ChatColor.BLUE + context.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + "\n";
                 }
 
                 if (context.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) != null) {
-                    text += AQUA + "    " + Lang.get("reqHeroesSecondaryDisplay") + " " + BLUE + context.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + "\n";
+                    text += ChatColor.AQUA + "    " + Lang.get("reqHeroesSecondaryDisplay") + " " + ChatColor.BLUE + context.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + "\n";
                 }
             }
 
@@ -671,7 +671,7 @@ public class RequirementsPrompt extends FixedSetPrompt {
 
                 text += ChatColor.BOLD + "" + ChatColor.DARK_BLUE + index + " - " + ChatColor.RESET + ChatColor.BLUE + dataKey;
                 if (datamap.get(dataKey) != null) {
-                    text += GREEN + " (" + datamap.get(dataKey) + ")\n";
+                    text += ChatColor.GREEN + " (" + datamap.get(dataKey) + ")\n";
                 } else {
                     text += ChatColor.RED + " (" + Lang.get("valRequired") + ")\n";
                 }
@@ -935,13 +935,14 @@ public class RequirementsPrompt extends FixedSetPrompt {
             if (cc.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) == null) {
                 text += ChatColor.BOLD + "" + ChatColor.GREEN + "1" + ChatColor.RESET + ChatColor.GREEN + " - " + Lang.get("reqHeroesSetPrimary") + " (" + Lang.get("noneSet") + ")\n";
             } else {
-                text += BOLD + "" + GREEN + "1" + RESET + GREEN + " - " + Lang.get("reqHeroesSetPrimary") + " (" + AQUA + cc.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + GREEN + ")\n";
+                text += ChatColor.BOLD + "" + ChatColor.GREEN + "1" + ChatColor.RESET + ChatColor.GREEN + " - " + Lang.get("reqHeroesSetPrimary") +
+                        " (" + ChatColor.AQUA + cc.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + ChatColor.GREEN + ")\n";
             }
 
             if (cc.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) == null) {
                 text += ChatColor.BOLD + "" + ChatColor.GREEN + "2" + ChatColor.RESET + ChatColor.GREEN + " - " + Lang.get("reqHeroesSetSecondary") + " (" + Lang.get("noneSet") + ")\n";
             } else {
-                text += BOLD + "" + GREEN + "2" + RESET + GREEN + " - " + Lang.get("reqHeroesSetSecondary") + " (" + AQUA + cc.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + GREEN + ")\n";
+                text += ChatColor.BOLD + "" + ChatColor.GREEN + "2" + ChatColor.RESET + ChatColor.GREEN + " - " + Lang.get("reqHeroesSetSecondary") + " (" + ChatColor.AQUA + cc.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + ChatColor.GREEN + ")\n";
             }
 
             text += ChatColor.BOLD + "" + ChatColor.GREEN + "3" + ChatColor.RESET + ChatColor.GREEN + " - " + Lang.get("done");

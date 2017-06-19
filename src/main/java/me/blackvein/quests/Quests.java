@@ -2101,20 +2101,20 @@ try{
                             String msg = Lang.get("questMaxAllowed");
                             msg = msg.replaceAll("<number>", String.valueOf(maxQuests));
                             player.sendMessage(ChatColor.YELLOW + msg);
-                        } else if (quester.currentQuests.containsKey(q)) {
+                        } else if (quester.currentQuests.containsKey(questToFind)) {
                             String msg = Lang.get("questAlreadyOn");
                             player.sendMessage(ChatColor.YELLOW + msg);
-                        } else if (quester.completedQuests.contains(q.name) && q.redoDelay < 0) {
+                        } else if (quester.completedQuests.contains(questToFind.name) && questToFind.redoDelay < 0) {
                             String msg = Lang.get("questAlreadyCompleted");
-                            msg = msg.replaceAll("<quest>", ChatColor.DARK_PURPLE + q.name + ChatColor.YELLOW);
+                            msg = msg.replaceAll("<quest>", ChatColor.DARK_PURPLE + questToFind.name + ChatColor.YELLOW);
                             player.sendMessage(ChatColor.YELLOW + msg);
-                        } else if (q.npcStart != null && allowCommandsForNpcQuests == false) {
+                        } else if (questToFind.npcStart != null && !allowCommandsForNpcQuests) {
                             String msg = Lang.get("mustSpeakTo");
-                            msg = msg.replaceAll("<npc>", ChatColor.DARK_PURPLE + q.npcStart.getName() + ChatColor.YELLOW);
+                            msg = msg.replaceAll("<npc>", ChatColor.DARK_PURPLE + questToFind.npcStart.getName() + ChatColor.YELLOW);
                             player.sendMessage(ChatColor.YELLOW + msg);
-                        } else if (q.blockStart != null) {
+                        } else if (questToFind.blockStart != null) {
                             String msg = Lang.get("noCommandStart");
-                            msg = msg.replaceAll("<quest>", ChatColor.DARK_PURPLE + q.name + ChatColor.YELLOW);
+                            msg = msg.replaceAll("<quest>", ChatColor.DARK_PURPLE + questToFind.name + ChatColor.YELLOW);
                             player.sendMessage(ChatColor.YELLOW + msg);
                         } else {
 
@@ -2146,8 +2146,8 @@ try{
 
                                 if (!inRegion) {
                                     String msg = Lang.get("questInvalidLocation");
-                                    msg = msg.replaceAll("<quest>", AQUA + questToFind.name + ChatColor.YELLOW);
-                                    player.sendMessage(YELLOW + msg);
+                                    msg = msg.replaceAll("<quest>", ChatColor.AQUA + questToFind.name + ChatColor.YELLOW);
+                                    player.sendMessage(ChatColor.YELLOW + msg);
                                     takeable = false;
                                 }
 
