@@ -319,7 +319,7 @@ public class Quest {
 
     @SuppressWarnings("deprecation")
 	public void completeQuest(Quester q) {
-
+         if(name==null||q==null)return;
         final Player player = plugin.getServer().getPlayer(q.id);
         q.hardQuit(this);
         q.completedQuests.add(name);

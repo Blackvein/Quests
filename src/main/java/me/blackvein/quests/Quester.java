@@ -37,7 +37,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Quester {
 
     UUID id;
-    boolean editorMode = false;
     boolean hasJournal = false;
 
     public String questToTake;
@@ -2627,13 +2626,13 @@ public class Quester {
 
     }
 
-    public boolean loadData() {
+    boolean loadData() {
 
         FileConfiguration data = new YamlConfiguration();
         try {
 
             File dataFile = new File(plugin.getDataFolder(), "data/" + id.toString() + ".yml");
-            if (dataFile.exists() == false) {
+            if (!dataFile.exists()) {
                 OfflinePlayer p = getOfflinePlayer();
                 dataFile = new File(plugin.getDataFolder(), "data/" + p.getName() + ".yml");
                 if (dataFile.exists() == false) {
@@ -2695,7 +2694,7 @@ public class Quester {
 
                 for (Quest q : plugin.quests) {
 
-                    if (q.name.equalsIgnoreCase(s)) {
+                    if (q.name.equalsIgnoreCase(s)&&q.name!=null&&s!=null) {
                         completedQuests.add(q.name);
                         break;
                     }

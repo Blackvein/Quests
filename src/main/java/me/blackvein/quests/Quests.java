@@ -2855,7 +2855,8 @@ try{
                 if (config.contains("quests." + questName + ".redo-delay")) {
 
                     if (config.getInt("quests." + questName + ".redo-delay", -999) != -999) {
-                        quest.redoDelay = config.getInt("quests." + questName + ".redo-delay") * 1000;
+                        long redoDelay=config.getLong("quests." + questName + ".redo-delay") * 1000;
+                        quest.redoDelay = redoDelay;
                     } else {
                         skipQuestProcess("redo-delay: for Quest " + quest.name + " is not a number!");
                     }
