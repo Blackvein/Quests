@@ -53,7 +53,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-public class PlayerListener implements Listener, ColorUtil {
+public class PlayerListener implements Listener {
 
     final Quests plugin;
 
@@ -125,7 +125,7 @@ public class PlayerListener implements Listener, ColorUtil {
 
                                 String msg = Lang.get("questMaxAllowed");
                                 msg = msg.replaceAll("<number>", String.valueOf(Quests.maxQuests));
-                                player.sendMessage(YELLOW + msg);
+                                player.sendMessage(ChatColor.YELLOW + msg);
 
                             } else if (quester.completedQuests.contains(quest.name) && quest.redoDelay < 0) {
                                 String completed = Lang.get("questAlreadyCompleted");
@@ -373,12 +373,13 @@ public class PlayerListener implements Listener, ColorUtil {
 
     }
 
-    @EventHandler
+    @SuppressWarnings("deprecation")
+	@EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent evt) {
     	if (evt.getRightClicked().getType() == EntityType.ITEM_FRAME) {
     		if(ItemUtil.isJournal(evt.getPlayer().getInventory().getItemInMainHand())) {
                 evt.setCancelled(true);
-    			evt.getPlayer().sendMessage(RED + Lang.get("journalDenied"));
+    			evt.getPlayer().sendMessage(ChatColor.RED + Lang.get("journalDenied"));
     		}
     	}
     }
@@ -480,7 +481,8 @@ public class PlayerListener implements Listener, ColorUtil {
 
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent evt) {
 
         if (!plugin.checkQuester(evt.getPlayer().getUniqueId())) {
@@ -618,7 +620,6 @@ public class PlayerListener implements Listener, ColorUtil {
 
                     if (damager instanceof Projectile) {
                         Projectile projectile = (Projectile)damager;
-                        @SuppressWarnings("deprecation")
 						ProjectileSource source = projectile.getShooter();
 
                         if (source instanceof Player) {
