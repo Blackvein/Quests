@@ -847,7 +847,7 @@ public class Quester {
 
                     Map<String, Object> datamap = getCurrentStage(quest).customObjectiveData.get(index);
                     for (String key : co.datamap.keySet()) {
-                        display = display.replaceAll("%" + ((String) key) + "%", ((String) datamap.get(key)));
+                        display = display.replaceAll("%" + key + "%", ((String) datamap.get(key)));
                     }
 
                     if (entry.getValue() < getCurrentStage(quest).customObjectiveCounts.get(index)) {
@@ -1661,7 +1661,7 @@ public class Quester {
 
             Map<String, Object> datamap = getCurrentStage(quest).customObjectiveData.get(index);
             for (String key : co.datamap.keySet()) {
-                message = message.replaceAll("%" + ((String) key) + "%", (String) datamap.get(key));
+                message = message.replaceAll("%" + key + "%", (String) datamap.get(key));
             }
 
             if (co.isCountShown() && co.isEnableCount()) {
@@ -1763,7 +1763,7 @@ public class Quester {
         if (quest.getStage(0).itemsToEnchant.isEmpty() == false) {
             for (Entry<Map<Enchantment, Material>, Integer> e : quest.getStage(0).itemsToEnchant.entrySet()) {
 
-                Map<Enchantment, Material> map = (Map<Enchantment, Material>) e.getKey();
+                Map<Enchantment, Material> map = e.getKey();
                 data.itemsEnchanted.put(map, 0);
 
             }
@@ -1928,7 +1928,7 @@ public class Quester {
         if (quest.getStage(stage).itemsToEnchant.isEmpty() == false) {
             for (Entry<Map<Enchantment, Material>, Integer> e : quest.getStage(stage).itemsToEnchant.entrySet()) {
 
-                Map<Enchantment, Material> map = (Map<Enchantment, Material>) e.getKey();
+                Map<Enchantment, Material> map = e.getKey();
                 data.itemsEnchanted.put(map, 0);
 
             }
@@ -2194,7 +2194,7 @@ public class Quester {
 
         FileConfiguration data = new YamlConfiguration();
 
-        if (currentQuests.isEmpty() == false) {
+        if (!currentQuests.isEmpty()) {
 
             ArrayList<String> questNames = new ArrayList<String>();
             ArrayList<Integer> questStages = new ArrayList<Integer>();
@@ -2218,7 +2218,7 @@ public class Quester {
                 QuestData questData = getQuestData(quest);
                 if (questData == null) continue;
                 
-                if (questData.blocksDamaged.isEmpty() == false) {
+                if (!questData.blocksDamaged.isEmpty()) {
 
                     LinkedList<String> blockNames = new LinkedList<String>();
                     LinkedList<Integer> blockAmounts = new LinkedList<Integer>();
@@ -2236,7 +2236,7 @@ public class Quester {
 
                 }
 
-                if (questData.blocksBroken.isEmpty() == false) {
+                if (!questData.blocksBroken.isEmpty()) {
                 	
                 	LinkedList<String> blockNames = new LinkedList<String>();
                     LinkedList<Integer> blockAmounts = new LinkedList<Integer>();
@@ -2254,7 +2254,7 @@ public class Quester {
 
                 }
 
-                if (questData.blocksPlaced.isEmpty() == false) {
+                if (!questData.blocksPlaced.isEmpty()) {
 
                     LinkedList<String> blockNames = new LinkedList<String>();
                     LinkedList<Integer> blockAmounts = new LinkedList<Integer>();
@@ -2272,7 +2272,7 @@ public class Quester {
 
                 }
 
-                if (questData.blocksUsed.isEmpty() == false) {
+                if (!questData.blocksUsed.isEmpty()) {
 
                     LinkedList<String> blockNames = new LinkedList<String>();
                     LinkedList<Integer> blockAmounts = new LinkedList<Integer>();
@@ -2290,7 +2290,7 @@ public class Quester {
 
                 }
 
-                if (questData.blocksCut.isEmpty() == false) {
+                if (!questData.blocksCut.isEmpty()) {
 
                     LinkedList<String> blockNames = new LinkedList<String>();
                     LinkedList<Integer> blockAmounts = new LinkedList<Integer>();
@@ -2316,7 +2316,7 @@ public class Quester {
                     questSec.set("players-killed", questData.getPlayersKilled());
                 }
 
-                if (questData.itemsEnchanted.isEmpty() == false) {
+                if (!questData.itemsEnchanted.isEmpty()) {
 
                     LinkedList<String> enchantments = new LinkedList<String>();
                     LinkedList<String> itemNames = new LinkedList<String>();
@@ -2324,12 +2324,12 @@ public class Quester {
 
                     for (Entry<Map<Enchantment, Material>, Integer> e : questData.itemsEnchanted.entrySet()) {
 
-                        Map<Enchantment, Material> enchMap = (Map<Enchantment, Material>) e.getKey();
+                        Map<Enchantment, Material> enchMap = e.getKey();
                         enchAmounts.add(questData.itemsEnchanted.get(enchMap));
                         for (Entry<Enchantment, Material> e2 : enchMap.entrySet()) {
 
-                            enchantments.add(Quester.prettyEnchantmentString((Enchantment) e2.getKey()));
-                            itemNames.add(((Material) e2.getValue()).name());
+                            enchantments.add(Quester.prettyEnchantmentString(e2.getKey()));
+                            itemNames.add(e2.getValue().name());
 
                         }
 
@@ -2341,7 +2341,7 @@ public class Quester {
 
                 }
 
-                if (questData.mobsKilled.isEmpty() == false) {
+                if (!questData.mobsKilled.isEmpty()) {
 
                     LinkedList<String> mobNames = new LinkedList<String>();
                     LinkedList<Integer> mobAmounts = new LinkedList<Integer>();
@@ -2354,11 +2354,7 @@ public class Quester {
 
                     }
 
-                    for (int i : questData.mobNumKilled) {
-
-                        mobAmounts.add(i);
-
-                    }
+                    mobAmounts.addAll(questData.mobNumKilled);
 
                     questSec.set("mobs-killed", mobNames);
                     questSec.set("mobs-killed-amounts", mobAmounts);
@@ -2578,17 +2574,13 @@ public class Quester {
 
         } else {
 
-            String[] completed = new String[completedQuests.size()];
-            for (String s : completedQuests) {
+            String[] completed = completedQuests.toArray(new String[completedQuests.size()]);
 
-                completed[completedQuests.indexOf(s)] = s;
-
-            }
             data.set("completed-Quests", completed);
 
         }
 
-        if (completedTimes.isEmpty() == false) {
+        if (!completedTimes.isEmpty()) {
 
             List<String> questTimeNames = new LinkedList<String>();
             List<Long> questTimes = new LinkedList<Long>();
@@ -2605,7 +2597,7 @@ public class Quester {
 
         }
 
-        if (amountsCompleted.isEmpty() == false) {
+        if (!amountsCompleted.isEmpty()) {
 
             List<String> list1 = new LinkedList<String>();
             List<Integer> list2 = new LinkedList<Integer>();
@@ -3528,7 +3520,7 @@ if (quest != null) {
             int amount = inNew.getAmount();
             HashMap<Integer, ? extends ItemStack> items = inInv.all(inNew.getType());
             for (int i = 0; i < inInv.getSize(); i++) {
-                if (!items.containsKey((Integer) i)) {
+                if (!items.containsKey(i)) {
                     continue;
                 }
 
