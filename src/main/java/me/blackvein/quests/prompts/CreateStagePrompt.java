@@ -187,8 +187,8 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                     LinkedList<Integer> npcs = (LinkedList<Integer>) context.getSessionData(pref + CK.S_NPCS_TO_TALK_TO);
 
-                    for (int i = 0; i < npcs.size(); i++) {
-                        text += ChatColor.GRAY + "    - " + ChatColor.BLUE + citizens.getNPCRegistry().getById(npcs.get(i)).getName() + "\n";
+                    for (Integer npc : npcs) {
+                        text += ChatColor.GRAY + "    - " + ChatColor.BLUE + citizens.getNPCRegistry().getById(npc).getName() + "\n";
                     }
 
                 }
@@ -496,7 +496,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         text += ChatColor.GRAY + "    - ";
                         for (String s : phraseList) {
-                            if (phraseList.getLast().equals(s) == false) {
+                            if (!phraseList.getLast().equals(s)) {
                                 text += ChatColor.DARK_AQUA + s + ChatColor.GRAY + "|";
                             } else {
                                 text += ChatColor.DARK_AQUA + s + "\n";
@@ -589,7 +589,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (context.getSessionData(pref + CK.S_PASSWORD_DISPLAYS) != null) {
 
@@ -630,7 +630,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (context.getSessionData(pref + CK.S_PASSWORD_PHRASES) != null) {
 
@@ -674,7 +674,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdClear")) == false && input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdClear")) && !input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 context.setSessionData(pref + CK.S_OVERRIDE_DISPLAY, input);
 
@@ -833,7 +833,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> names = new LinkedList<String>();
@@ -843,7 +843,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Material.matchMaterial(s) != null) {
 
-                            if (names.contains(s) == false) {
+                            if (!names.contains(s)) {
                                 names.add(s);
                             } else {
                                 context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("stageEditorContainsDuplicates"));
@@ -881,7 +881,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -922,7 +922,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> durability = new LinkedList<Integer>();
@@ -1095,7 +1095,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> names = new LinkedList<String>();
@@ -1105,7 +1105,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Material.matchMaterial(s) != null) {
 
-                            if (names.contains(s) == false) {
+                            if (!names.contains(s)) {
                                 names.add(s);
                             } else {
                                 context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("stageEditorListContainsDuplicates"));
@@ -1143,7 +1143,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -1184,7 +1184,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> durability = new LinkedList<Integer>();
@@ -1357,7 +1357,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> names = new LinkedList<String>();
@@ -1367,7 +1367,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Material.matchMaterial(s) != null) {
 
-                            if (names.contains(s) == false) {
+                            if (!names.contains(s)) {
                                 names.add(s);
                             } else {
                                 context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("stageEditorListContainsDuplicates"));
@@ -1405,7 +1405,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -1446,7 +1446,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> durability = new LinkedList<Integer>();
@@ -1619,7 +1619,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> names = new LinkedList<String>();
@@ -1629,7 +1629,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Material.matchMaterial(s) != null) {
 
-                            if (names.contains(s) == false) {
+                            if (!names.contains(s)) {
                                 names.add(s);
                             } else {
                                 context.getForWhom().sendRawMessage(ChatColor.RED + " " + Lang.get("stageEditorContainsDuplicates"));
@@ -1667,7 +1667,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -1708,7 +1708,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> durability = new LinkedList<Integer>();
@@ -1881,7 +1881,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> names = new LinkedList<String>();
@@ -1891,7 +1891,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Material.matchMaterial(s) != null) {
 
-                            if (names.contains(s) == false) {
+                            if (!names.contains(s)) {
                                 names.add(s);
                             } else {
                                 context.getForWhom().sendRawMessage(ChatColor.RED + " " + Lang.get("stageEditorListContainsDuplicates"));
@@ -1929,7 +1929,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -1970,7 +1970,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> durability = new LinkedList<Integer>();
@@ -2215,7 +2215,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(",");
                 LinkedList<String> enchs = new LinkedList<String>();
@@ -2228,7 +2228,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Quester.prettyEnchantmentString(e).equalsIgnoreCase(s)) {
 
-                            if (enchs.contains(s) == false) {
+                            if (!enchs.contains(s)) {
                                 enchs.add(Quester.prettyEnchantmentString(e));
                                 valid = true;
                                 break;
@@ -2240,7 +2240,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
                         }
 
                     }
-                    if (valid == false) {
+                    if (!valid) {
                         context.getForWhom().sendRawMessage(ChatColor.LIGHT_PURPLE + s + ChatColor.RED + " " + Lang.get("stageEditorInvalidEnchantment"));
                         return new EnchantTypesPrompt();
                     }
@@ -2266,7 +2266,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> names = new LinkedList<String>();
@@ -2276,7 +2276,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                         if (Material.matchMaterial(s) != null) {
 
-                            if (names.contains(s) == false) {
+                            if (!names.contains(s)) {
                                 names.add(s);
                             } else {
                                 context.getForWhom().sendRawMessage(ChatColor.RED + " " + Lang.get("stageEditorListContainsDuplicates"));
@@ -2314,7 +2314,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -2520,7 +2520,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> npcs = new LinkedList<Integer>();
@@ -2550,7 +2550,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             }
 
-            questFactory.selectingNPCs.remove((Player) context.getForWhom());
+            questFactory.selectingNPCs.remove(context.getForWhom());
             return new DeliveryListPrompt();
 
         }
@@ -2568,7 +2568,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(";");
                 LinkedList<String> messages = new LinkedList<String>();
@@ -2595,7 +2595,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> npcs = new LinkedList<Integer>();
@@ -2621,7 +2621,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                 }
 
-                questFactory.selectingNPCs.remove((Player) context.getForWhom());
+                questFactory.selectingNPCs.remove(context.getForWhom());
                 context.setSessionData(pref + CK.S_NPCS_TO_TALK_TO, npcs);
 
             } else if (input.equalsIgnoreCase(Lang.get("cmdClear"))) {
@@ -2752,7 +2752,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> npcs = new LinkedList<Integer>();
@@ -2782,7 +2782,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             }
 
-            questFactory.selectingNPCs.remove((Player) context.getForWhom());
+            questFactory.selectingNPCs.remove(context.getForWhom());
             return new NPCKillListPrompt();
 
         }
@@ -2798,7 +2798,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -3069,7 +3069,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
             for (int i = 0; i < mobArr.length; i++) {
 
                 final EntityType type = mobArr[i];
-                if (type.isAlive() == false) {
+                if (!type.isAlive()) {
                     continue;
                 }
 
@@ -3089,7 +3089,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> mobTypes = new LinkedList<String>();
                 for (String s : input.split(" ")) {
@@ -3127,7 +3127,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Integer> mobAmounts = new LinkedList<Integer>();
                 for (String s : input.split(" ")) {
@@ -3225,7 +3225,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Integer> radii = new LinkedList<Integer>();
                 for (String s : input.split(" ")) {
@@ -3269,7 +3269,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> locNames = new LinkedList<String>();
                 locNames.addAll(Arrays.asList(input.split(",")));
@@ -3491,7 +3491,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Integer> radii = new LinkedList<Integer>();
                 for (String s : input.split(" ")) {
@@ -3535,7 +3535,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> locNames = new LinkedList<String>();
                 locNames.addAll(Arrays.asList(input.split(",")));
@@ -3667,7 +3667,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
             for (int i = 0; i < mobArr.length; i++) {
 
                 final EntityType type = mobArr[i];
-                if (type.isAlive() == false) {
+                if (!type.isAlive()) {
                     continue;
                 }
 
@@ -3687,7 +3687,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> mobTypes = new LinkedList<String>();
                 for (String s : input.split(" ")) {
@@ -3725,7 +3725,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Integer> mobAmounts = new LinkedList<Integer>();
                 for (String s : input.split(" ")) {
@@ -3889,7 +3889,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> colors = new LinkedList<String>();
                 for (String s : input.split(" ")) {
@@ -3927,7 +3927,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Integer> shearAmounts = new LinkedList<Integer>();
                 for (String s : input.split(" ")) {
@@ -4070,7 +4070,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 Event found = null;
 
@@ -4127,7 +4127,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 Event found = null;
 
@@ -4184,7 +4184,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 Event found = null;
 
@@ -4241,7 +4241,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 Event found = null;
 
@@ -4298,7 +4298,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 Event found = null;
 
@@ -4350,7 +4350,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 		@Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (context.getSessionData(pref + CK.S_CHAT_EVENTS) == null) {
 
@@ -4457,7 +4457,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 context.setSessionData(pref + CK.S_DELAY_MESSAGE, input);
                 return new CreateStagePrompt(stageNum, questFactory, citizens);
@@ -4495,7 +4495,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 if (ScriptRegistry.containsScript(input)) {
 
@@ -4563,7 +4563,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         public Prompt acceptInput(ConversationContext context, String input) {
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 context.setSessionData(pref + CK.S_START_MESSAGE, input);
                 return new CreateStagePrompt(stageNum, questFactory, citizens);
@@ -4592,7 +4592,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
         public Prompt acceptInput(ConversationContext context, String input) {
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 context.setSessionData(pref + CK.S_COMPLETE_MESSAGE, input);
                 return new CreateStagePrompt(stageNum, questFactory, citizens);
@@ -4628,7 +4628,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 		@Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 CustomObjective found = null;
                 for (CustomObjective co : questFactory.quests.customObjectives) {
@@ -4653,7 +4653,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
                         LinkedList<String> list = (LinkedList<String>) context.getSessionData(pref + CK.S_CUSTOM_OBJECTIVES);
                         LinkedList<Map<String, Object>> datamapList = (LinkedList<Map<String, Object>>) context.getSessionData(pref + CK.S_CUSTOM_OBJECTIVES_DATA);
                         LinkedList<Integer> countList = (LinkedList<Integer>) context.getSessionData(pref + CK.S_CUSTOM_OBJECTIVES_COUNT);
-                        if (list.contains(found.getName()) == false) {
+                        if (!list.contains(found.getName())) {
                             list.add(found.getName());
                             datamapList.add(found.datamap);
                             countList.add(-999);
@@ -4680,7 +4680,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
                         return new CustomObjectiveCountPrompt();
                     }
 
-                    if (found.datamap.isEmpty() == false) {
+                    if (!found.datamap.isEmpty()) {
 
                         context.setSessionData(pref + CK.S_CUSTOM_OBJECTIVES_DATA_DESCRIPTIONS, found.descriptions);
                         return new ObjectiveCustomDataListPrompt();
@@ -4730,7 +4730,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
             }
 
-            text += ChatColor.BLUE + found.getCountPrompt().toString() + "\n\n";
+            text += ChatColor.BLUE + found.getCountPrompt() + "\n\n";
 
             return text;
 
@@ -4759,7 +4759,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
 
                 }
 
-                if (found.datamap.isEmpty() == false) {
+                if (!found.datamap.isEmpty()) {
                     context.setSessionData(pref + CK.S_CUSTOM_OBJECTIVES_DATA_DESCRIPTIONS, found.descriptions);
                     return new ObjectiveCustomDataListPrompt();
                 } else {
@@ -4793,16 +4793,14 @@ public class CreateStagePrompt extends FixedSetPrompt {
             int index = 1;
 
             LinkedList<String> datamapKeys = new LinkedList<String>();
-            for (String key : datamap.keySet()) {
-                datamapKeys.add(key);
-            }
+            datamapKeys.addAll(datamap.keySet());
             Collections.sort(datamapKeys);
 
             for (String dataKey : datamapKeys) {
 
                 text += ChatColor.BOLD + "" + ChatColor.DARK_BLUE + index + " - " + ChatColor.RESET + ChatColor.BLUE + dataKey;
                 if (datamap.get(dataKey) != null) {
-                    text += ChatColor.GREEN + " (" + (String) datamap.get(dataKey) + ")\n";
+                    text += ChatColor.GREEN + " (" + datamap.get(dataKey) + ")\n";
                 } else {
                     text += ChatColor.RED + " (" + Lang.get("valRequired") + ")\n";
                 }
@@ -4838,9 +4836,7 @@ public class CreateStagePrompt extends FixedSetPrompt {
             if (numInput < datamap.size() + 1) {
 
                 LinkedList<String> datamapKeys = new LinkedList<String>();
-                for (String key : datamap.keySet()) {
-                    datamapKeys.add(key);
-                }
+                datamapKeys.addAll(datamap.keySet());
                 Collections.sort(datamapKeys);
 
                 String selectedKey = datamapKeys.get(numInput - 1);

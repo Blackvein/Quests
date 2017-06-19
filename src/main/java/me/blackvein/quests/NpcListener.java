@@ -42,7 +42,7 @@ public class NpcListener implements Listener {
             return;
         }
 
-        if (evt.getClicker().isConversing() == false) {
+        if (!evt.getClicker().isConversing()) {
 
             final Player player = evt.getClicker();
             final Quester quester = plugin.getQuester(player.getUniqueId());
@@ -50,9 +50,9 @@ public class NpcListener implements Listener {
 
             for (Quest quest : quester.currentQuests.keySet()) {
 
-                if (quester.hasObjective(quest, "deliverItem") && player.getItemInHand() != null) {
+                if (quester.hasObjective(quest, "deliverItem") && player.getInventory().getItemInMainHand() != null) {
 
-                    ItemStack hand = player.getItemInHand();
+                    ItemStack hand = player.getInventory().getItemInMainHand();
 
                     ItemStack found = null;
 
@@ -112,9 +112,9 @@ public class NpcListener implements Listener {
 
             }
 
-            if (plugin.questNPCs.contains(evt.getNPC()) && delivery == false) {
+            if (plugin.questNPCs.contains(evt.getNPC()) && !delivery) {
 
-                if (plugin.checkQuester(player.getUniqueId()) == false) {
+                if (!plugin.checkQuester(player.getUniqueId())) {
 
                     boolean hasObjective = false;
 
@@ -122,7 +122,7 @@ public class NpcListener implements Listener {
 
                         if (quester.hasObjective(quest, "talkToNPC")) {
 
-                            if (quester.getQuestData(quest) != null && quester.getQuestData(quest).citizensInteracted.containsKey(evt.getNPC().getId()) && quester.getQuestData(quest).citizensInteracted.get(evt.getNPC().getId()) == false) {
+                            if (quester.getQuestData(quest) != null && quester.getQuestData(quest).citizensInteracted.containsKey(evt.getNPC().getId()) && !quester.getQuestData(quest).citizensInteracted.get(evt.getNPC().getId())) {
                                 hasObjective = true;
                             }
 
@@ -140,18 +140,18 @@ public class NpcListener implements Listener {
                             if(quester.currentQuests.containsKey(q))
                                 continue;
                             if (q.npcStart != null && q.npcStart.getId() == evt.getNPC().getId()) {
-                                if (Quests.ignoreLockedQuests && (quester.completedQuests.contains(q.name) == false || q.redoDelay > -1)) {
+                                if (Quests.ignoreLockedQuests && (!quester.completedQuests.contains(q.name) || q.redoDelay > -1)) {
                                     if (q.testRequirements(quester)) {
                                         npcQuests.add(q);
                                     }
-                                } else if (quester.completedQuests.contains(q.name) == false || q.redoDelay > -1) {
+                                } else if (!quester.completedQuests.contains(q.name) || q.redoDelay > -1) {
                                     npcQuests.add(q);
                                 }
                             }
 
                         }
 
-                        if (npcQuests.isEmpty() == false && npcQuests.size() >= 1) {
+                        if (!npcQuests.isEmpty() && npcQuests.size() >= 1) {
 
                             if (plugin.questNPCGUIs.contains(evt.getNPC().getId())) {
                                 quester.showGUIDisplay(evt.getNPC(), npcQuests);
@@ -181,7 +181,7 @@ public class NpcListener implements Listener {
 
                                     plugin.conversationFactory.buildConversation(player).begin();
 
-                                } else if (quester.currentQuests.containsKey(q) == false) {
+                                } else if (!quester.currentQuests.containsKey(q)) {
 
                                     String msg = Lang.get("questMaxAllowed");
                                     msg = msg.replaceAll("<number>", String.valueOf(Quests.maxQuests));
@@ -211,7 +211,7 @@ public class NpcListener implements Listener {
                                     plugin.conversationFactory.buildConversation(player).begin();
                                 }
 
-                            } else if (quester.currentQuests.containsKey(q) == false) {
+                            } else if (!quester.currentQuests.containsKey(q)) {
 
                                 String msg = Lang.get("questMaxAllowed");
                                 msg = msg.replaceAll("<number>", String.valueOf(Quests.maxQuests));

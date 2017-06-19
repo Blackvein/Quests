@@ -42,37 +42,37 @@ public class ItemUtil {
             return 0;
         }
 
-        if (one.getType().name() != two.getType().name()) {
+        if (!one.getType().name().equals(two.getType().name())) {
             return -1;
-        } else if ((one.getAmount() != two.getAmount()) && ignoreAmount == false) {
+        } else if ((one.getAmount() != two.getAmount()) && !ignoreAmount) {
             return -2;
-        } else if (one.getData().equals(two.getData()) == false) {
+        } else if (!one.getData().equals(two.getData())) {
             return -3;
         }
 
         if (one.hasItemMeta() || two.hasItemMeta()) {
 
-            if (one.hasItemMeta() && two.hasItemMeta() == false) {
+            if (one.hasItemMeta() && !two.hasItemMeta()) {
                 return -4;
-            } else if (one.hasItemMeta() == false && two.hasItemMeta()) {
+            } else if (!one.hasItemMeta() && two.hasItemMeta()) {
                 return -4;
-            } else if (one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName() == false) {
+            } else if (one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) {
                 return -4;
-            } else if (one.getItemMeta().hasDisplayName() == false && two.getItemMeta().hasDisplayName()) {
+            } else if (!one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName()) {
                 return -4;
-            } else if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore() == false) {
+            } else if (one.getItemMeta().hasLore() && !two.getItemMeta().hasLore()) {
                 return -4;
-            } else if (one.getItemMeta().hasLore() == false && two.getItemMeta().hasLore()) {
+            } else if (!one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
                 return -4;
-            } else if (one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName() && ChatColor.stripColor(one.getItemMeta().getDisplayName()).equals(ChatColor.stripColor(two.getItemMeta().getDisplayName())) == false) {
+            } else if (one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName() && !ChatColor.stripColor(one.getItemMeta().getDisplayName()).equals(ChatColor.stripColor(two.getItemMeta().getDisplayName()))) {
                 return -4;
-            } else if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore() && one.getItemMeta().getLore().equals(two.getItemMeta().getLore()) == false) {
+            } else if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore() && !one.getItemMeta().getLore().equals(two.getItemMeta().getLore())) {
                 return -4;
             }
 
         }
 
-        if (one.getEnchantments().equals(two.getEnchantments()) == false) {
+        if (!one.getEnchantments().equals(two.getEnchantments())) {
             return -5;
         } else {
             return 0;
@@ -117,7 +117,7 @@ public class ItemUtil {
 
         }
 
-        if (lore.isEmpty() == false) {
+        if (!lore.isEmpty()) {
             meta.setLore(lore);
         }
 
@@ -140,7 +140,7 @@ public class ItemUtil {
         if (is.getDurability() != 0) {
             serial += ":data-" + is.getDurability();
         }
-        if (is.getEnchantments().isEmpty() == false) {
+        if (!is.getEnchantments().isEmpty()) {
 
             for (Entry<Enchantment, Integer> e : is.getEnchantments().entrySet()) {
                 serial += ":enchantment-" + Quester.enchantmentString(e.getKey()) + " " + e.getValue();
@@ -181,7 +181,7 @@ public class ItemUtil {
 
             text += ChatColor.AQUA + " x " + is.getAmount();
 
-            if (is.getEnchantments().isEmpty() == false) {
+            if (!is.getEnchantments().isEmpty()) {
                 text += " " + ChatColor.DARK_PURPLE + Lang.get("enchantedItem");
             }
 
@@ -234,12 +234,9 @@ public class ItemUtil {
         
         if(is == null)
             return false;
-        
-        if(is.getType().equals(Material.AIR))
-            return false;
-        
-        return true;
-        
+
+        return !is.getType().equals(Material.AIR);
+
     }
     
     public static boolean isJournal(ItemStack is) {
@@ -247,10 +244,10 @@ public class ItemUtil {
         if(is == null)
             return false;
         
-        if(is.hasItemMeta() == false)
+        if(!is.hasItemMeta())
             return false;
         
-        if(is.getItemMeta().hasDisplayName() == false)
+        if(!is.getItemMeta().hasDisplayName())
             return false;
         
         return is.getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + Lang.get("journalTitle"));

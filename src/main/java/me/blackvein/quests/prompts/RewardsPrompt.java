@@ -393,7 +393,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] args = input.split(",");
                 LinkedList<String> commands = new LinkedList<String>();
@@ -429,7 +429,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> permissions = new LinkedList<String>();
@@ -577,7 +577,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> skills = new LinkedList<String>();
@@ -585,7 +585,7 @@ public class RewardsPrompt extends FixedSetPrompt {
 
                     if (Quests.getMcMMOSkill(s) != null) {
 
-                        if (skills.contains(s) == false) {
+                        if (!skills.contains(s)) {
                             skills.add(Quester.getCapitalized(s));
                         } else {
                             context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("listDuplicate"));
@@ -621,7 +621,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
@@ -789,7 +789,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] arr = input.split(" ");
                 LinkedList<String> classes = new LinkedList<String>();
@@ -834,7 +834,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] arr = input.split(" ");
                 LinkedList<Double> amounts = new LinkedList<Double>();
@@ -886,7 +886,7 @@ public class RewardsPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] arr = input.split(" ");
                 LinkedList<String> loots = new LinkedList<String>();
@@ -939,7 +939,7 @@ public class RewardsPrompt extends FixedSetPrompt {
 		@Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 CustomReward found = null;
                 for (CustomReward cr : quests.customRewards) {
@@ -963,7 +963,7 @@ public class RewardsPrompt extends FixedSetPrompt {
                     if (context.getSessionData(CK.REW_CUSTOM) != null) {
                         LinkedList<String> list = (LinkedList<String>) context.getSessionData(CK.REW_CUSTOM);
                         LinkedList<Map<String, Object>> datamapList = (LinkedList<Map<String, Object>>) context.getSessionData(CK.REW_CUSTOM_DATA);
-                        if (list.contains(found.getName()) == false) {
+                        if (!list.contains(found.getName())) {
                             list.add(found.getName());
                             datamapList.add(found.datamap);
                             context.setSessionData(CK.REW_CUSTOM, list);
@@ -982,7 +982,7 @@ public class RewardsPrompt extends FixedSetPrompt {
                     }
 
                     //Send user to the custom data prompt if there is any needed
-                    if (found.datamap.isEmpty() == false) {
+                    if (!found.datamap.isEmpty()) {
 
                         context.setSessionData(CK.REW_CUSTOM_DATA_DESCRIPTIONS, found.descriptions);
                         return new RewardCustomDataListPrompt();
@@ -1025,16 +1025,14 @@ public class RewardsPrompt extends FixedSetPrompt {
             int index = 1;
 
             LinkedList<String> datamapKeys = new LinkedList<String>();
-            for (String key : datamap.keySet()) {
-                datamapKeys.add(key);
-            }
+            datamapKeys.addAll(datamap.keySet());
             Collections.sort(datamapKeys);
 
             for (String dataKey : datamapKeys) {
 
                 text += ChatColor.BOLD + "" + ChatColor.DARK_BLUE + index + " - " + ChatColor.RESET + ChatColor.BLUE + dataKey;
                 if (datamap.get(dataKey) != null) {
-                    text += ChatColor.GREEN + " (" + (String) datamap.get(dataKey) + ")\n";
+                    text += ChatColor.GREEN + " (" + datamap.get(dataKey) + ")\n";
                 } else {
                     text += ChatColor.RED + " (" + Lang.get("valRequired") + ")\n";
                 }
@@ -1070,9 +1068,7 @@ public class RewardsPrompt extends FixedSetPrompt {
             if (numInput < datamap.size() + 1) {
 
                 LinkedList<String> datamapKeys = new LinkedList<String>();
-                for (String key : datamap.keySet()) {
-                    datamapKeys.add(key);
-                }
+                datamapKeys.addAll(datamap.keySet());
                 Collections.sort(datamapKeys);
 
                 String selectedKey = datamapKeys.get(numInput - 1);

@@ -71,8 +71,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
         if (input.equalsIgnoreCase("0")) {
 
             Player player = (Player) cc.getForWhom();
-            @SuppressWarnings("deprecation")
-			ItemStack is = player.getItemInHand();
+            ItemStack is = player.getInventory().getItemInMainHand();
             if (is == null || is.getType().equals(Material.AIR)) {
 
                 player.sendMessage(ChatColor.RED + Lang.get("itemCreateNoItem"));
@@ -89,7 +88,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
                 if (is.getDurability() != 0) {
                     cc.setSessionData("tempData", is.getDurability());
                 }
-                if (is.getEnchantments() != null && is.getEnchantments().isEmpty() == false) {
+                if (is.getEnchantments() != null && !is.getEnchantments().isEmpty()) {
                     cc.setSessionData("tempEnchantments", new HashMap<Enchantment, Integer>(is.getEnchantments()));
                 }
                 if (is.hasItemMeta()) {
@@ -202,7 +201,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
                 ItemMeta meta = stack.getItemMeta();
 
                 if (data != -1) {
-                    stack.setDurability((short) data);
+                    stack.setDurability(data);
                 }
                 if (enchs != null) {
                     for (Entry<Enchantment, Integer> e : enchs.entrySet()) {
@@ -244,7 +243,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
 
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String dataString = null;
                 if (input.contains(":")) {
@@ -293,7 +292,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
 
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 try {
 
@@ -329,7 +328,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
 
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 try {
 
@@ -379,7 +378,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdClear")) == false && input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdClear")) && !input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 Enchantment e = Quests.getEnchantmentPretty(input);
                 if (e != null) {
@@ -464,7 +463,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
 
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 input = Quests.parseString(input);
 
@@ -491,7 +490,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
 
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 input = Quests.parseString(input);
 
@@ -523,7 +522,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
                 item = ChatColor.AQUA + Quester.prettyItemString(name);
 
                 if (cc.getSessionData("tempData") != null) {
-                    item += ":" + ChatColor.BLUE + (Short) cc.getSessionData("tempData");
+                    item += ":" + ChatColor.BLUE + cc.getSessionData("tempData");
                 }
 
             } else {
@@ -532,7 +531,7 @@ public class ItemStackPrompt extends FixedSetPrompt {
                 String name = (String) cc.getSessionData("tempName");
                 item += ChatColor.AQUA + Quester.prettyItemString(name);
                 if (cc.getSessionData("tempData") != null) {
-                    item += ":" + ChatColor.BLUE + (Short) cc.getSessionData("tempData");
+                    item += ":" + ChatColor.BLUE + cc.getSessionData("tempData");
                 }
                 item += ChatColor.GRAY + ")";
 

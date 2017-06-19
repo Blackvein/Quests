@@ -216,19 +216,19 @@ public class EventFactory implements ConversationAbandonedListener {
             context.setSessionData(CK.E_MESSAGE, event.message);
         }
 
-        if (event.clearInv == true) {
+        if (event.clearInv) {
             context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("yesWord"));
         } else {
             context.setSessionData(CK.E_CLEAR_INVENTORY, Lang.get("noWord"));
         }
 
-        if (event.failQuest == true) {
+        if (event.failQuest) {
             context.setSessionData(CK.E_FAIL_QUEST, Lang.get("yesWord"));
         } else {
             context.setSessionData(CK.E_FAIL_QUEST, Lang.get("noWord"));
         }
 
-        if (event.items != null && event.items.isEmpty() == false) {
+        if (event.items != null && !event.items.isEmpty()) {
 
             LinkedList<ItemStack> items = new LinkedList<ItemStack>();
             items.addAll(event.items);
@@ -237,7 +237,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
         }
 
-        if (event.explosions != null && event.explosions.isEmpty() == false) {
+        if (event.explosions != null && !event.explosions.isEmpty()) {
 
             LinkedList<String> locs = new LinkedList<String>();
 
@@ -249,15 +249,15 @@ public class EventFactory implements ConversationAbandonedListener {
 
         }
 
-        if (event.effects != null && event.effects.isEmpty() == false) {
+        if (event.effects != null && !event.effects.isEmpty()) {
 
             LinkedList<String> locs = new LinkedList<String>();
             LinkedList<String> effs = new LinkedList<String>();
 
             for (Entry<Location, Effect> e : event.effects.entrySet()) {
 
-                locs.add(Quests.getLocationInfo((Location) e.getKey()));
-                effs.add(((Effect) e.getValue()).toString());
+                locs.add(Quests.getLocationInfo(e.getKey()));
+                effs.add(e.getValue().toString());
 
             }
 
@@ -280,7 +280,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
         }
 
-        if (event.mobSpawns != null && event.mobSpawns.isEmpty() == false) {
+        if (event.mobSpawns != null && !event.mobSpawns.isEmpty()) {
 
             LinkedList<String> questMobs = new LinkedList<String>();
 
@@ -291,7 +291,7 @@ public class EventFactory implements ConversationAbandonedListener {
             context.setSessionData(CK.E_MOB_TYPES, questMobs);
         }
 
-        if (event.lightningStrikes != null && event.lightningStrikes.isEmpty() == false) {
+        if (event.lightningStrikes != null && !event.lightningStrikes.isEmpty()) {
 
             LinkedList<String> locs = new LinkedList<String>();
             for (Location loc : event.lightningStrikes) {
@@ -301,7 +301,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
         }
 
-        if (event.potionEffects != null && event.potionEffects.isEmpty() == false) {
+        if (event.potionEffects != null && !event.potionEffects.isEmpty()) {
 
             LinkedList<String> types = new LinkedList<String>();
             LinkedList<Long> durations = new LinkedList<Long>();
@@ -323,19 +323,19 @@ public class EventFactory implements ConversationAbandonedListener {
 
         if (event.hunger > -1) {
 
-            context.setSessionData(CK.E_HUNGER, (Integer) event.hunger);
+            context.setSessionData(CK.E_HUNGER, event.hunger);
 
         }
 
         if (event.saturation > -1) {
 
-            context.setSessionData(CK.E_SATURATION, (Integer) event.saturation);
+            context.setSessionData(CK.E_SATURATION, event.saturation);
 
         }
 
         if (event.health > -1) {
 
-            context.setSessionData(CK.E_HEALTH, (Float) event.health);
+            context.setSessionData(CK.E_HEALTH, event.health);
 
         }
 
@@ -374,7 +374,7 @@ public class EventFactory implements ConversationAbandonedListener {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 for (Event evt : quests.events) {
 
@@ -419,7 +419,7 @@ public class EventFactory implements ConversationAbandonedListener {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> used = new LinkedList<String>();
 
@@ -987,13 +987,13 @@ public class EventFactory implements ConversationAbandonedListener {
             return;
         }
 
-        if (((String) context.getSessionData(CK.E_OLD_EVENT)).isEmpty() == false) {
-            data.set("events." + (String) context.getSessionData(CK.E_OLD_EVENT), null);
+        if (!((String) context.getSessionData(CK.E_OLD_EVENT)).isEmpty()) {
+            data.set("events." + context.getSessionData(CK.E_OLD_EVENT), null);
             quests.events.remove(quests.getEvent((String) context.getSessionData(CK.E_OLD_EVENT)));
         }
 
-        ConfigurationSection section = data.createSection("events." + (String) context.getSessionData(CK.E_NAME));
-        names.remove((String) context.getSessionData(CK.E_NAME));
+        ConfigurationSection section = data.createSection("events." + context.getSessionData(CK.E_NAME));
+        names.remove(context.getSessionData(CK.E_NAME));
 
         if (context.getSessionData(CK.E_MESSAGE) != null) {
             section.set("message", getCString(context, CK.E_MESSAGE));
@@ -1111,7 +1111,7 @@ public class EventFactory implements ConversationAbandonedListener {
         if (context.getSessionData(CK.E_COMMANDS) != null) {
 
             LinkedList<String> commands = getCStringList(context, CK.E_COMMANDS);
-            if (commands.isEmpty() == false) {
+            if (!commands.isEmpty()) {
                 section.set("commands", commands);
             }
 
@@ -1194,7 +1194,7 @@ public class EventFactory implements ConversationAbandonedListener {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 for (Event e : quests.events) {
 
@@ -1214,7 +1214,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
                 }
 
-                if (StringUtils.isAlphanumeric(input) == false) {
+                if (!StringUtils.isAlphanumeric(input)) {
 
                     context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("eventEditorAlpha"));
                     return new EventNamePrompt();
@@ -1333,7 +1333,7 @@ public class EventFactory implements ConversationAbandonedListener {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 for (Event e : quests.events) {
 
@@ -1349,14 +1349,14 @@ public class EventFactory implements ConversationAbandonedListener {
                     return new SetNamePrompt();
                 }
 
-                if (StringUtils.isAlphanumeric(input) == false) {
+                if (!StringUtils.isAlphanumeric(input)) {
 
                     context.getForWhom().sendRawMessage(ChatColor.RED + Lang.get("eventEditorAlpha"));
                     return new SetNamePrompt();
 
                 }
 
-                names.remove((String) context.getSessionData(CK.E_NAME));
+                names.remove(context.getSessionData(CK.E_NAME));
                 context.setSessionData(CK.E_NAME, input);
                 names.add(input);
 
@@ -1379,7 +1379,7 @@ public class EventFactory implements ConversationAbandonedListener {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdNone")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdNone"))) {
                 context.setSessionData(CK.E_MESSAGE, input);
             } else if (input.equalsIgnoreCase(Lang.get("cmdNone"))) {
                 context.setSessionData(CK.E_MESSAGE, null);
@@ -1649,7 +1649,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (Quests.getEffect(input.toUpperCase()) != null) {
 
@@ -1773,7 +1773,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (quests.getServer().getWorld(input) != null) {
 
@@ -1908,7 +1908,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (quests.getServer().getWorld(input) != null) {
 
@@ -2199,7 +2199,7 @@ public class EventFactory implements ConversationAbandonedListener {
             for (int i = 0; i < mobArr.length; i++) {
 
                 final EntityType type = mobArr[i];
-                if (type.isAlive() == false) {
+                if (!type.isAlive()) {
                     continue;
                 }
 
@@ -2218,7 +2218,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 if (MiscUtil.getProperMobType(input) != null) {
 
@@ -2256,7 +2256,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 try {
 
@@ -2578,7 +2578,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<String> effTypes = new LinkedList<String>();
                 for (String s : input.split(" ")) {
@@ -2617,7 +2617,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Long> effDurations = new LinkedList<Long>();
                 for (String s : input.split(" ")) {
@@ -2664,7 +2664,7 @@ public class EventFactory implements ConversationAbandonedListener {
 
             Player player = (Player) context.getForWhom();
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 LinkedList<Integer> magAmounts = new LinkedList<Integer>();
                 for (String s : input.split(" ")) {
@@ -2714,7 +2714,7 @@ public class EventFactory implements ConversationAbandonedListener {
                     ((Player) context.getForWhom()).sendMessage(ChatColor.RED + Lang.get("eventEditorHungerLevelAtLeastZero"));
                     return new HungerPrompt();
                 } else {
-                    context.setSessionData(CK.E_HUNGER, (Integer) input.intValue());
+                    context.setSessionData(CK.E_HUNGER, input.intValue());
                 }
 
             } else {
@@ -2744,7 +2744,7 @@ public class EventFactory implements ConversationAbandonedListener {
                     ((Player) context.getForWhom()).sendMessage(ChatColor.RED + Lang.get("eventEditorSaturationLevelAtLeastZero"));
                     return new SaturationPrompt();
                 } else {
-                    context.setSessionData(CK.E_SATURATION, (Integer) input.intValue());
+                    context.setSessionData(CK.E_SATURATION, input.intValue());
                 }
 
             } else {
@@ -2774,7 +2774,7 @@ public class EventFactory implements ConversationAbandonedListener {
                     ((Player) context.getForWhom()).sendMessage(ChatColor.RED + Lang.get("eventEditorHealthLevelAtLeastZero"));
                     return new HealthPrompt();
                 } else {
-                    context.setSessionData(CK.E_HEALTH, (Integer) input.intValue());
+                    context.setSessionData(CK.E_HEALTH, input.intValue());
                 }
 
             } else {
@@ -2848,7 +2848,7 @@ public class EventFactory implements ConversationAbandonedListener {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] commands = input.split(",");
                 LinkedList<String> cmdList = new LinkedList<String>();
