@@ -153,28 +153,28 @@ public class Stage {
 
             Stage other = (Stage) o;
 
-            if (other.blocksToDamage.equals(blocksToDamage) == false) {
+            if (!other.blocksToDamage.equals(blocksToDamage)) {
                 return false;
             }
 
-            if (other.blocksToBreak.equals(blocksToBreak) == false) {
+            if (!other.blocksToBreak.equals(blocksToBreak)) {
                 return false;
             }
 
-            if (other.blocksToPlace.equals(blocksToPlace) == false) {
+            if (!other.blocksToPlace.equals(blocksToPlace)) {
                 return false;
             }
 
-            if (other.blocksToUse.equals(blocksToUse) == false) {
+            if (!other.blocksToUse.equals(blocksToUse)) {
                 return false;
             }
 
-            if (other.blocksToCut.equals(blocksToCut) == false) {
+            if (!other.blocksToCut.equals(blocksToCut)) {
                 return false;
             }
 
             if (other.fishToCatch != null && fishToCatch != null) {
-                if (other.fishToCatch.equals(fishToCatch) == false) {
+                if (!other.fishToCatch.equals(fishToCatch)) {
                     return false;
                 }
             } else if (other.fishToCatch != null && fishToCatch == null) {
@@ -184,7 +184,7 @@ public class Stage {
             }
 
             if (other.playersToKill != null && playersToKill != null) {
-                if (other.playersToKill.equals(playersToKill) == false) {
+                if (!other.playersToKill.equals(playersToKill)) {
                     return false;
                 }
             } else if (other.playersToKill != null && playersToKill == null) {
@@ -193,104 +193,104 @@ public class Stage {
                 return false;
             }
 
-            if (other.itemsToEnchant.equals(itemsToEnchant) == false) {
+            if (!other.itemsToEnchant.equals(itemsToEnchant)) {
                 return false;
             }
 
-            if (other.mobsToKill.equals(mobsToKill) == false) {
+            if (!other.mobsToKill.equals(mobsToKill)) {
                 return false;
             }
 
-            if (other.mobNumToKill.equals(mobNumToKill) == false) {
+            if (!other.mobNumToKill.equals(mobNumToKill)) {
                 return false;
             }
 
-            if (other.locationsToKillWithin.equals(locationsToKillWithin) == false) {
+            if (!other.locationsToKillWithin.equals(locationsToKillWithin)) {
                 return false;
             }
 
-            if (other.radiiToKillWithin.equals(radiiToKillWithin) == false) {
+            if (!other.radiiToKillWithin.equals(radiiToKillWithin)) {
                 return false;
             }
 
-            if (other.areaNames.equals(areaNames) == false) {
+            if (!other.areaNames.equals(areaNames)) {
                 return false;
             }
 
-            if (other.itemsToDeliver.equals(itemsToDeliver) == false) {
+            if (!other.itemsToDeliver.equals(itemsToDeliver)) {
                 return false;
             }
 
-            if (other.itemDeliveryTargets.equals(itemDeliveryTargets) == false) {
+            if (!other.itemDeliveryTargets.equals(itemDeliveryTargets)) {
                 return false;
             }
 
-            if (other.deliverMessages.equals(deliverMessages) == false) {
+            if (!other.deliverMessages.equals(deliverMessages)) {
                 return false;
             }
 
-            if (other.citizensToInteract.equals(citizensToInteract) == false) {
+            if (!other.citizensToInteract.equals(citizensToInteract)) {
                 return false;
             }
 
-            if (other.citizensToKill.equals(citizensToKill) == false) {
+            if (!other.citizensToKill.equals(citizensToKill)) {
                 return false;
             }
 
-            if (other.citizenNumToKill.equals(citizenNumToKill) == false) {
+            if (!other.citizenNumToKill.equals(citizenNumToKill)) {
                 return false;
             }
 
-            if (other.locationsToReach.equals(locationsToReach) == false) {
+            if (!other.locationsToReach.equals(locationsToReach)) {
                 return false;
             }
 
-            if (other.radiiToReachWithin.equals(radiiToReachWithin) == false) {
+            if (!other.radiiToReachWithin.equals(radiiToReachWithin)) {
                 return false;
             }
 
-            if (other.worldsToReachWithin.equals(worldsToReachWithin) == false) {
+            if (!other.worldsToReachWithin.equals(worldsToReachWithin)) {
                 return false;
             }
 
-            if (other.locationNames.equals(locationNames) == false) {
+            if (!other.locationNames.equals(locationNames)) {
                 return false;
             }
 
-            if (other.mobsToTame.equals(mobsToTame) == false) {
+            if (!other.mobsToTame.equals(mobsToTame)) {
                 return false;
             }
 
-            if (other.sheepToShear.equals(sheepToShear) == false) {
+            if (!other.sheepToShear.equals(sheepToShear)) {
                 return false;
             }
 
-            if (other.itemsToCraft.equals(itemsToCraft) == false) {
+            if (!other.itemsToCraft.equals(itemsToCraft)) {
                 return false;
             }
 
-            if (other.customObjectives.equals(customObjectives) == false) {
+            if (!other.customObjectives.equals(customObjectives)) {
                 return false;
             }
 
-            if (other.customObjectiveDisplays.equals(customObjectiveDisplays) == false) {
+            if (!other.customObjectiveDisplays.equals(customObjectiveDisplays)) {
                 return false;
             }
 
-            if (other.customObjectiveData.equals(customObjectiveData) == false) {
+            if (!other.customObjectiveData.equals(customObjectiveData)) {
                 return false;
             }
 
-            if (other.passwordDisplays.equals(passwordDisplays) == false) {
+            if (!other.passwordDisplays.equals(passwordDisplays)) {
                 return false;
             }
 
-            if (other.passwordPhrases.equals(passwordPhrases) == false) {
+            if (!other.passwordPhrases.equals(passwordPhrases)) {
                 return false;
             }
 
             if (other.script != null && script != null) {
-                if (other.script.equals(script) == false) {
+                if (!other.script.equals(script)) {
                     return false;
                 }
             } else if (other.script != null && script == null) {
@@ -300,7 +300,7 @@ public class Stage {
             }
 
             if (other.startEvent != null && startEvent != null) {
-                if (other.startEvent.equals(startEvent) == false) {
+                if (!other.startEvent.equals(startEvent)) {
                     return false;
                 }
             } else if (other.startEvent != null && startEvent == null) {
@@ -310,7 +310,7 @@ public class Stage {
             }
 
             if (other.deathEvent != null && deathEvent != null) {
-                if (other.deathEvent.equals(deathEvent) == false) {
+                if (!other.deathEvent.equals(deathEvent)) {
                     return false;
                 }
             } else if (other.deathEvent != null && deathEvent == null) {
@@ -320,7 +320,7 @@ public class Stage {
             }
 
             if (other.finishEvent != null && finishEvent != null) {
-                if (other.finishEvent.equals(finishEvent) == false) {
+                if (!other.finishEvent.equals(finishEvent)) {
                     return false;
                 }
             } else if (other.finishEvent != null && finishEvent == null) {
@@ -329,7 +329,7 @@ public class Stage {
                 return false;
             }
 
-            if (other.chatEvents.equals(chatEvents) == false) {
+            if (!other.chatEvents.equals(chatEvents)) {
                 return false;
             }
 
@@ -338,7 +338,7 @@ public class Stage {
             }
 
             if (other.delayMessage != null && delayMessage != null) {
-                if (other.delayMessage.equals(delayMessage) == false) {
+                if (!other.delayMessage.equals(delayMessage)) {
                     return false;
                 }
             } else if (other.delayMessage != null && delayMessage == null) {
@@ -348,7 +348,7 @@ public class Stage {
             }
 
             if (other.startMessage != null && startMessage != null) {
-                if (other.startMessage.equals(startMessage) == false) {
+                if (!other.startMessage.equals(startMessage)) {
                     return false;
                 }
             } else if (other.startMessage != null && startMessage == null) {
@@ -358,7 +358,7 @@ public class Stage {
             }
 
             if (other.completeMessage != null && completeMessage != null) {
-                if (other.completeMessage.equals(completeMessage) == false) {
+                if (!other.completeMessage.equals(completeMessage)) {
                     return false;
                 }
             } else if (other.completeMessage != null && completeMessage == null) {
@@ -368,7 +368,7 @@ public class Stage {
             }
 
             if (other.objectiveOverride != null && objectiveOverride != null) {
-                if (other.objectiveOverride.equals(objectiveOverride) == false) {
+                if (!other.objectiveOverride.equals(objectiveOverride)) {
                     return false;
                 }
             } else if (other.objectiveOverride != null && objectiveOverride == null) {

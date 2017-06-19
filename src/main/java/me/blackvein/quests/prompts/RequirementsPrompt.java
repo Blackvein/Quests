@@ -130,11 +130,11 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
                 text += BLUE + "" + BOLD + "8" + RESET + YELLOW + " - " + Lang.get("reqSetHeroes") + "\n";
 
                 if (context.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) != null) {
-                    text += AQUA + "    " + Lang.get("reqHeroesPrimaryDisplay") + " " + BLUE + (String) context.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + "\n";
+                    text += AQUA + "    " + Lang.get("reqHeroesPrimaryDisplay") + " " + BLUE + context.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + "\n";
                 }
 
                 if (context.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) != null) {
-                    text += AQUA + "    " + Lang.get("reqHeroesSecondaryDisplay") + " " + BLUE + (String) context.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + "\n";
+                    text += AQUA + "    " + Lang.get("reqHeroesSecondaryDisplay") + " " + BLUE + context.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + "\n";
                 }
             }
 
@@ -312,7 +312,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] args = input.split(",");
                 LinkedList<String> questNames = new LinkedList<String>();
@@ -502,7 +502,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<Boolean> booleans = new LinkedList<Boolean>();
@@ -541,7 +541,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 String[] args = input.split(" ");
                 LinkedList<String> permissions = new LinkedList<String>();
@@ -578,7 +578,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
 		@Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 CustomRequirement found = null;
                 for (CustomRequirement cr : quests.customRequirements) {
@@ -602,7 +602,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
                     if (context.getSessionData(CK.REQ_CUSTOM) != null) {
                         LinkedList<String> list = (LinkedList<String>) context.getSessionData(CK.REQ_CUSTOM);
                         LinkedList<Map<String, Object>> datamapList = (LinkedList<Map<String, Object>>) context.getSessionData(CK.REQ_CUSTOM_DATA);
-                        if (list.contains(found.getName()) == false) {
+                        if (!list.contains(found.getName())) {
                             list.add(found.getName());
                             datamapList.add(found.datamap);
                             context.setSessionData(CK.REQ_CUSTOM, list);
@@ -621,7 +621,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
                     }
 
                     //Send user to the custom data prompt if there is any needed
-                    if (found.datamap.isEmpty() == false) {
+                    if (!found.datamap.isEmpty()) {
 
                         context.setSessionData(CK.REQ_CUSTOM_DATA_DESCRIPTIONS, found.descriptions);
                         return new RequirementCustomDataListPrompt();
@@ -664,16 +664,14 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
             int index = 1;
 
             LinkedList<String> datamapKeys = new LinkedList<String>();
-            for (String key : datamap.keySet()) {
-                datamapKeys.add(key);
-            }
+            datamapKeys.addAll(datamap.keySet());
             Collections.sort(datamapKeys);
 
             for (String dataKey : datamapKeys) {
 
                 text += BOLD + "" + DARKBLUE + index + " - " + RESET + BLUE + dataKey;
                 if (datamap.get(dataKey) != null) {
-                    text += GREEN + " (" + (String) datamap.get(dataKey) + ")\n";
+                    text += GREEN + " (" + datamap.get(dataKey) + ")\n";
                 } else {
                     text += RED + " (" + Lang.get("valRequired") + ")\n";
                 }
@@ -709,9 +707,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
             if (numInput < datamap.size() + 1) {
 
                 LinkedList<String> datamapKeys = new LinkedList<String>();
-                for (String key : datamap.keySet()) {
-                    datamapKeys.add(key);
-                }
+                datamapKeys.addAll(datamap.keySet());
                 Collections.sort(datamapKeys);
 
                 String selectedKey = datamapKeys.get(numInput - 1);
@@ -839,7 +835,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 LinkedList<String> skills = new LinkedList<String>();
 
@@ -889,7 +885,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdCancel")) == false && input.equalsIgnoreCase(Lang.get("cmdClear")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdCancel")) && !input.equalsIgnoreCase(Lang.get("cmdClear"))) {
 
                 LinkedList<Integer> amounts = new LinkedList<Integer>();
 
@@ -939,13 +935,13 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
             if (cc.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) == null) {
                 text += BOLD + "" + GREEN + "1" + RESET + GREEN + " - " + Lang.get("reqHeroesSetPrimary") + " (" + Lang.get("noneSet") + ")\n";
             } else {
-                text += BOLD + "" + GREEN + "1" + RESET + GREEN + " - " + Lang.get("reqHeroesSetPrimary") + " (" + AQUA + (String) cc.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + GREEN + ")\n";
+                text += BOLD + "" + GREEN + "1" + RESET + GREEN + " - " + Lang.get("reqHeroesSetPrimary") + " (" + AQUA + cc.getSessionData(CK.REQ_HEROES_PRIMARY_CLASS) + GREEN + ")\n";
             }
 
             if (cc.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) == null) {
                 text += BOLD + "" + GREEN + "2" + RESET + GREEN + " - " + Lang.get("reqHeroesSetSecondary") + " (" + Lang.get("noneSet") + ")\n";
             } else {
-                text += BOLD + "" + GREEN + "2" + RESET + GREEN + " - " + Lang.get("reqHeroesSetSecondary") + " (" + AQUA + (String) cc.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + GREEN + ")\n";
+                text += BOLD + "" + GREEN + "2" + RESET + GREEN + " - " + Lang.get("reqHeroesSetSecondary") + " (" + AQUA + cc.getSessionData(CK.REQ_HEROES_SECONDARY_CLASS) + GREEN + ")\n";
             }
 
             text += BOLD + "" + GREEN + "3" + RESET + GREEN + " - " + Lang.get("done");
@@ -1002,7 +998,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdClear")) == false && input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdClear")) && !input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 HeroClass hc = Quests.heroes.getClassManager().getClass(input);
                 if (hc != null) {
@@ -1072,7 +1068,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext cc, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get("cmdClear")) == false && input.equalsIgnoreCase(Lang.get("cmdCancel")) == false) {
+            if (!input.equalsIgnoreCase(Lang.get("cmdClear")) && !input.equalsIgnoreCase(Lang.get("cmdCancel"))) {
 
                 HeroClass hc = Quests.heroes.getClassManager().getClass(input);
                 if (hc != null) {
@@ -1120,7 +1116,7 @@ public class RequirementsPrompt extends FixedSetPrompt implements ColorUtil {
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
 
-            if (input.equalsIgnoreCase(Lang.get(Lang.get("cancel"))) == false) {
+            if (!input.equalsIgnoreCase(Lang.get(Lang.get("cancel")))) {
                 context.setSessionData(CK.Q_FAIL_MESSAGE, input);
             }
 

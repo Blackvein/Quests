@@ -244,7 +244,7 @@ public class Quest {
 
         for (String s : permissionReqs) {
 
-            if (player.hasPermission(s) == false) {
+            if (!player.hasPermission(s)) {
                 return false;
             }
 
@@ -262,7 +262,7 @@ public class Quest {
 
         if (heroesPrimaryClassReq != null) {
 
-            if (plugin.testPrimaryHeroesClass(heroesPrimaryClassReq, player.getUniqueId()) == false) {
+            if (!plugin.testPrimaryHeroesClass(heroesPrimaryClassReq, player.getUniqueId())) {
                 return false;
             }
 
@@ -270,7 +270,7 @@ public class Quest {
 
         if (heroesSecondaryClassReq != null) {
 
-            if (plugin.testSecondaryHeroesClass(heroesSecondaryClassReq, player.getUniqueId()) == false) {
+            if (!plugin.testSecondaryHeroesClass(heroesSecondaryClassReq, player.getUniqueId())) {
                 return false;
             }
 
@@ -287,7 +287,7 @@ public class Quest {
             }
 
             if (found != null) {
-                if (found.testRequirement(player, customRequirements.get(s)) == false) {
+                if (!found.testRequirement(player, customRequirements.get(s))) {
                     return false;
                 }
             } else {
@@ -300,7 +300,7 @@ public class Quest {
             return false;
         }
 
-        if (quester.completedQuests.containsAll(neededQuests) == false) {
+        if (!quester.completedQuests.containsAll(neededQuests)) {
             return false;
         }
 
@@ -398,20 +398,20 @@ public class Quest {
                 Quests.economy.depositPlayer(player.getName(), lb.getMoney());
             }
 
-            if (lb.getItemList().isEmpty() == false) {
+            if (!lb.getItemList().isEmpty()) {
                 phatLootItems.addAll(lb.getItemList());
                 for (ItemStack is : lb.getItemList()) {
                     Quests.addItem(player, is);
                 }
             }
 
-            if (lb.getCommandList().isEmpty() == false) {
+            if (!lb.getCommandList().isEmpty()) {
                 for (CommandLoot cl : lb.getCommandList()) {
                     cl.execute(player);
                 }
             }
 
-            if (lb.getMessageList().isEmpty() == false) {
+            if (!lb.getMessageList().isEmpty()) {
                 phatLootMessages.addAll(lb.getMessageList());
             }
 
@@ -510,21 +510,21 @@ public class Quest {
             none = null;
         }
 
-        if (mcmmoSkills.isEmpty() == false) {
+        if (!mcmmoSkills.isEmpty()) {
             for (String s : mcmmoSkills) {
                 player.sendMessage("- " + ChatColor.DARK_GREEN + mcmmoAmounts.get(mcmmoSkills.indexOf(s)) + " " + ChatColor.DARK_PURPLE + s + " " + Lang.get("experience"));
             }
             none = null;
         }
 
-        if (heroesClasses.isEmpty() == false) {
+        if (!heroesClasses.isEmpty()) {
             for (String s : heroesClasses) {
                 player.sendMessage("- " + ChatColor.AQUA + heroesAmounts.get(heroesClasses.indexOf(s)) + " " + ChatColor.BLUE + s + " " + Lang.get("experience"));
             }
             none = null;
         }
 
-        if (phatLootMessages.isEmpty() == false) {
+        if (!phatLootMessages.isEmpty()) {
             for (String s : phatLootMessages) {
                 player.sendMessage("- " + s);
             }
@@ -546,7 +546,7 @@ public class Quest {
                 String message = found.getRewardName();
 
                 for (String key : datamap.keySet()) {
-                    message = message.replaceAll("%" + ((String) key) + "%", ((String) datamap.get(key)));
+                    message = message.replaceAll("%" + key + "%", ((String) datamap.get(key)));
                 }
                 player.sendMessage("- " + ChatColor.GOLD + message);
                 found.giveReward(player, customRewards.get(s));
@@ -594,7 +594,7 @@ public class Quest {
             Quest other = (Quest) o;
             
             if (other.blockStart != null && blockStart != null) {
-                if (other.blockStart.equals(blockStart) == false) {
+                if (!other.blockStart.equals(blockStart)) {
                     return false;
                 }
             } else if (other.blockStart != null && blockStart == null) {
@@ -606,7 +606,7 @@ public class Quest {
             if (commands.size() == other.commands.size()) {
 
                 for (int i = 0; i < commands.size(); i++) {
-                    if (commands.get(i).equals(other.commands.get(i)) == false) {
+                    if (!commands.get(i).equals(other.commands.get(i))) {
                         return false;
                     }
                 }
@@ -615,12 +615,12 @@ public class Quest {
                 return false;
             }
 
-            if (other.description.equals(description) == false) {
+            if (!other.description.equals(description)) {
                 return false;
             }
 
             if (other.initialEvent != null && initialEvent != null) {
-                if (other.initialEvent.equals(initialEvent) == false) {
+                if (!other.initialEvent.equals(initialEvent)) {
                     return false;
                 }
             } else if (other.initialEvent != null && initialEvent == null) {
@@ -634,7 +634,7 @@ public class Quest {
             }
 
             if (other.failRequirements != null && failRequirements != null) {
-                if (other.failRequirements.equals(failRequirements) == false) {
+                if (!other.failRequirements.equals(failRequirements)) {
                     return false;
                 }
             } else if (other.failRequirements != null && failRequirements == null) {
@@ -643,43 +643,43 @@ public class Quest {
                 return false;
             }
 
-            if (other.finished.equals(finished) == false) {
+            if (!other.finished.equals(finished)) {
                 return false;
             }
 
-            if (other.items.equals(items) == false) {
+            if (!other.items.equals(items)) {
                 return false;
             }
 
-            if (other.itemRewards.equals(itemRewards) == false) {
+            if (!other.itemRewards.equals(itemRewards)) {
                 return false;
             }
 
-            if (other.rpgItemRewardIDs.equals(rpgItemRewardIDs) == false) {
+            if (!other.rpgItemRewardIDs.equals(rpgItemRewardIDs)) {
                 return false;
             }
 
-            if (other.rpgItemRewardAmounts.equals(rpgItemRewardAmounts) == false) {
+            if (!other.rpgItemRewardAmounts.equals(rpgItemRewardAmounts)) {
                 return false;
             }
 
-            if (other.mcmmoAmounts.equals(mcmmoAmounts) == false) {
+            if (!other.mcmmoAmounts.equals(mcmmoAmounts)) {
                 return false;
             }
 
-            if (other.mcmmoSkills.equals(mcmmoSkills) == false) {
+            if (!other.mcmmoSkills.equals(mcmmoSkills)) {
                 return false;
             }
 
-            if (other.heroesClasses.equals(heroesClasses) == false) {
+            if (!other.heroesClasses.equals(heroesClasses)) {
                 return false;
             }
 
-            if (other.heroesAmounts.equals(heroesAmounts) == false) {
+            if (!other.heroesAmounts.equals(heroesAmounts)) {
                 return false;
             }
 
-            if (other.phatLootRewards.equals(phatLootRewards) == false) {
+            if (!other.phatLootRewards.equals(phatLootRewards)) {
                 return false;
             }
 
@@ -691,20 +691,20 @@ public class Quest {
                 return false;
             }
 
-            if (other.name.equals(name) == false) {
+            if (!other.name.equals(name)) {
                 return false;
             }
 
-            if (other.neededQuests.equals(neededQuests) == false) {
+            if (!other.neededQuests.equals(neededQuests)) {
                 return false;
             }
 
-            if (other.blockQuests.equals(blockQuests) == false) {
+            if (!other.blockQuests.equals(blockQuests)) {
                 return false;
             }
 
             if (other.npcStart != null && npcStart != null) {
-                if (other.npcStart.equals(npcStart) == false) {
+                if (!other.npcStart.equals(npcStart)) {
                     return false;
                 }
             } else if (other.npcStart != null && npcStart == null) {
@@ -713,12 +713,12 @@ public class Quest {
                 return false;
             }
 
-            if (other.permissionReqs.equals(permissionReqs) == false) {
+            if (!other.permissionReqs.equals(permissionReqs)) {
                 return false;
             }
 
             if (other.heroesPrimaryClassReq != null && heroesPrimaryClassReq != null) {
-                if (other.heroesPrimaryClassReq.equals(heroesPrimaryClassReq) == false) {
+                if (!other.heroesPrimaryClassReq.equals(heroesPrimaryClassReq)) {
                     return false;
                 }
             } else if (other.heroesPrimaryClassReq != null && heroesPrimaryClassReq == null) {
@@ -728,7 +728,7 @@ public class Quest {
             }
 
             if (other.heroesSecondaryClassReq != null && heroesSecondaryClassReq != null) {
-                if (other.heroesSecondaryClassReq.equals(heroesSecondaryClassReq) == false) {
+                if (!other.heroesSecondaryClassReq.equals(heroesSecondaryClassReq)) {
                     return false;
                 }
             } else if (other.heroesSecondaryClassReq != null && heroesSecondaryClassReq == null) {
@@ -737,23 +737,23 @@ public class Quest {
                 return false;
             }
 
-            if (other.customRequirements.equals(customRequirements) == false) {
+            if (!other.customRequirements.equals(customRequirements)) {
                 return false;
             }
 
-            if (other.customRewards.equals(customRewards) == false) {
+            if (!other.customRewards.equals(customRewards)) {
                 return false;
             }
 
-            if (other.permissions.equals(permissions) == false) {
+            if (!other.permissions.equals(permissions)) {
                 return false;
             }
 
-            if (other.mcMMOSkillReqs.equals(mcMMOSkillReqs) == false) {
+            if (!other.mcMMOSkillReqs.equals(mcMMOSkillReqs)) {
                 return false;
             }
 
-            if (other.mcMMOAmountReqs.equals(mcMMOAmountReqs) == false) {
+            if (!other.mcMMOAmountReqs.equals(mcMMOAmountReqs)) {
                 return false;
             }
 
@@ -769,7 +769,7 @@ public class Quest {
                 return false;
             }
 
-            if (other.orderedStages.equals(orderedStages) == false) {
+            if (!other.orderedStages.equals(orderedStages)) {
                 return false;
             }
 
@@ -829,10 +829,8 @@ public class Quest {
             return true;
         } else {
             ApplicableRegionSet ars = Quests.worldGuard.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
-            Iterator<ProtectedRegion> i = ars.iterator();
-            while (i.hasNext()) {
+            for (ProtectedRegion pr : ars) {
 
-                ProtectedRegion pr = i.next();
                 if (pr.getId().equalsIgnoreCase(region)) {
                     return true;
                 }

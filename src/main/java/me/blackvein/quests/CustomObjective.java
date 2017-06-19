@@ -173,43 +173,43 @@ public abstract class CustomObjective implements Listener {
 
             CustomObjective other = (CustomObjective) o;
 
-            if (other.name.equals(name) == false) {
+            if (!other.name.equals(name)) {
                 return false;
             }
 
-            if (other.author.equals(name) == false) {
+            if (!other.author.equals(name)) {
                 return false;
             }
 
             for (String s : other.datamap.keySet()) {
-                if (datamap.containsKey(s) == false) {
+                if (!datamap.containsKey(s)) {
                     return false;
                 }
             }
 
             for (Object val : other.datamap.values()) {
-                if (datamap.containsValue(val) == false) {
+                if (!datamap.containsValue(val)) {
                     return false;
                 }
             }
 
             for (String s : other.descriptions.keySet()) {
-                if (descriptions.containsKey(s) == false) {
+                if (!descriptions.containsKey(s)) {
                     return false;
                 }
             }
 
             for (String s : other.descriptions.values()) {
-                if (descriptions.containsValue(s) == false) {
+                if (!descriptions.containsValue(s)) {
                     return false;
                 }
             }
 
-            if (other.countPrompt.equals(countPrompt) == false) {
+            if (!other.countPrompt.equals(countPrompt)) {
                 return false;
             }
 
-            if (other.display.equals(display) == false) {
+            if (!other.display.equals(display)) {
                 return false;
             }
 
@@ -221,11 +221,7 @@ public abstract class CustomObjective implements Listener {
                 return false;
             }
 
-            if (other.count != count) {
-                return false;
-            }
-
-            return true;
+            return other.count == count;
         }
 
         return false;

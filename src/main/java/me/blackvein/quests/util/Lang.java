@@ -1104,7 +1104,7 @@ public class Lang {
 
         try {
 
-            if (dir.exists() == false || dir.isDirectory() == false) {
+            if (!dir.exists() || !dir.isDirectory()) {
                 dir.mkdir();
             }
 

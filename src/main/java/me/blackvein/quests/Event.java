@@ -53,7 +53,7 @@ public class Event {
                 }
 
                 for (int i = 0; i < size(); i++) {
-                    if (get(i).equals(other.get(i)) == false) {
+                    if (!get(i).equals(other.get(i))) {
                         return false;
                     }
                 }
@@ -81,12 +81,12 @@ public class Event {
 
             Event other = (Event) o;
 
-            if (other.name.equals(name) == false) {
+            if (!other.name.equals(name)) {
                 return false;
             }
 
             if (other.message != null && message != null) {
-                if (other.message.equals(message) == false) {
+                if (!other.message.equals(message)) {
                     return false;
                 }
             } else if (other.message != null && message == null) {
@@ -103,20 +103,20 @@ public class Event {
                 return false;
             }
 
-            if (other.explosions.equals(explosions) == false) {
+            if (!other.explosions.equals(explosions)) {
                 return false;
             }
 
-            if (other.effects.entrySet().equals(effects.entrySet()) == false) {
+            if (!other.effects.entrySet().equals(effects.entrySet())) {
                 return false;
             }
 
-            if (other.items.equals(items) == false) {
+            if (!other.items.equals(items)) {
                 return false;
             }
 
             if (other.stormWorld != null && stormWorld != null) {
-                if (other.stormWorld.equals(stormWorld) == false) {
+                if (!other.stormWorld.equals(stormWorld)) {
                     return false;
                 }
             } else if (other.stormWorld != null && stormWorld == null) {
@@ -130,7 +130,7 @@ public class Event {
             }
 
             if (other.thunderWorld != null && thunderWorld != null) {
-                if (other.thunderWorld.equals(thunderWorld) == false) {
+                if (!other.thunderWorld.equals(thunderWorld)) {
                     return false;
                 }
             } else if (other.thunderWorld != null && thunderWorld == null) {
@@ -145,21 +145,21 @@ public class Event {
 
             for (QuestMob qm : mobSpawns) {
 
-                if (qm.equals(other.mobSpawns.get(mobSpawns.indexOf(qm))) == false) {
+                if (!qm.equals(other.mobSpawns.get(mobSpawns.indexOf(qm)))) {
                     return false;
                 }
 
             }
 
-            if (other.lightningStrikes.equals(lightningStrikes) == false) {
+            if (!other.lightningStrikes.equals(lightningStrikes)) {
                 return false;
             }
 
-            if (other.commands.equals(commands) == false) {
+            if (!other.commands.equals(commands)) {
                 return false;
             }
 
-            if (other.potionEffects.equals(potionEffects) == false) {
+            if (!other.potionEffects.equals(potionEffects)) {
                 return false;
             }
 
@@ -176,7 +176,7 @@ public class Event {
             }
 
             if (other.teleport != null && teleport != null) {
-                if (other.teleport.equals(teleport) == false) {
+                if (!other.teleport.equals(teleport)) {
                     return false;
                 }
             } else if (other.teleport != null && teleport == null) {
@@ -204,11 +204,11 @@ public class Event {
             player.sendMessage(Quests.parseString(message, quest));
         }
 
-        if (clearInv == true) {
+        if (clearInv) {
             player.getInventory().clear();
         }
 
-        if (explosions.isEmpty() == false) {
+        if (!explosions.isEmpty()) {
 
             for (Location l : explosions) {
 
@@ -218,7 +218,7 @@ public class Event {
 
         }
 
-        if (effects.isEmpty() == false) {
+        if (!effects.isEmpty()) {
 
             for (Location l : effects.keySet()) {
 
@@ -228,7 +228,7 @@ public class Event {
 
         }
 
-        if (items.isEmpty() == false) {
+        if (!items.isEmpty()) {
 
             for (ItemStack is : items) {
                 Quests.addItem(player, is);
@@ -246,14 +246,14 @@ public class Event {
             thunderWorld.setThunderDuration(thunderDuration);
         }
 
-        if (mobSpawns.isEmpty() == false) {
+        if (!mobSpawns.isEmpty()) {
 
             for (QuestMob questMob : mobSpawns) {
                 questMob.spawn();
             }
         }
 
-        if (lightningStrikes.isEmpty() == false) {
+        if (!lightningStrikes.isEmpty()) {
 
             for (Location l : lightningStrikes) {
 
@@ -263,7 +263,7 @@ public class Event {
 
         }
 
-        if (commands.isEmpty() == false) {
+        if (!commands.isEmpty()) {
 
             for (String s : commands) {
                 quester.plugin.getServer().dispatchCommand(quester.plugin.getServer().getConsoleSender(), s.replaceAll("<player>", quester.getPlayer().getName()));
@@ -271,7 +271,7 @@ public class Event {
 
         }
 
-        if (potionEffects.isEmpty() == false) {
+        if (!potionEffects.isEmpty()) {
 
             for (PotionEffect p : potionEffects) {
 
@@ -305,7 +305,7 @@ public class Event {
 
         }
 
-        if (failQuest == true) {
+        if (failQuest) {
 
             quest.failQuest(quester);
 

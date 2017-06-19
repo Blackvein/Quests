@@ -22,8 +22,5 @@ public class InvalidStageException extends Exception {
 
     private static final long serialVersionUID = 1778748295752972651L;
 
-    @Override
-    public void printStackTrace() {
-        super.printStackTrace();
-    }
+
 }

@@ -229,14 +229,14 @@ public class QuestMob {
     
     @Override
     public boolean equals(Object o) {
-        if ((o instanceof QuestMob) == false) {
+        if (!(o instanceof QuestMob)) {
             return false;
         }
 
         QuestMob other = (QuestMob) o;
 
         if (name != null && other.name != null) {
-            if (name.equalsIgnoreCase(other.name) == false) {
+            if (!name.equalsIgnoreCase(other.name)) {
                 return false;
             }
         } else if (name == null && other.name == null) {
@@ -266,10 +266,6 @@ public class QuestMob {
             return false;
         }
 
-        if (!spawnLocation.equals(other.spawnLocation)) {
-            return false;
-        }
-
-        return true;
+        return spawnLocation.equals(other.spawnLocation);
     }
 }

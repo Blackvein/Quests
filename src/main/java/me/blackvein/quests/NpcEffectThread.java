@@ -36,7 +36,7 @@ public class NpcEffectThread implements Runnable {
 
             Quester quester = plugin.getQuester(player.getUniqueId());
             List<Entity> nearby = player.getNearbyEntities(32.0, 32.0, 32.0);
-            if (nearby.isEmpty() == false) {
+            if (!nearby.isEmpty()) {
 
                 for (Entity e : nearby) {
                     if (plugin.citizens != null) {
@@ -137,8 +137,7 @@ public class NpcEffectThread implements Runnable {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_12_R1.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -172,8 +171,7 @@ public class NpcEffectThread implements Runnable {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_12_R1.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -182,8 +180,7 @@ public class NpcEffectThread implements Runnable {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_12_R1.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -258,8 +255,7 @@ public class NpcEffectThread implements Runnable {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_11_R1.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -293,8 +289,7 @@ public class NpcEffectThread implements Runnable {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_11_R1.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -303,8 +298,7 @@ public class NpcEffectThread implements Runnable {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_11_R1.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -379,8 +373,7 @@ public class NpcEffectThread implements Runnable {
             } else if (Quests.effect.equalsIgnoreCase("note")) {
 
                 try {
-                    Location old = eyeLoc;
-                    Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                    Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                     Eff_1_10_R1.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -414,8 +407,7 @@ public class NpcEffectThread implements Runnable {
             } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
                 try {
-                    Location old = eyeLoc;
-                    Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                    Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                     Eff_1_10_R1.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -424,8 +416,7 @@ public class NpcEffectThread implements Runnable {
             } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
                 try {
-                    Location old = eyeLoc;
-                    Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                    Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                     Eff_1_10_R1.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -500,8 +491,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_9_R2.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -535,8 +525,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_9_R2.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -545,8 +534,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_9_R2.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -621,8 +609,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_9_R1.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -656,8 +643,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_9_R1.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -666,8 +652,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_9_R1.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -742,8 +727,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R3.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -777,8 +761,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R3.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -787,8 +770,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R3.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -863,8 +845,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R2.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -898,8 +879,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R2.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -908,8 +888,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R2.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -984,8 +963,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R1.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1019,8 +997,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R1.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1029,8 +1006,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_8_R1.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4, null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1105,8 +1081,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R4.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1140,8 +1115,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R4.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1150,8 +1124,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R4.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1218,8 +1191,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("note")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R3.NOTE.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1236,8 +1208,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("dust")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R3.RED_DUST.sendToPlayer(player, newLoc, 0, 0, 0, 1, 1);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1254,8 +1225,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("snowball")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R3.SNOWBALL_POOF.sendToPlayer(player, newLoc, 0, 0, 0, 1, 3);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1264,8 +1234,7 @@ private static void showEffect_1_9_R2(Player player, NPC npc) {
         } else if (Quests.effect.equalsIgnoreCase("splash")) {
 
             try {
-                Location old = eyeLoc;
-                Location newLoc = new Location(player.getWorld(), old.getX(), old.getY() + (float) 0.5, old.getZ());
+                Location newLoc = new Location(player.getWorld(), eyeLoc.getX(), eyeLoc.getY() + (float) 0.5, eyeLoc.getZ());
                 Eff_1_7_R3.SPLASH.sendToPlayer(player, newLoc, 0, 0, 0, 1, 4);
             } catch (Exception e) {
                 e.printStackTrace();

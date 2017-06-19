@@ -39,8 +39,7 @@ public class MiscUtil {
             int t = 0;
             try {
                 t = Math.abs(Integer.parseInt(num));
-            } catch (NumberFormatException e) {
-            }
+            }catch (Exception e){}
 
             if (type.equals("d")) {
                 timeMilliSeconds += t * 86400000L;
@@ -138,7 +137,7 @@ public class MiscUtil {
             
         }
         
-        if(line.equals("") == false)
+        if(!line.equals(""))
             toReturn.add(lineColor + line);
         
         return toReturn;

@@ -338,7 +338,7 @@ public class Quester {
 
         Player player = getPlayer();
 
-        if (q.testRequirements(player) == true || override) {
+        if (q.testRequirements(player) || override) {
 
             addEmpties(q);
             currentQuests.put(q, 0);
@@ -351,7 +351,7 @@ public class Quester {
                 }
 
                 for (ItemStack is : q.items) {
-                    if (q.removeItems.get(q.items.indexOf(is)) == true) {
+                    if (q.removeItems.get(q.items.indexOf(is))) {
                         Quests.removeItem(player.getInventory(), is);
                     }
                 }
@@ -377,7 +377,7 @@ public class Quester {
                 getPlayer().sendMessage(Quests.parseString(stageStartMessage, q));
             }
 
-            if (stage.chatEvents.isEmpty() == false) {
+            if (!stage.chatEvents.isEmpty()) {
 
                 for (String chatTrigger : stage.chatEvents.keySet()) {
 
@@ -701,7 +701,7 @@ public class Quester {
 
                 if (e.getKey().equals(n)) {
 
-                    if (e.getValue() == false) {
+                    if (!e.getValue()) {
 
                         String obj = Lang.get("talkTo");
                         obj = obj.replaceAll("<npc>", plugin.getNPCName(n));
@@ -799,7 +799,7 @@ public class Quester {
                 if (l.equals(l2)) {
                 	if (!getQuestData(quest).hasReached.isEmpty()) {
 
-                		if (getQuestData(quest).hasReached.get(getQuestData(quest).locationsReached.indexOf(l2)) == false) {
+                		if (!getQuestData(quest).hasReached.get(getQuestData(quest).locationsReached.indexOf(l2))) {
 
                 			String obj = Lang.get("goTo");
                 			obj = obj.replaceAll("<location>", getCurrentStage(quest).locationNames.get(getCurrentStage(quest).locationsToReach.indexOf(l)));
@@ -823,7 +823,7 @@ public class Quester {
 
         for (String s : getCurrentStage(quest).passwordDisplays) {
 
-            if (getQuestData(quest).passwordsSaid.get(s) == false) {
+            if (!getQuestData(quest).passwordsSaid.get(s)) {
 
                 unfinishedObjectives.add(ChatColor.GREEN + s);
 
@@ -962,10 +962,9 @@ public class Quester {
     }
 
     public void damageBlock(Quest quest, ItemStack m) {
-    	ItemStack temp = m;
-    	temp.setAmount(0);
-    	ItemStack damaged = temp;
-    	ItemStack toDamage = temp;
+        m.setAmount(0);
+    	ItemStack damaged = m;
+    	ItemStack toDamage = m;
     	
     	for (ItemStack is : getQuestData(quest).blocksDamaged) {
 
@@ -982,11 +981,10 @@ public class Quester {
 
     	if (damaged != null && toDamage != null) {
     		if (damaged.getAmount() < toDamage.getAmount()) {
-        		ItemStack newDamaged = damaged;
-    			newDamaged.setAmount(damaged.getAmount() + 1);
+                damaged.setAmount(damaged.getAmount() + 1);
         		
         		//TODO is this correct?
-        		getQuestData(quest).blocksDamaged.set(getQuestData(quest).blocksDamaged.indexOf(damaged), newDamaged);
+        		getQuestData(quest).blocksDamaged.set(getQuestData(quest).blocksDamaged.indexOf(damaged), damaged);
 
         		if (damaged.getAmount() == toDamage.getAmount()) {
                     finishObjective(quest, "damageBlock", m, null, null, null, null, null, null, null, null, null);
@@ -1001,10 +999,9 @@ public class Quester {
 
     //Called when a block is broken in PlayerListener, hence ItemStack m will always have amount of 1
     public void breakBlock(Quest quest, ItemStack m) {
-    	ItemStack temp = m;
-    	temp.setAmount(0);
-    	ItemStack broken = temp;
-    	ItemStack toBreak = temp;
+        m.setAmount(0);
+    	ItemStack broken = m;
+    	ItemStack toBreak = m;
     	
     	for (ItemStack is : getQuestData(quest).blocksBroken) {
 
@@ -1021,11 +1018,10 @@ public class Quester {
 
     	if (broken != null && toBreak != null) {
     		if (broken.getAmount() < toBreak.getAmount()) {
-        		ItemStack newBroken = broken;
-    			newBroken.setAmount(broken.getAmount() + 1);
+                broken.setAmount(broken.getAmount() + 1);
         		
         		//TODO is this correct?
-        		getQuestData(quest).blocksBroken.set(getQuestData(quest).blocksBroken.indexOf(broken), newBroken);
+        		getQuestData(quest).blocksBroken.set(getQuestData(quest).blocksBroken.indexOf(broken), broken);
 
         		if (broken.getAmount() == toBreak.getAmount()) {
                     finishObjective(quest, "breakBlock", m, null, null, null, null, null, null, null, null, null);
@@ -1039,10 +1035,9 @@ public class Quester {
     }
 
     public void placeBlock(Quest quest, ItemStack m) {
-    	ItemStack temp = m;
-    	temp.setAmount(0);
-    	ItemStack placed = temp;
-    	ItemStack toPlace = temp;
+        m.setAmount(0);
+    	ItemStack placed = m;
+    	ItemStack toPlace = m;
     	
     	for (ItemStack is : getQuestData(quest).blocksPlaced) {
 
@@ -1059,11 +1054,10 @@ public class Quester {
 
     	if (placed != null && toPlace != null) {
     		if (placed.getAmount() < toPlace.getAmount()) {
-        		ItemStack newplaced = placed;
-    			newplaced.setAmount(placed.getAmount() + 1);
+                placed.setAmount(placed.getAmount() + 1);
         		
         		//TODO is this correct?
-        		getQuestData(quest).blocksPlaced.set(getQuestData(quest).blocksPlaced.indexOf(placed), newplaced);
+        		getQuestData(quest).blocksPlaced.set(getQuestData(quest).blocksPlaced.indexOf(placed), placed);
 
         		if (placed.getAmount() == toPlace.getAmount()) {
                     finishObjective(quest, "placeBlock", m, null, null, null, null, null, null, null, null, null);
@@ -1077,10 +1071,9 @@ public class Quester {
     }
 
     public void useBlock(Quest quest, ItemStack m) {
-    	ItemStack temp = m;
-    	temp.setAmount(0);
-    	ItemStack used = temp;
-    	ItemStack toUse = temp;
+        m.setAmount(0);
+    	ItemStack used = m;
+    	ItemStack toUse = m;
     	
     	for (ItemStack is : getQuestData(quest).blocksUsed) {
 
@@ -1097,11 +1090,10 @@ public class Quester {
 
     	if (used != null && toUse != null) {
     		if (used.getAmount() < toUse.getAmount()) {
-        		ItemStack newUsed = used;
-    			newUsed.setAmount(used.getAmount() + 1);
+                used.setAmount(used.getAmount() + 1);
         		
         		//TODO is this correct?
-        		getQuestData(quest).blocksUsed.set(getQuestData(quest).blocksUsed.indexOf(used), newUsed);
+        		getQuestData(quest).blocksUsed.set(getQuestData(quest).blocksUsed.indexOf(used), used);
 
         		if (used.getAmount() == toUse.getAmount()) {
                     finishObjective(quest, "useBlock", m, null, null, null, null, null, null, null, null, null);
@@ -1115,10 +1107,9 @@ public class Quester {
     }
 
     public void cutBlock(Quest quest, ItemStack m) {
-    	ItemStack temp = m;
-    	temp.setAmount(0);
-    	ItemStack cut = temp;
-    	ItemStack toCut = temp;
+        m.setAmount(0);
+    	ItemStack cut = m;
+    	ItemStack toCut = m;
     	
     	for (ItemStack is : getQuestData(quest).blocksCut) {
 
@@ -1135,11 +1126,10 @@ public class Quester {
 
     	if (cut != null && toCut != null) {
     		if (cut.getAmount() < toCut.getAmount()) {
-        		ItemStack newCut = cut;
-    			newCut.setAmount(cut.getAmount() + 1);
+                cut.setAmount(cut.getAmount() + 1);
         		
         		//TODO is this correct?
-        		getQuestData(quest).blocksCut.set(getQuestData(quest).blocksCut.indexOf(cut), newCut);
+        		getQuestData(quest).blocksCut.set(getQuestData(quest).blocksCut.indexOf(cut), cut);
 
         		if (cut.getAmount() == toCut.getAmount()) {
                     finishObjective(quest, "cutBlock", m, null, null, null, null, null, null, null, null, null);
@@ -1202,7 +1192,7 @@ public class Quester {
     public void killMob(Quest quest, Location killedLocation, EntityType e) {
         QuestData questData = getQuestData(quest);
 
-        if (questData.mobsKilled.contains(e) == false) {
+        if (!questData.mobsKilled.contains(e)) {
             return;
         }
 
@@ -1212,22 +1202,22 @@ public class Quester {
         Integer numberOfSpecificMobKilled                           = questData.mobNumKilled.get(indexOfMobKilled);
         Integer numberOfSpecificMobNeedsToBeKilledInCurrentStage    = currentStage.mobNumToKill.get(indexOfMobKilled);
 
-        if (questData.locationsToKillWithin.isEmpty() == false) {
+        if (!questData.locationsToKillWithin.isEmpty()) {
             Location locationToKillWithin = questData.locationsToKillWithin.get(indexOfMobKilled);
             double radius = questData.radiiToKillWithin.get(indexOfMobKilled);
 
             // Check world #name, not the object
-            if ((killedLocation.getWorld().getName() == locationToKillWithin.getWorld().getName()) == false) {
+            if (!(killedLocation.getWorld().getName().equals(locationToKillWithin.getWorld().getName()))) {
                 return;
             }
             // Radius check, it's a "circle", not cuboid
-            if ((killedLocation.getX() < (locationToKillWithin.getX() + radius) && killedLocation.getX() > (locationToKillWithin.getX() - radius)) == false) {
+            if (!(killedLocation.getX() < (locationToKillWithin.getX() + radius) && killedLocation.getX() > (locationToKillWithin.getX() - radius))) {
                 return;
             }
-            if ((killedLocation.getZ() < (locationToKillWithin.getZ() + radius) && killedLocation.getZ() > (locationToKillWithin.getZ() - radius)) == false) {
+            if (!(killedLocation.getZ() < (locationToKillWithin.getZ() + radius) && killedLocation.getZ() > (locationToKillWithin.getZ() - radius))) {
                 return;
             }
-            if ((killedLocation.getY() < (locationToKillWithin.getY() + radius) && killedLocation.getY() > (locationToKillWithin.getY() - radius)) == false) {
+            if (!(killedLocation.getY() < (locationToKillWithin.getY() + radius) && killedLocation.getY() > (locationToKillWithin.getY() - radius))) {
                 return;
             }
         }
@@ -1280,7 +1270,7 @@ public class Quester {
 
         if (getQuestData(quest).citizensInteracted.containsKey(n.getId())) {
 
-            if (getQuestData(quest).citizensInteracted.get(n.getId()) == false) {
+            if (!getQuestData(quest).citizensInteracted.get(n.getId())) {
                 getQuestData(quest).citizensInteracted.put(n.getId(), true);
                 finishObjective(quest, "talkToNPC", null, null, null, null, null, n, null, null, null, null);
             }
@@ -1319,7 +1309,7 @@ public class Quester {
 
                     if (l.getY() < (locationToReach.getY() + radius) && l.getY() > (locationToReach.getY() - radius)) {
 
-                        if (getQuestData(quest).hasReached.get(index) == false) {
+                        if (!getQuestData(quest).hasReached.get(index)) {
 
                             getQuestData(quest).hasReached.set(index, true);
                             finishObjective(quest, "reachLocation", null, null, null, null, null, null, location, null, null, null);
@@ -1692,7 +1682,7 @@ public class Quester {
         QuestData data = new QuestData(this);
         data.setDoJournalUpdate(false);
 
-        if (quest.getStage(0).blocksToDamage.isEmpty() == false) {
+        if (!quest.getStage(0).blocksToDamage.isEmpty()) {
             for (ItemStack i : quest.getStage(0).blocksToDamage) {
             	if (data.blocksDamaged.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1705,7 +1695,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).blocksToBreak.isEmpty() == false) {
+        if (!quest.getStage(0).blocksToBreak.isEmpty()) {
             for (ItemStack i : quest.getStage(0).blocksToBreak) {
             	if (data.blocksBroken.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1718,7 +1708,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).blocksToPlace.isEmpty() == false) {
+        if (!quest.getStage(0).blocksToPlace.isEmpty()) {
             for (ItemStack i : quest.getStage(0).blocksToPlace) {
             	if (data.blocksPlaced.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1731,7 +1721,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).blocksToUse.isEmpty() == false) {
+        if (!quest.getStage(0).blocksToUse.isEmpty()) {
             for (ItemStack i : quest.getStage(0).blocksToUse) {
             	if (data.blocksUsed.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1744,7 +1734,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).blocksToCut.isEmpty() == false) {
+        if (!quest.getStage(0).blocksToCut.isEmpty()) {
             for (ItemStack i : quest.getStage(0).blocksToCut) {
             	if (data.blocksCut.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1759,7 +1749,7 @@ public class Quester {
 
         data.setFishCaught(0);
 
-        if (quest.getStage(0).itemsToEnchant.isEmpty() == false) {
+        if (!quest.getStage(0).itemsToEnchant.isEmpty()) {
             for (Entry<Map<Enchantment, Material>, Integer> e : quest.getStage(0).itemsToEnchant.entrySet()) {
 
                 Map<Enchantment, Material> map = e.getKey();
@@ -1768,15 +1758,15 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).mobsToKill.isEmpty() == false) {
+        if (!quest.getStage(0).mobsToKill.isEmpty()) {
             for (EntityType e : quest.getStage(0).mobsToKill) {
 
                 data.mobsKilled.add(e);
                 data.mobNumKilled.add(0);
-                if (quest.getStage(0).locationsToKillWithin.isEmpty() == false) {
+                if (!quest.getStage(0).locationsToKillWithin.isEmpty()) {
                     data.locationsToKillWithin.add(quest.getStage(0).locationsToKillWithin.get(data.mobsKilled.indexOf(e)));
                 }
-                if (quest.getStage(0).radiiToKillWithin.isEmpty() == false) {
+                if (!quest.getStage(0).radiiToKillWithin.isEmpty()) {
                     data.radiiToKillWithin.add(quest.getStage(0).radiiToKillWithin.get(data.mobsKilled.indexOf(e)));
                 }
 
@@ -1785,7 +1775,7 @@ public class Quester {
 
         data.setPlayersKilled(0);
 
-        if (quest.getStage(0).itemsToDeliver.isEmpty() == false) {
+        if (!quest.getStage(0).itemsToDeliver.isEmpty()) {
             for (ItemStack is : quest.getStage(0).itemsToDeliver) {
 
                 data.itemsDelivered.put(is, 0);
@@ -1793,7 +1783,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).citizensToInteract.isEmpty() == false) {
+        if (!quest.getStage(0).citizensToInteract.isEmpty()) {
             for (Integer n : quest.getStage(0).citizensToInteract) {
 
                 data.citizensInteracted.put(n, false);
@@ -1801,7 +1791,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).citizensToKill.isEmpty() == false) {
+        if (!quest.getStage(0).citizensToKill.isEmpty()) {
             for (Integer n : quest.getStage(0).citizensToKill) {
 
                 data.citizensKilled.add(n);
@@ -1810,7 +1800,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).locationsToReach.isEmpty() == false) {
+        if (!quest.getStage(0).locationsToReach.isEmpty()) {
             for (Location l : quest.getStage(0).locationsToReach) {
 
                 data.locationsReached.add(l);
@@ -1820,7 +1810,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).mobsToTame.isEmpty() == false) {
+        if (!quest.getStage(0).mobsToTame.isEmpty()) {
             for (EntityType e : quest.getStage(0).mobsToTame.keySet()) {
 
                 data.mobsTamed.put(e, 0);
@@ -1828,7 +1818,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).sheepToShear.isEmpty() == false) {
+        if (!quest.getStage(0).sheepToShear.isEmpty()) {
             for (DyeColor d : quest.getStage(0).sheepToShear.keySet()) {
 
                 data.sheepSheared.put(d, 0);
@@ -1836,13 +1826,13 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(0).passwordDisplays.isEmpty() == false) {
+        if (!quest.getStage(0).passwordDisplays.isEmpty()) {
             for (String display : quest.getStage(0).passwordDisplays) {
                 data.passwordsSaid.put(display, false);
             }
         }
 
-        if (quest.getStage(0).customObjectives.isEmpty() == false) {
+        if (!quest.getStage(0).customObjectives.isEmpty()) {
             for (CustomObjective co : quest.getStage(0).customObjectives) {
                 data.customObjectiveCounts.put(co.getName(), 0);
             }
@@ -1857,7 +1847,7 @@ public class Quester {
         QuestData data = new QuestData(this);
         data.setDoJournalUpdate(false);
 
-        if (quest.getStage(stage).blocksToDamage.isEmpty() == false) {
+        if (!quest.getStage(stage).blocksToDamage.isEmpty()) {
             for (ItemStack i : quest.getStage(stage).blocksToDamage) {
             	if (data.blocksDamaged.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1870,7 +1860,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).blocksToBreak.isEmpty() == false) {
+        if (!quest.getStage(stage).blocksToBreak.isEmpty()) {
             for (ItemStack i : quest.getStage(stage).blocksToBreak) {
             	if (data.blocksBroken.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1883,7 +1873,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).blocksToPlace.isEmpty() == false) {
+        if (!quest.getStage(stage).blocksToPlace.isEmpty()) {
             for (ItemStack i : quest.getStage(stage).blocksToPlace) {
             	if (data.blocksPlaced.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1896,7 +1886,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).blocksToUse.isEmpty() == false) {
+        if (!quest.getStage(stage).blocksToUse.isEmpty()) {
             for (ItemStack i : quest.getStage(stage).blocksToUse) {
             	if (data.blocksUsed.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1909,7 +1899,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).blocksToCut.isEmpty() == false) {
+        if (!quest.getStage(stage).blocksToCut.isEmpty()) {
             for (ItemStack i : quest.getStage(stage).blocksToCut) {
             	if (data.blocksCut.indexOf(i) != -1) {
             		//TODO Will this ever happen?
@@ -1924,7 +1914,7 @@ public class Quester {
 
         data.setFishCaught(0);
 
-        if (quest.getStage(stage).itemsToEnchant.isEmpty() == false) {
+        if (!quest.getStage(stage).itemsToEnchant.isEmpty()) {
             for (Entry<Map<Enchantment, Material>, Integer> e : quest.getStage(stage).itemsToEnchant.entrySet()) {
 
                 Map<Enchantment, Material> map = e.getKey();
@@ -1933,15 +1923,15 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).mobsToKill.isEmpty() == false) {
+        if (!quest.getStage(stage).mobsToKill.isEmpty()) {
             for (EntityType e : quest.getStage(stage).mobsToKill) {
 
                 data.mobsKilled.add(e);
                 data.mobNumKilled.add(0);
-                if (quest.getStage(stage).locationsToKillWithin.isEmpty() == false) {
+                if (!quest.getStage(stage).locationsToKillWithin.isEmpty()) {
                     data.locationsToKillWithin.add(quest.getStage(stage).locationsToKillWithin.get(data.mobsKilled.indexOf(e)));
                 }
-                if (quest.getStage(stage).radiiToKillWithin.isEmpty() == false) {
+                if (!quest.getStage(stage).radiiToKillWithin.isEmpty()) {
                     data.radiiToKillWithin.add(quest.getStage(stage).radiiToKillWithin.get(data.mobsKilled.indexOf(e)));
                 }
 
@@ -1950,7 +1940,7 @@ public class Quester {
 
         data.setPlayersKilled(0);
 
-        if (quest.getStage(stage).itemsToDeliver.isEmpty() == false) {
+        if (!quest.getStage(stage).itemsToDeliver.isEmpty()) {
             for (ItemStack is : quest.getStage(stage).itemsToDeliver) {
 
                 data.itemsDelivered.put(is, 0);
@@ -1958,7 +1948,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).citizensToInteract.isEmpty() == false) {
+        if (!quest.getStage(stage).citizensToInteract.isEmpty()) {
             for (Integer n : quest.getStage(stage).citizensToInteract) {
 
                 data.citizensInteracted.put(n, false);
@@ -1966,7 +1956,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).citizensToKill.isEmpty() == false) {
+        if (!quest.getStage(stage).citizensToKill.isEmpty()) {
             for (Integer n : quest.getStage(stage).citizensToKill) {
 
                 data.citizensKilled.add(n);
@@ -1975,7 +1965,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).blocksToCut.isEmpty() == false) {
+        if (!quest.getStage(stage).blocksToCut.isEmpty()) {
         	for (ItemStack is : quest.getStage(stage).blocksToCut) {
         		
         		//TODO should be .set() ?
@@ -1984,7 +1974,7 @@ public class Quester {
         	}
         }
 
-        if (quest.getStage(stage).locationsToReach.isEmpty() == false) {
+        if (!quest.getStage(stage).locationsToReach.isEmpty()) {
             for (Location l : quest.getStage(stage).locationsToReach) {
 
                 data.locationsReached.add(l);
@@ -1994,7 +1984,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).mobsToTame.isEmpty() == false) {
+        if (!quest.getStage(stage).mobsToTame.isEmpty()) {
             for (EntityType e : quest.getStage(stage).mobsToTame.keySet()) {
 
                 data.mobsTamed.put(e, 0);
@@ -2002,7 +1992,7 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).sheepToShear.isEmpty() == false) {
+        if (!quest.getStage(stage).sheepToShear.isEmpty()) {
             for (DyeColor d : quest.getStage(stage).sheepToShear.keySet()) {
 
                 data.sheepSheared.put(d, 0);
@@ -2010,13 +2000,13 @@ public class Quester {
             }
         }
 
-        if (quest.getStage(stage).passwordDisplays.isEmpty() == false) {
+        if (!quest.getStage(stage).passwordDisplays.isEmpty()) {
             for (String display : quest.getStage(stage).passwordDisplays) {
                 data.passwordsSaid.put(display, false);
             }
         }
 
-        if (quest.getStage(stage).customObjectives.isEmpty() == false) {
+        if (!quest.getStage(stage).customObjectives.isEmpty()) {
             for (CustomObjective co : quest.getStage(stage).customObjectives) {
                 data.customObjectiveCounts.put(co.getName(), 0);
             }
@@ -2030,9 +2020,8 @@ public class Quester {
     public static String getCapitalized(String target) {
         String firstLetter = target.substring(0, 1);
         String remainder = target.substring(1);
-        String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
 
-        return capitalized;
+        return firstLetter.toUpperCase() + remainder.toLowerCase();
     }
 
     
@@ -2176,16 +2165,15 @@ public class Quester {
 
         long currentTime = System.currentTimeMillis();
         long lastTime;
-        if (completedTimes.containsKey(q.name) == false) {
+        if (!completedTimes.containsKey(q.name)) {
             lastTime = System.currentTimeMillis();
             completedTimes.put(q.name, System.currentTimeMillis());
         } else {
             lastTime = completedTimes.get(q.name);
         }
         long comparator = q.redoDelay;
-        long difference = (comparator - (currentTime - lastTime));
 
-        return difference;
+        return (comparator - (currentTime - lastTime));
 
     }
 
@@ -2358,7 +2346,7 @@ public class Quester {
                     questSec.set("mobs-killed", mobNames);
                     questSec.set("mobs-killed-amounts", mobAmounts);
 
-                    if (questData.locationsToKillWithin.isEmpty() == false) {
+                    if (!questData.locationsToKillWithin.isEmpty()) {
 
                         for (Location l : questData.locationsToKillWithin) {
 
@@ -2366,11 +2354,7 @@ public class Quester {
 
                         }
 
-                        for (int i : questData.radiiToKillWithin) {
-
-                            radii.add(i);
-
-                        }
+                        radii.addAll(questData.radiiToKillWithin);
 
                         questSec.set("mob-kill-locations", locations);
                         questSec.set("mob-kill-location-radii", radii);
@@ -2379,7 +2363,7 @@ public class Quester {
 
                 }
 
-                if (questData.itemsDelivered.isEmpty() == false) {
+                if (!questData.itemsDelivered.isEmpty()) {
 
                     LinkedList<Integer> deliveryAmounts = new LinkedList<Integer>();
 
@@ -2393,7 +2377,7 @@ public class Quester {
 
                 }
 
-                if (questData.citizensInteracted.isEmpty() == false) {
+                if (!questData.citizensInteracted.isEmpty()) {
 
                     LinkedList<Integer> npcIds = new LinkedList<Integer>();
                     LinkedList<Boolean> hasTalked = new LinkedList<Boolean>();
@@ -2410,22 +2394,18 @@ public class Quester {
 
                 }
 
-                if (questData.citizensKilled.isEmpty() == false) {
+                if (!questData.citizensKilled.isEmpty()) {
 
                     LinkedList<Integer> npcIds = new LinkedList<Integer>();
 
-                    for (Integer n : questData.citizensKilled) {
-
-                        npcIds.add(n);
-
-                    }
+                    npcIds.addAll(questData.citizensKilled);
 
                     questSec.set("citizen-ids-killed", npcIds);
                     questSec.set("citizen-amounts-killed", questData.citizenNumKilled);
 
                 }
 
-                if (questData.locationsReached.isEmpty() == false) {
+                if (!questData.locationsReached.isEmpty()) {
 
                     LinkedList<String> locations = new LinkedList<String>();
                     LinkedList<Boolean> has = new LinkedList<Boolean>();
@@ -2437,13 +2417,9 @@ public class Quester {
 
                     }
 
-                    for (boolean b : questData.hasReached) {
-                        has.add(b);
-                    }
+                    has.addAll(questData.hasReached);
 
-                    for (int i : questData.radiiToReachWithin) {
-                        radii.add(i);
-                    }
+                    radii.addAll(questData.radiiToReachWithin);
 
                     questSec.set("locations-to-reach", locations);
                     questSec.set("has-reached-location", has);
@@ -2451,7 +2427,7 @@ public class Quester {
 
                 }
 
-                if (questData.potionsBrewed.isEmpty() == false) {
+                if (!questData.potionsBrewed.isEmpty()) {
 
                     LinkedList<String> potionNames = new LinkedList<String>();
                     LinkedList<Integer> potionAmounts = new LinkedList<Integer>();
@@ -2468,7 +2444,7 @@ public class Quester {
 
                 }
 
-                if (questData.mobsTamed.isEmpty() == false) {
+                if (!questData.mobsTamed.isEmpty()) {
 
                     LinkedList<String> mobNames = new LinkedList<String>();
                     LinkedList<Integer> mobAmounts = new LinkedList<Integer>();
@@ -2485,7 +2461,7 @@ public class Quester {
 
                 }
 
-                if (questData.sheepSheared.isEmpty() == false) {
+                if (!questData.sheepSheared.isEmpty()) {
 
                     LinkedList<String> colors = new LinkedList<String>();
                     LinkedList<Integer> shearAmounts = new LinkedList<Integer>();
@@ -2502,7 +2478,7 @@ public class Quester {
 
                 }
 
-                if (questData.passwordsSaid.isEmpty() == false) {
+                if (!questData.passwordsSaid.isEmpty()) {
 
                     LinkedList<String> passwords = new LinkedList<String>();
                     LinkedList<Boolean> said = new LinkedList<Boolean>();
@@ -2519,7 +2495,7 @@ public class Quester {
 
                 }
 
-                if (questData.customObjectiveCounts.isEmpty() == false) {
+                if (!questData.customObjectiveCounts.isEmpty()) {
 
                     LinkedList<String> customObj = new LinkedList<String>();
                     LinkedList<Integer> customObjCounts = new LinkedList<Integer>();
@@ -2540,18 +2516,18 @@ public class Quester {
                     questSec.set("stage-delay", questData.delayTimeLeft);
                 }
 
-                if (questData.eventFired.isEmpty() == false) {
+                if (!questData.eventFired.isEmpty()) {
 
                     LinkedList<String> triggers = new LinkedList<String>();
                     for (String trigger : questData.eventFired.keySet()) {
 
-                        if (questData.eventFired.get(trigger) == true) {
+                        if (questData.eventFired.get(trigger)) {
                             triggers.add(trigger);
                         }
 
                     }
 
-                    if (triggers.isEmpty() == false) {
+                    if (!triggers.isEmpty()) {
                         questSec.set("chat-triggers", triggers);
                     }
 
@@ -2635,7 +2611,7 @@ public class Quester {
             if (!dataFile.exists()) {
                 OfflinePlayer p = getOfflinePlayer();
                 dataFile = new File(plugin.getDataFolder(), "data/" + p.getName() + ".yml");
-                if (dataFile.exists() == false) {
+                if (!dataFile.exists()) {
                     return false;
                 }
             }
@@ -2707,7 +2683,7 @@ public class Quester {
             completedQuests.clear();
         }
 
-        if (data.isString("currentQuests") == false) {
+        if (!data.isString("currentQuests")) {
 
             List<String> questNames = data.getStringList("currentQuests");
             List<Integer> questStages = data.getIntegerList("currentStages");
@@ -2735,7 +2711,7 @@ public class Quester {
                 Quest quest = plugin.getQuest(key);
                 Stage stage;
 
-                if (quest == null || currentQuests.containsKey(quest) == false) {
+                if (quest == null || !currentQuests.containsKey(quest)) {
                     continue;
                 }
 
@@ -3107,7 +3083,7 @@ public class Quester {
 
                 }
 
-                if (getCurrentStage(quest).chatEvents.isEmpty() == false) {
+                if (!getCurrentStage(quest).chatEvents.isEmpty()) {
 
                     for (String trig : getCurrentStage(quest).chatEvents.keySet()) {
 
@@ -3382,7 +3358,7 @@ if (getQuestData(quest).delayTimeLeft > -1) {
 
 public boolean hasData() {
 
-if (currentQuests.isEmpty() == false || questData.isEmpty() == false) {
+if (!currentQuests.isEmpty() || !questData.isEmpty()) {
     return true;
 }
 
@@ -3390,7 +3366,7 @@ if (questPoints > 1) {
     return true;
 }
 
-return completedQuests.isEmpty() == false;
+return !completedQuests.isEmpty();
 
 }
 
@@ -3428,7 +3404,7 @@ if (quest != null) {
 
     }
 
-    if (exists == false) {
+    if (!exists) {
 
         if (plugin.getServer().getPlayer(id) != null) {
             String error = Lang.get("questNotExist");
@@ -3559,20 +3535,20 @@ if (quest != null) {
         Inventory inv = Bukkit.getServer().createInventory(player, size, Lang.get("quests") + " | " + npc.getName());
 
         int inc = 0;
-        for (int i = 0; i < quests.size(); i++) {
+        for (Quest quest : quests) {
 
-            if (quests.get(i).guiDisplay != null) {
+            if (quest.guiDisplay != null) {
 
-                ItemStack display = quests.get(i).guiDisplay;
+                ItemStack display = quest.guiDisplay;
                 ItemMeta meta = display.getItemMeta();
-                meta.setDisplayName(ChatColor.DARK_PURPLE + Quests.parseString(quests.get(i).getName(), npc));
+                meta.setDisplayName(ChatColor.DARK_PURPLE + Quests.parseString(quest.getName(), npc));
 
                 if (!meta.hasLore()) {
-                	LinkedList<String> lines = new LinkedList<String>();
+                    LinkedList<String> lines = new LinkedList<String>();
 
-                	lines = MiscUtil.makeLines(quests.get(i).description, " ", 40, ChatColor.DARK_GREEN);
+                    lines = MiscUtil.makeLines(quest.description, " ", 40, ChatColor.DARK_GREEN);
 
-                	meta.setLore(lines);
+                    meta.setLore(lines);
                 }
 
                 display.setItemMeta(meta);

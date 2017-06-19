@@ -200,7 +200,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
     private void defaultLangFile() {
         lang = new Lang(this);
         lang.initPhrases();
-        if (new File(this.getDataFolder(), "/lang/en.yml").exists() == false) {
+        if (!new File(this.getDataFolder(), "/lang/en.yml").exists()) {
         	getLogger().info("Translation data not found, writing defaults to file.");
             lang.saveNewLang();
         } else {
@@ -450,13 +450,13 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
     @Override
     public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
 
-        if (abandonedEvent.gracefulExit() == false) {
+        if (!abandonedEvent.gracefulExit()) {
 
             if (abandonedEvent.getContext().getForWhom() != null) {
 
                 try {
                     abandonedEvent.getContext().getForWhom().sendRawMessage(YELLOW + Lang.get("questTimeout"));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
 
             }
@@ -596,7 +596,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
             File[] modules = f.listFiles();
             for (File module : modules) {
 
-                if (module.isDirectory() == false && module.getName().endsWith(".jar")) {
+                if (!module.isDirectory() && module.getName().endsWith(".jar")) {
                     loadModule(module);
                 }
 
@@ -626,7 +626,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
             
             while (e.hasMoreElements()) {
 
-                JarEntry je = (JarEntry) e.nextElement();
+                JarEntry je = e.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {
                     continue;
                 }
@@ -755,7 +755,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
     public boolean onCommand(final CommandSender cs, Command cmd, String label, String[] args) {
 
     	if (cs instanceof Player) {
-    		if (checkQuester(((Player)cs).getUniqueId()) == true) {
+    		if (checkQuester(((Player) cs).getUniqueId())) {
     			cs.sendMessage(RED + Lang.get("questBlacklisted"));
     			return true;
     		}
@@ -1225,7 +1225,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
                                     msg = msg.replaceAll("<file>", DARKAQUA + f.getName() + RED);
                                     cs.sendMessage(RED + msg);
                                     failCount++;
-                                } else if (suppressed == false) {
+                                } else if (!suppressed) {
                                     String msg = Lang.get("errorReadingSuppress");
                                     msg = msg.replaceAll("<file>", DARKAQUA + f.getName() + RED);
                                     cs.sendMessage(RED + msg);
@@ -1239,7 +1239,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener,
                                     msg = msg.replaceAll("<file>", DARKAQUA + f.getName() + RED);
                                     cs.sendMessage(RED + msg);
                                     failCount++;
-                                } else if (suppressed == false) {
+                                } else if (!suppressed) {
                                     String msg = Lang.get("errorReadingSuppress");
                                     msg = msg.replaceAll("<file>", DARKAQUA + f.getName() + RED);
                                     cs.sendMessage(RED + msg);
@@ -1853,7 +1853,7 @@ try{
             cs.sendMessage(GOLD + msg);
             for (String s : sortedMap.keySet()) {
 
-                int i = (Integer) sortedMap.get(s);
+                int i = sortedMap.get(s);
                 s = s.trim();
                 UUID id = UUID.fromString(s);
                 s = Bukkit.getOfflinePlayer(id).getName();
@@ -1889,7 +1889,7 @@ try{
 			}
     	} else {
     		quester = getQuester(((Player)cs).getUniqueId());
-    		cs.sendMessage(GOLD + "- " + ((Player)cs).getName() + " -");
+    		cs.sendMessage(GOLD + "- " + cs.getName() + " -");
     	}
     	
         cs.sendMessage(YELLOW + Lang.get("questPointsDisplay") + " " + PURPLE + quester.questPoints);
@@ -1993,9 +1993,9 @@ try{
 
     private boolean questsQuit(final Player player, String[] args) {
 
-        if (allowQuitting == true) {
+        if (allowQuitting) {
 
-            if (((Player) player).hasPermission("quests.quit")) {
+            if (player.hasPermission("quests.quit")) {
 
                 if (args.length == 1) {
                     player.sendMessage(RED + Lang.get("COMMAND_QUIT_HELP"));
@@ -2003,7 +2003,7 @@ try{
                 }
 
                 Quester quester = getQuester(player.getUniqueId());
-                if (quester.currentQuests.isEmpty() == false) {
+                if (!quester.currentQuests.isEmpty()) {
 
                     Quest found = findQuest(MiscUtil.concatArgArray(args, 1, args.length - 1, ' '));
 
@@ -2044,9 +2044,9 @@ try{
     }
 
     private void questsTake(final Player player, String[] args) {
-        if (allowCommands == true) {
+        if (allowCommands) {
 
-            if (((Player) player).hasPermission("quests.take")) {
+            if (player.hasPermission("quests.take")) {
 
                 if (args.length == 1) {
 
@@ -2095,74 +2095,71 @@ try{
 
                     if (questToFind != null) {
 
-                        final Quest q = questToFind;
                         final Quester quester = getQuester(player.getUniqueId());
 
                         if (quester.currentQuests.size() >= maxQuests && maxQuests > 0) {
                             String msg = Lang.get("questMaxAllowed");
                             msg = msg.replaceAll("<number>", String.valueOf(maxQuests));
                             player.sendMessage(YELLOW + msg);
-                        } else if (quester.currentQuests.containsKey(q)) {
+                        } else if (quester.currentQuests.containsKey(questToFind)) {
                             String msg = Lang.get("questAlreadyOn");
                             player.sendMessage(YELLOW + msg);
-                        } else if (quester.completedQuests.contains(q.name) && q.redoDelay < 0) {
+                        } else if (quester.completedQuests.contains(questToFind.name) && questToFind.redoDelay < 0) {
                             String msg = Lang.get("questAlreadyCompleted");
-                            msg = msg.replaceAll("<quest>", PURPLE + q.name + YELLOW);
+                            msg = msg.replaceAll("<quest>", PURPLE + questToFind.name + YELLOW);
                             player.sendMessage(YELLOW + msg);
-                        } else if (q.npcStart != null && allowCommandsForNpcQuests == false) {
+                        } else if (questToFind.npcStart != null && !allowCommandsForNpcQuests) {
                             String msg = Lang.get("mustSpeakTo");
-                            msg = msg.replaceAll("<npc>", PURPLE + q.npcStart.getName() + YELLOW);
+                            msg = msg.replaceAll("<npc>", PURPLE + questToFind.npcStart.getName() + YELLOW);
                             player.sendMessage(YELLOW + msg);
-                        } else if (q.blockStart != null) {
+                        } else if (questToFind.blockStart != null) {
                             String msg = Lang.get("noCommandStart");
-                            msg = msg.replaceAll("<quest>", PURPLE + q.name + YELLOW);
+                            msg = msg.replaceAll("<quest>", PURPLE + questToFind.name + YELLOW);
                             player.sendMessage(YELLOW + msg);
                         } else {
 
                             boolean takeable = true;
 
-                            if (quester.completedQuests.contains(q.name)) {
+                            if (quester.completedQuests.contains(questToFind.name)) {
 
-                                if (quester.getDifference(q) > 0) {
+                                if (quester.getDifference(questToFind) > 0) {
                                     String early = Lang.get("questTooEarly");
-                                    early = early.replaceAll("<quest>", ChatColor.AQUA + q.name + ChatColor.YELLOW);
-                                    early = early.replaceAll("<time>", ChatColor.DARK_PURPLE + Quests.getTime(quester.getDifference(q)) + ChatColor.YELLOW);
+                                    early = early.replaceAll("<quest>", ChatColor.AQUA + questToFind.name + ChatColor.YELLOW);
+                                    early = early.replaceAll("<time>", ChatColor.DARK_PURPLE + Quests.getTime(quester.getDifference(questToFind)) + ChatColor.YELLOW);
                                     player.sendMessage(YELLOW + early);
                                     takeable = false;
                                 }
 
                             }
 
-                            if (q.region != null) {
+                            if (questToFind.region != null) {
 
                                 boolean inRegion = false;
                                 Player p = quester.getPlayer();
                                 RegionManager rm = worldGuard.getRegionManager(p.getWorld());
-                                Iterator<ProtectedRegion> it = rm.getApplicableRegions(p.getLocation()).iterator();
-                                while (it.hasNext()) {
-                                    ProtectedRegion pr = it.next();
-                                    if (pr.getId().equalsIgnoreCase(q.region)) {
+                                for (ProtectedRegion pr : rm.getApplicableRegions(p.getLocation())) {
+                                    if (pr.getId().equalsIgnoreCase(questToFind.region)) {
                                         inRegion = true;
                                         break;
                                     }
                                 }
 
-                                if (inRegion == false) {
+                                if (!inRegion) {
                                     String msg = Lang.get("questInvalidLocation");
-                                    msg = msg.replaceAll("<quest>", AQUA + q.name + YELLOW);
+                                    msg = msg.replaceAll("<quest>", AQUA + questToFind.name + YELLOW);
                                     player.sendMessage(YELLOW + msg);
                                     takeable = false;
                                 }
 
                             }
 
-                            if (takeable == true) {
+                            if (takeable) {
 
                                 if (player instanceof Conversable) {
 
-                                    if (((Player) player).isConversing() == false) {
+                                    if (!player.isConversing()) {
 
-                                        quester.questToTake = q.name;
+                                        quester.questToTake = questToFind.name;
 
                                         String s
                                                 = GOLD + "- " + PURPLE + quester.questToTake + GOLD + " -\n"
@@ -2173,7 +2170,7 @@ try{
                                             player.sendMessage(msg);
                                         }
 
-                                        conversationFactory.buildConversation((Conversable) player).begin();
+                                        conversationFactory.buildConversation(player).begin();
 
                                     } else {
 
@@ -2207,7 +2204,7 @@ try{
     }
 
     private void questsList(final CommandSender cs, String[] args) {
-        if (((Player) cs).hasPermission("quests.list")) {
+        if (cs.hasPermission("quests.list")) {
 
             if (args.length == 1) {
                 listQuests((Player) cs, 1);
@@ -2244,7 +2241,7 @@ try{
     }
 
     private void questsHelp(final CommandSender cs) {
-        if (((Player) cs).hasPermission("quests.quests")) {
+        if (cs.hasPermission("quests.quests")) {
 
             Player p = (Player) cs;
             printHelp(p);
@@ -2259,7 +2256,7 @@ try{
 
         if (cs instanceof Player) {
 
-            if (((Player) cs).hasPermission("quests.quest")) {
+            if (cs.hasPermission("quests.quest")) {
 
                 if (args.length == 0) {
 
@@ -2290,7 +2287,7 @@ try{
 
     private void showQuestDetails(final CommandSender cs, String[] args) {
 
-        if (((Player) cs).hasPermission("quests.questinfo")) {
+        if (cs.hasPermission("quests.questinfo")) {
 
             String name = "";
 
@@ -2342,11 +2339,11 @@ try{
 
                 cs.sendMessage(" ");
 
-                if (showQuestReqs == true) {
+                if (showQuestReqs) {
 
                     cs.sendMessage(GOLD + Lang.get("requirements"));
 
-                    if (q.permissionReqs.isEmpty() == false) {
+                    if (!q.permissionReqs.isEmpty()) {
 
                         for (String perm : q.permissionReqs) {
 
@@ -2380,7 +2377,7 @@ try{
 
                     }
 
-                    if (q.mcMMOSkillReqs.isEmpty() == false) {
+                    if (!q.mcMMOSkillReqs.isEmpty()) {
 
                         for (String skill : q.mcMMOSkillReqs) {
 
@@ -2426,11 +2423,11 @@ try{
 
                     }
 
-                    if (q.items.isEmpty() == false) {
+                    if (!q.items.isEmpty()) {
 
                         for (ItemStack is : q.items) {
 
-                            if (hasItem(player, is) == true) {
+                            if (hasItem(player, is)) {
                                 cs.sendMessage(GRAY + "- " + GREEN + ItemUtil.getString(is));
                             } else {
                                 cs.sendMessage(GRAY + "- " + RED + ItemUtil.getString(is));
@@ -2440,7 +2437,7 @@ try{
 
                     }
 
-                    if (q.neededQuests.isEmpty() == false) {
+                    if (!q.neededQuests.isEmpty()) {
 
                         for (String s : q.neededQuests) {
 
@@ -2454,7 +2451,7 @@ try{
 
                     }
 
-                    if (q.blockQuests.isEmpty() == false) {
+                    if (!q.blockQuests.isEmpty()) {
 
                         for (String s : q.blockQuests) {
 
@@ -2490,7 +2487,7 @@ try{
     private void showObjectives(final Player player) {
 
         Quester quester = getQuester(player.getUniqueId());
-        if (quester.currentQuests.isEmpty() == false) {
+        if (!quester.currentQuests.isEmpty()) {
             for (Quest q : quester.currentQuests.keySet()) {
                 Stage stage = quester.getCurrentStage(q);
                 q.updateCompass(quester, stage);
@@ -2684,13 +2681,13 @@ try{
 
         if (quester == null) {
 
-            if (debug == true && !questerBlacklist.contains(id.toString())) {
+            if (debug && !questerBlacklist.contains(id.toString())) {
                 getLogger().log(Level.WARNING, "Quester data for UUID \"" + id.toString() + "\" not stored. Attempting manual data retrieval..");
             }
 
             quester = new Quester(this);
             quester.id = id;
-            if (quester.loadData() == false && !questerBlacklist.contains(id.toString())) {
+            if (!quester.loadData() && !questerBlacklist.contains(id.toString())) {
             	if (citizens != null) {
             		if (citizens.getNPCRegistry().getByUniqueId(id) != null) {
             			return quester;
@@ -2698,7 +2695,7 @@ try{
             	}
             	getLogger().info("Quester not found for UUID \"" + id.toString() + "\". Consider adding them to the Quester blacklist.");
             } else {
-                if (debug == true && !questerBlacklist.contains(id.toString())) {
+                if (debug && !questerBlacklist.contains(id.toString())) {
                     getLogger().log(Level.INFO, "Manual data retrieval succeeded for UUID \"" + id.toString() + "\"");
                 }
                 questers.put(id, quester);
@@ -2743,7 +2740,7 @@ try{
 
             Quester quester = new Quester(this);
             quester.id = p.getUniqueId();
-            if (quester.loadData() == false) {
+            if (!quester.loadData()) {
                 quester.saveData();
             }
             qs.put(p.getUniqueId(), quester);
@@ -2855,8 +2852,7 @@ try{
                 if (config.contains("quests." + questName + ".redo-delay")) {
 
                     if (config.getInt("quests." + questName + ".redo-delay", -999) != -999) {
-                        long redoDelay=config.getLong("quests." + questName + ".redo-delay") * 1000;
-                        quest.redoDelay = redoDelay;
+                        quest.redoDelay = config.getLong("quests." + questName + ".redo-delay") * 1000;
                     } else {
                         skipQuestProcess("redo-delay: for Quest " + quest.name + " is not a number!");
                     }
@@ -2907,7 +2903,7 @@ try{
 
                     } catch (IOException e) {
 
-                        if (debug == false) {
+                        if (!debug) {
                             getLogger().log(Level.SEVERE, "Failed to load Quest \"" + questName + "\". Skipping.");
                         } else {
                             getLogger().log(Level.SEVERE, "Failed to load Quest \"" + questName + "\". Error log:");
@@ -2917,13 +2913,11 @@ try{
                     }
                 }
 
-                if (failedToLoad == true) {
+                if (failedToLoad) {
                     getLogger().log(Level.SEVERE, "Failed to load Quest \"" + questName + "\". Skipping.");
                 }
             } catch (SkipQuest ex) {
-                continue;
             } catch (StageFailedException ex) {
-                continue;
             }
         }
     }
@@ -3128,7 +3122,7 @@ try{
 
                 }
 
-                if (failed == true) {
+                if (failed) {
                     skipQuestProcess("items: Requirement for Quest " + quest.name + " is not formatted correctly!");
                 }
 
@@ -3969,11 +3963,7 @@ try{
 
                     if (Quests.checkList(config.getList("quests." + questName + ".stages.ordered." + s2 + ".mob-amounts"), Integer.class)) {
 
-                        for (int i : config.getIntegerList("quests." + questName + ".stages.ordered." + s2 + ".mob-amounts")) {
-
-                            mobNumToKill.add(i);
-
-                        }
+                        mobNumToKill.addAll(config.getIntegerList("quests." + questName + ".stages.ordered." + s2 + ".mob-amounts"));
 
                     } else {
 
@@ -4034,11 +4024,7 @@ try{
                     if (Quests.checkList(config.getList("quests." + questName + ".stages.ordered." + s2 + ".kill-location-radii"), Integer.class)) {
 
                         List<Integer> radii = config.getIntegerList("quests." + questName + ".stages.ordered." + s2 + ".kill-location-radii");
-                        for (int i : radii) {
-
-                            radiiToKillWithin.add(i);
-
-                        }
+                        radiiToKillWithin.addAll(radii);
 
                     } else {
                         stageFailed("kill-location-radii: in Stage " + s2 + " of Quest " + quest.name + " is not a list of numbers!");
@@ -4053,11 +4039,7 @@ try{
                     if (Quests.checkList(config.getList("quests." + questName + ".stages.ordered." + s2 + ".kill-location-names"), String.class)) {
 
                         List<String> locationNames = config.getStringList("quests." + questName + ".stages.ordered." + s2 + ".kill-location-names");
-                        for (String name : locationNames) {
-
-                            areaNames.add(name);
-
-                        }
+                        areaNames.addAll(locationNames);
 
                     } else {
                         stageFailed("kill-location-names: in Stage " + s2 + " of Quest " + quest.name + " is not a list of names!");
@@ -4134,11 +4116,7 @@ try{
                     if (Quests.checkList(config.getList("quests." + questName + ".stages.ordered." + s2 + ".reach-location-radii"), Integer.class)) {
 
                         List<Integer> radii = config.getIntegerList("quests." + questName + ".stages.ordered." + s2 + ".reach-location-radii");
-                        for (int i : radii) {
-
-                            oStage.radiiToReachWithin.add(i);
-
-                        }
+                        oStage.radiiToReachWithin.addAll(radii);
 
                     } else {
                         stageFailed("reach-location-radii: in Stage " + s2 + " of Quest " + quest.name + " is not a list of numbers!");
@@ -4153,11 +4131,7 @@ try{
                     if (Quests.checkList(config.getList("quests." + questName + ".stages.ordered." + s2 + ".reach-location-names"), String.class)) {
 
                         List<String> locationNames = config.getStringList("quests." + questName + ".stages.ordered." + s2 + ".reach-location-names");
-                        for (String name : locationNames) {
-
-                            oStage.locationNames.add(name);
-
-                        }
+                        oStage.locationNames.addAll(locationNames);
 
                     } else {
                         stageFailed("reach-location-names: in Stage " + s2 + " of Quest " + quest.name + " is not a list of names!");
@@ -4773,9 +4747,7 @@ try{
             return null;
         }
 
-        Location finalLocation = new Location(Bukkit.getServer().getWorld(info[0]), x, y, z);
-
-        return finalLocation;
+        return new Location(Bukkit.getServer().getWorld(info[0]), x, y, z);
 
     }
 
@@ -4976,7 +4948,7 @@ try{
 
         if (leftover != null) {
 
-            if (leftover.isEmpty() == false) {
+            if (!leftover.isEmpty()) {
 
                 for (ItemStack i2 : leftover.values()) {
                     p.getWorld().dropItem(p.getLocation(), i2);
@@ -5082,7 +5054,7 @@ try{
         		return false;
         	}
 
-            if (c.isAssignableFrom(o.getClass()) == false) {
+            if (!c.isAssignableFrom(o.getClass())) {
                 return false;
             }
 
@@ -5388,11 +5360,11 @@ try{
 
         for (Quest q : quests) {
 
-            if (q.npcStart != null && quester.completedQuests.contains(q.name) == false) {
+            if (q.npcStart != null && !quester.completedQuests.contains(q.name)) {
 
                 if (q.npcStart.getId() == npc.getId()) {
 
-                    if(ignoreLockedQuests == false || ignoreLockedQuests == true && q.testRequirements(quester) == true) {
+                    if(!ignoreLockedQuests || ignoreLockedQuests && q.testRequirements(quester)) {
                         return true;
                     }
                 }
@@ -5470,7 +5442,7 @@ try{
         final File dataFolder = new File(this.getDataFolder(), "data/");
         final File oldDataFolder = new File(this.getDataFolder(), "data/old/");
 
-        if (oldDataFolder.exists() == false || oldDataFolder.exists() && oldDataFolder.isDirectory() == false) {
+        if (!oldDataFolder.exists() || oldDataFolder.exists() && !oldDataFolder.isDirectory()) {
             oldDataFolder.mkdir();
         }
 
