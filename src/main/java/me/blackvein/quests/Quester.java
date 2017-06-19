@@ -2625,16 +2625,32 @@ public class Quester {
         }
 
         hardClear();
-
+        loadQuestTimes: {//No purpose, just here to help me find this easily. Also here if i wish to break in between.
         if (data.contains("completedRedoableQuests")) {
+            List<String> completedRedoableQuests= data.getStringList("completedRedoableQuests");
+            for(int i=0;i<completedRedoableQuests.size();i++){
+                String questName=completedRedoableQuests.get(i);
+                Long questTime;
+                try{
+                questTime=(Long)data.getList("completedQuestTimes").get(i);}
+                catch(IndexOutOfBoundsException e){plugin.getLogger().warning("Invalid times on id "+id.toString());continue;}
+                for(Quest q:plugin.quests)
+                    if(q.name.equals(questName)) {
+                        completedTimes.put(questName, questTime);
+                        break;
+                }
 
-            for (String s : data.getStringList("completedRedoableQuests")) {
+            }
+
+        }
+
+           /* for (String s :) {
 
                 for (Object o : data.getList("completedQuestTimes")) {
 
                     for (Quest q : plugin.quests) {
 
-                        if (q.name.equalsIgnoreCase(s)) {
+                        if (q.name.equals(s)) {
                             completedTimes.put(q.name, (Long) o);
                             break;
                         }
@@ -2643,7 +2659,7 @@ public class Quester {
 
                 }
 
-            }
+            }*/
 
         }
 
