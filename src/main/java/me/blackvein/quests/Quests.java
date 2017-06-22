@@ -616,7 +616,6 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener 
 
             JarFile jarFile = new JarFile(jar);
             Enumeration<JarEntry> e = jarFile.entries();
-            jarFile.close();
 
             URL[] urls = {new URL("jar:file:" + jar.getPath() + "!/")};
 
@@ -685,6 +684,7 @@ public class Quests extends JavaPlugin implements ConversationAbandonedListener 
             if(count == 0) {
                 getLogger().severe("Error: Unable to load module from file: " + jar.getName() + ", jar file is not a valid module!");
             }
+            jarFile.close();
 
         } catch (Exception e) {
         	getLogger().severe("Error: Unable to load module from file: " + jar.getName());
