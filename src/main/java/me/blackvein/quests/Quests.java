@@ -4181,7 +4181,7 @@ try{
 
                             for (String mob : mobs) {
 
-                                if (mob.equalsIgnoreCase("Wolf") || mob.equalsIgnoreCase("Ocelot") || mob.equalsIgnoreCase("Horse")) {
+                                if (mob.equalsIgnoreCase("Wolf") || mob.equalsIgnoreCase("Ocelot") || mob.equalsIgnoreCase("Horse") || mob.equalsIgnoreCase("Parrot")) {
 
                                     oStage.mobsToTame.put(EntityType.valueOf(mob.toUpperCase()), mobAmounts.get(mobs.indexOf(mob)));
 
