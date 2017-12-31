@@ -12,22 +12,34 @@
 
 package me.blackvein.quests;
 
-import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import net.aufdemrand.denizen.BukkitScriptEntryData;
-import net.aufdemrand.denizen.objects.dPlayer;
-import net.aufdemrand.denizencore.scripts.ScriptRegistry;
-import net.aufdemrand.denizencore.scripts.containers.core.TaskScriptContainer;
+import me.blackvein.quests.util.Lang;
 
-public class QuestTaskTrigger {
+public class ObjectiveTimer extends BukkitRunnable {
 
-	public boolean parseQuestTaskTrigger(String theScriptName, Player player) {
-		if (!ScriptRegistry.containsScript(theScriptName)) {
-			return false;
-		}
-		TaskScriptContainer task_script = ScriptRegistry.getScriptContainerAs(theScriptName, TaskScriptContainer.class);
-		BukkitScriptEntryData entryData = new BukkitScriptEntryData(dPlayer.mirrorBukkitPlayer(player), null);
-		task_script.runTaskScript(entryData, null);
-		return true;
-	}
+    Quester quester;
+    Quests plugin;
+    Quest quest;
+    private int time;
+    private boolean last;
+
+    ObjectiveTimer(Quests plugin, Quester quester, Quest quest, int time, boolean last) {
+        this.quester = quester;
+        this.quest = quest;
+        this.plugin = plugin;
+        this.time = time;
+        this.last = last;
+    }
+
+    @Override
+    public void run() {
+        quester.timers.remove(getTaskId());
+        if (last) {
+            quest.failQuest(quester);
+            quester.updateJournal();
+        } else {
+            quester.getPlayer().sendMessage(Quests.parseString(String.format(Lang.get("timerMessage"), time), quest));
+        }
+    }
 }

@@ -14,7 +14,7 @@ quests:
       ordered:
         1:
           break-block-names:
-            - stone
+            - STONE
           break-block-amounts:
             - 10
           break-block-durability:
@@ -54,7 +54,7 @@ quests:
             - 1
     rewards:
       items:
-        - name-diamond_sword:amount-1
+        - name-DIAMOND_SWORD:amount-1
       exp: 100
       quest-points: 1
   CatchFish:
@@ -77,3 +77,22 @@ quests:
           fish-to-catch: 5
     rewards:
       exp: 250
+  TimedQuest:
+    name: 'Timed Quest'
+    ask-message: '<yellow>Dig up <purple>10<yellow> blocks of <purple>Dirt<yellow> before time runs out!'
+    finish-message: '<yellow>You did it in time! Have an <purple>Iron Shovel<yellow> and some <green>experience<yellow>.'
+    stages:
+      ordered:
+        '1':
+          break-block-names:
+          - DIRT
+          break-block-amounts:
+          - 10
+          break-block-durability:
+          - 0
+          start-event: TimerEvent
+          finish-event: CancelTimer
+    rewards:
+      items:
+        - name-IRON_SPADE:amount-1
+      exp: 150
